@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group name="2017-2018 WEBR4">
+            <file>file:/C:/xampp/htdocs/MyBlog/.htaccess</file>
+            <file>file:/C:/xampp/htdocs/MyBlog/view/Connection/index.php</file>
+            <file>file:/C:/xampp/htdocs/MyBlog/framework/Model.php</file>
+            <file>file:/C:/xampp/htdocs/MyBlog/view/template.php</file>
+            <file>file:/C:/xampp/htdocs/MyBlog/view/error.php</file>
+            <file>file:/C:/xampp/htdocs/MyBlog/controller/ControllerSecured.php</file>
+            <file>file:/C:/xampp/htdocs/MyBlog/controller/ControllerAdmin.php</file>
+            <file>file:/C:/xampp/htdocs/MyBlog/controller/ControllerHome.php</file>
+            <file>file:/C:/xampp/htdocs/MyBlog/view/Home/index.php</file>
+            <file>file:/C:/xampp/htdocs/MyBlog/framework/Controller.php</file>
+            <file>file:/C:/xampp/htdocs/MyBlog/framework/Request.php</file>
+            <file>file:/C:/xampp/htdocs/MyBlog/controller/ControllerPost.php</file>
+            <file>file:/C:/xampp/htdocs/MyBlog/index.php</file>
+            <file>file:/C:/xampp/htdocs/MyBlog/model/Post.php</file>
+            <file>file:/C:/xampp/htdocs/MyBlog/framework/Configuration.php</file>
+            <file>file:/C:/xampp/htdocs/MyBlog/view/Post/index.php</file>
+            <file>file:/C:/xampp/htdocs/MyBlog/model/User.php</file>
+            <file>file:/C:/xampp/htdocs/MyBlog/controller/ControllerConnection.php</file>
+            <file>file:/C:/xampp/htdocs/MyBlog/view/Admin/index.php</file>
+            <file>file:/C:/xampp/htdocs/MyBlog/framework/Router.php</file>
+            <file>file:/C:/xampp/htdocs/MyBlog/framework/Session.php</file>
+            <file>file:/C:/xampp/htdocs/MyBlog/model/Comment.php</file>
+            <file>file:/C:/xampp/htdocs/MyBlog/Config/dev.ini</file>
+            <file>file:/C:/xampp/htdocs/MyBlog/framework/View.php</file>
+        </group>
+        <group>
+            <file>file:/home/nico/public_html/tmp/MyBlog_2020/view/Home/index.php</file>
+        </group>
+    </open-files>
+</project-private>
