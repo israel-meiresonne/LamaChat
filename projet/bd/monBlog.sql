@@ -1,43 +1,182 @@
 /* Testé sous MySQL 5.x */
+-- Hôte : localhost:8889
+-- Version du serveur :  5.7.23
+-- Version de PHP :  7.2.10
 
-CREATE DATABASE IF NOT EXISTS `monblog` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `monblog`;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
-drop table if exists T_COMMENTAIRE;
-drop table if exists T_BILLET;
-drop table if exists T_UTILISATEUR;
+--
+-- Base de données :  `projet_din_mai_2020`
+--
 
-create table T_BILLET (
-  BIL_ID integer primary key auto_increment,
-  BIL_DATE datetime not null,
-  BIL_TITRE varchar(100) not null,
-  BIL_CONTENU varchar(400) not null
-) ENGINE=INNODB CHARACTER SET utf8 COLLATE utf8_general_ci;
+-- --------------------------------------------------------
 
-create table T_COMMENTAIRE (
-  COM_ID integer primary key auto_increment,
-  COM_DATE datetime not null,
-  COM_AUTEUR varchar(100) not null,
-  COM_CONTENU varchar(200) not null,
-  BIL_ID integer not null,
-  constraint fk_com_bil foreign key(BIL_ID) references T_BILLET(BIL_ID)
-) ENGINE=INNODB CHARACTER SET utf8 COLLATE utf8_general_ci;
+--
+-- Structure de la table `Contacts`
+--
 
-create table T_UTILISATEUR (
-  UTIL_ID integer primary key auto_increment,
-  UTIL_LOGIN varchar(100) not null,
-  UTIL_MDP varchar(100) not null
-) ENGINE=INNODB CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE TABLE `Contacts` (
+  `pseudo_` varchar(15) NOT NULL,
+  `contact` varchar(15) NOT NULL,
+  `contactStatus` enum('know','unknow','blocked') DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-insert into T_BILLET(BIL_DATE, BIL_TITRE, BIL_CONTENU) values
-(NOW(), 'Premier billet', 'Bonjour monde ! Ceci est le premier billet sur mon blog.');
-insert into T_BILLET(BIL_DATE, BIL_TITRE, BIL_CONTENU) values
-(NOW(), 'Au travail', 'Il faut enrichir ce blog dès maintenant.');
+-- --------------------------------------------------------
 
-insert into T_COMMENTAIRE(COM_DATE, COM_AUTEUR, COM_CONTENU, BIL_ID) values
-(NOW(), 'A. Nonyme', 'Bravo pour ce début', 1);
-insert into T_COMMENTAIRE(COM_DATE, COM_AUTEUR, COM_CONTENU, BIL_ID) values
-(NOW(), 'Moi', 'Merci ! Je vais continuer sur ma lancée', 1);
+--
+-- Structure de la table `Discussions`
+--
 
-insert into T_UTILISATEUR(UTIL_LOGIN, UTIL_MDP) values
-('admin', 'secret');
+CREATE TABLE `Discussions` (
+  `discuID` varchar(25) NOT NULL,
+  `discuName` varchar(15) DEFAULT NULL,
+  `discuSetDate` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `Messages`
+--
+
+CREATE TABLE `Messages` (
+  `msgID` varchar(25) NOT NULL,
+  `discuId` varchar(25) NOT NULL,
+  `from_pseudo` varchar(15) NOT NULL,
+  `msgPublicK` varchar(512) NOT NULL,
+  `msgType` enum('text','image') NOT NULL,
+  `msg` text NOT NULL,
+  `msgSetDate` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `Participants`
+--
+
+CREATE TABLE `Participants` (
+  `discuId` varchar(25) NOT NULL,
+  `pseudo_` varchar(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `Professions`
+--
+
+CREATE TABLE `Professions` (
+  `profession` varchar(25) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `Users`
+--
+
+CREATE TABLE `Users` (
+  `pseudo` varchar(15) NOT NULL,
+  `password` varchar(25) NOT NULL,
+  `firstname` varchar(25) NOT NULL,
+  `lastname` varchar(25) NOT NULL,
+  `picture` varchar(25) NOT NULL,
+  `status` varchar(250) NOT NULL,
+  `permission` enum('admin','user') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `Users_Professions`
+--
+
+CREATE TABLE `Users_Professions` (
+  `pseudo_` varchar(15) NOT NULL,
+  `profession_` varchar(25) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Index pour les tables déchargées
+--
+
+--
+-- Index pour la table `Contacts`
+--
+ALTER TABLE `Contacts`
+  ADD PRIMARY KEY (`pseudo_`,`contact`),
+  ADD KEY `FK-Contacts.contact-FROM-Users` (`contact`);
+
+--
+-- Index pour la table `Discussions`
+--
+ALTER TABLE `Discussions`
+  ADD PRIMARY KEY (`discuID`);
+
+--
+-- Index pour la table `Messages`
+--
+ALTER TABLE `Messages`
+  ADD PRIMARY KEY (`msgID`,`discuId`) USING BTREE,
+  ADD KEY `FK-Messages.discuId-FROM-Discussions` (`discuId`),
+  ADD KEY `FK-Messages.from_pseudo-FROM-Users` (`from_pseudo`);
+
+--
+-- Index pour la table `Participants`
+--
+ALTER TABLE `Participants`
+  ADD PRIMARY KEY (`discuId`,`pseudo_`),
+  ADD KEY `FK-Participants.pseudo_-FROM-Discussions` (`pseudo_`);
+
+--
+-- Index pour la table `Professions`
+--
+ALTER TABLE `Professions`
+  ADD PRIMARY KEY (`profession`);
+
+--
+-- Index pour la table `Users`
+--
+ALTER TABLE `Users`
+  ADD PRIMARY KEY (`pseudo`);
+
+--
+-- Index pour la table `Users_Professions`
+--
+ALTER TABLE `Users_Professions`
+  ADD PRIMARY KEY (`pseudo_`,`profession_`),
+  ADD KEY `FK-Users_Professions.profession_-FROM-Professions` (`profession_`);
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `Contacts`
+--
+ALTER TABLE `Contacts`
+  ADD CONSTRAINT `FK-Contacts.contact-FROM-Users` FOREIGN KEY (`contact`) REFERENCES `Users` (`pseudo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK-Contacts.pseudo_-FROM-Users` FOREIGN KEY (`pseudo_`) REFERENCES `Users` (`pseudo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `Messages`
+--
+ALTER TABLE `Messages`
+  ADD CONSTRAINT `FK-Messages.discuId-FROM-Discussions` FOREIGN KEY (`discuId`) REFERENCES `Discussions` (`discuID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK-Messages.from_pseudo-FROM-Users` FOREIGN KEY (`from_pseudo`) REFERENCES `Users` (`pseudo`) ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `Participants`
+--
+ALTER TABLE `Participants`
+  ADD CONSTRAINT `FK-Participants.discuId-FROM-Discussions` FOREIGN KEY (`discuId`) REFERENCES `Discussions` (`discuID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK-Participants.pseudo_-FROM-Discussions` FOREIGN KEY (`pseudo_`) REFERENCES `Users` (`pseudo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `Users_Professions`
+--
+ALTER TABLE `Users_Professions`
+  ADD CONSTRAINT `FK-Users_Professions.profession_-FROM-Professions` FOREIGN KEY (`profession_`) REFERENCES `Professions` (`profession`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK-Users_Professions.pseudo_-FROM-Users` FOREIGN KEY (`pseudo_`) REFERENCES `Users` (`pseudo`) ON DELETE CASCADE ON UPDATE CASCADE;
