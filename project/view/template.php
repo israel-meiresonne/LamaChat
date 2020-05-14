@@ -1,30 +1,32 @@
 <!DOCTYPE html>
-<!-- rnvs : modèle utilisé par toutes les pages du site
-            les contenus spécifiques sont insérés dans le 
-            <div> d'id 'content' -->
-<html lang="fr">
-    <head>
-        <meta charset="UTF-8" />
-        <!-- rnvs : https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base 
-                    The HTML <base> element specifies the base URL to use for 
-                    all relative URLs in a document. -->
-        <base href="<?= $webRoot ?>" >
-        <link rel="stylesheet" href="content/style.css" />
-        <title><?= $title ?></title>
-    </head>
-    <body>
-        <div id="global">
-            <header>
-                <a href=""><h1 id="blogTitle">Mon Blog</h1></a>
-                <p>Je vous souhaite la bienvenue sur ce modeste blog.</p>
-            </header>
-            <div id="content">
-                <!-- rnvs : ici inclusion du corps spécifique à la vue -->
-                <?= $content ?>
-            </div> <!-- #content -->
-            <footer id="blogFooter">
-                Blog réalisé avec PHP, HTML5 et CSS.
-            </footer>
-        </div> <!-- #global -->
-    </body>
+<html>
+<title><?= $title ?></title>
+<meta charset="UTF-8">
+<base href="<?= $webRoot ?>" >
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="content/css/w3_home.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<style>
+
+</style>
+
+<body>
+
+    <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+        <div class="w3-display-topleft w3-padding-large w3-xlarge">
+            Logo
+        </div>
+        <div class="w3-display-middle">
+            <h1 class="w3-jumbo w3-animate-top">COMING SOON</h1>
+            <hr class="w3-border-grey" style="margin:auto;width:40%">
+            <p class="w3-large w3-center">35 days left</p>
+        </div>
+        <div class="w3-display-bottomleft w3-padding-large">
+            Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a>
+        </div>
+    </div>
+
+</body>
+
 </html>
