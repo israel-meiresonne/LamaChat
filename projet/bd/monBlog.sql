@@ -1,4 +1,7 @@
-/* Testé sous MySQL 5.x */
+-- phpMyAdmin SQL Dump
+-- version 4.8.3
+-- https://www.phpmyadmin.net/
+--
 -- Hôte : localhost:8889
 -- Version du serveur :  5.7.23
 -- Version de PHP :  7.2.10
@@ -180,3 +183,6 @@ ALTER TABLE `Participants`
 ALTER TABLE `Users_Professions`
   ADD CONSTRAINT `FK-Users_Professions.profession_-FROM-Professions` FOREIGN KEY (`profession_`) REFERENCES `Professions` (`profession`) ON UPDATE CASCADE,
   ADD CONSTRAINT `FK-Users_Professions.pseudo_-FROM-Users` FOREIGN KEY (`pseudo_`) REFERENCES `Users` (`pseudo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
