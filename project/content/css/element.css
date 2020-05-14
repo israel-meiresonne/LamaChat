@@ -1,0 +1,55 @@
+:root {
+    /*———————————————————————————————— COLOR DOWN ———————————————————————————*/
+    --color-label: #C6C6C7;
+    --color-blue-esi: #7fc9f3;
+    --color-grey-esi: #75766a;
+    /*———————————————————————————————— COLOR UP —————————————————————————————*/
+}
+
+/*————————————————————— IMG-TEXT_RIGHT DOWN ——————————————————*/
+
+.img-text-wrap {
+    display: flex;
+    width: 100%;
+    /* height: 100%; */
+}
+
+.img-text-img {
+    /* display: flex; */
+    /* width: 25px; */
+    width: 50%;
+    /* flex-direction: row; */
+}
+
+.img-text-img img {
+    width: 100%;
+    margin: auto;
+}
+
+.img-text-div {
+    width: 50%;
+    margin: auto 0 auto 5px;
+}
+
+/*————————————————————— IMG-TEXT_RIGHT UP ——————————————————*/
+
+/*————————————————————— DATA_KEY_VALUE DOWN ———————————*/
+
+.data-key_value-wrap {
+    display: flex;
+    text-transform: capitalize;
+}
+
+.data-key_value-wrap .data-key_value-key {
+    color: var(--color-grey-esi);
+}
+
+.data-key_value-key:first-child {
+    margin-right: 5px;
+}
+
+.data-key_value-wrap .data-key_value-value {
+    color: var(--color-blue-esi);
+}
+
+/*————————————————————— DATA_KEY_VALUE UP —————————————*/
