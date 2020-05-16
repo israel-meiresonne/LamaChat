@@ -1,4 +1,18 @@
-.esi-logo-container{
+.esi-logo-container {
     width: 200px;
     padding: 20px;
+}
+
+.window-display-middle {
+    width: 50%;
+    height: 50vh;
+    margin: auto;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: var(--color-white);
+}
+
+.input-container{
+    /* width: 50%; */
+margin: 0 auto;
 }

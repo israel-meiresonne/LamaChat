@@ -1,6 +1,6 @@
 body,
 h1 {
-    font-family: "Raleway", sans-serif
+    font-family: var(--main-font-family);
 }
 
 body,

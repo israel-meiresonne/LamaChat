@@ -1,9 +1,14 @@
 :root {
     /*———————————————————————————————— COLOR DOWN ———————————————————————————*/
-    --color-label: #C6C6C7;
+    --color-grey-esi: #C6C6C7;
     --color-blue-esi: #7fc9f3;
     --color-grey-esi: #75766a;
+    --color-white: #fff;
+    --color-text-05: rgba(14, 36, 57, 0.5);
     /*———————————————————————————————— COLOR UP —————————————————————————————*/
+    /*———————————————————————————————— FONT-FAMILY DOWN —————————————————————*/
+    --main-font-family: "Raleway", sans-serif;
+    /*———————————————————————————————— FONT-FAMILY UP ———————————————————————*/
 }
 
 /*————————————————————— IMG-TEXT_RIGHT DOWN ——————————————————*/
@@ -53,3 +58,99 @@
 }
 
 /*————————————————————— DATA_KEY_VALUE UP —————————————*/
+/*————————————————————— INPUT DOWN —————————————————————*/
+
+.input-wrap {
+    position: relative;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.input-label {
+    display: none;
+    position: absolute;
+    /* width: 300px; */
+    left: 5px;
+    vertical-align: middle;
+    color: var(--color-grey-esi);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: normal;
+    z-index: 1;
+}
+
+.input-unit {
+    /* display: none; */
+    position: absolute;
+    /* width: 300px; */
+    right: 20px;
+    /* top: 22px; */
+    top: 11px;
+    vertical-align: middle;
+    color: var(--color-grey-esi);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: normal;
+    z-index: 1;
+}
+
+.input-wrap .input-tag {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -ms-appearance: none;
+    width: 100%;
+    height: 45px;
+    padding: 15px 0 0;
+    /* background-color: #fff; */
+    /* border: #00174F 1px solid; */
+    color: var(--color-text-05);
+    background-color: var(--color-white);
+    border: var(--color-blue-esi) solid;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* color: #00174F; */
+    white-space: nowrap;
+    border-width: 0 0 0.5px;
+}
+
+.input-wrap .input-label {
+    text-transform: capitalize;
+}
+
+.input-wrap .input-tag::-webkit-input-placeholder {
+    /* Edge */
+    color: var(--color-grey-esi);
+}
+
+.input-wrap .input-tag:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: var(--color-grey-esi);
+}
+
+.input-wrap .input-tag::placeholder {
+    color: var(--color-grey-esi);
+    text-transform: capitalize;
+    font-family: var(--main-font-family);
+}
+
+.input-wrap .comment {
+    /* display: none; */
+    margin: 5px 0 10px;
+    color: var(--color-red);
+    font-size: var(--little-font-size);
+    /* transition: var(--transition-time);
+    -moz-transition: var(--transition-time); */
+}
+
+.input-wrap .comment::first-letter {
+    text-transform: capitalize;
+}
+
+.select-error {
+    border: var(--color-red) 2px solid;
+}
+
+/*————————————————————— INPUT UP —————————————————————*/

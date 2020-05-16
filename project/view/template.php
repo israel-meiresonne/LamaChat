@@ -37,14 +37,24 @@
                 </div>
             </div>
         </div>
-        <!-- <img src="content/images/static/logo-esi.png" style="width: 50px;"> -->
-        <!-- <div class="w3-display-topleft w3-padding-large w3-xlarge">
-            logo
-        </div> -->
-        <div class="w3-display-middle">
-            <h1 class="w3-jumbo w3-animate-top">COMING SOON</h1>
+        <div class="window-display-middle">
+            <!-- <h1 class="w3-jumbo w3-animate-top">COMING SOON</h1>
             <hr class="w3-border-grey" style="margin:auto;width:40%">
-            <p class="w3-large w3-center">35 days left</p>
+            <p class="w3-large w3-center">35 days left</p> -->
+            <div class="sign_form-container">
+                <form id="sign_form">
+                    <div class="input-set">
+                        <div class="input-container">
+                            <div class="input-wrap">
+                                <label class="input-label" for="sign_form_pseudo">choisis un pseudo</label>
+                                <input id="sign_form_pseudo" class="input-tag" type="text" name="sign_form_pseudo" placeholder="choisis un pseudo">
+                                <p class="comment"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
         </div>
     </div>
 
