@@ -161,6 +161,7 @@
             </identity>
             <addresses>
                 <postal>
+                    <!-- <country_id>BE</ country_id> -->
                     <country_id>BE</country_id>
                     <postalcode>5570</postalcode>
                     <city>Felenne</city>
@@ -202,6 +203,7 @@
                 <postal>
                     <country_id>FR</country_id>
                     <postalcode>76610</postalcode>
+                    <!-- <citi>Le Havre</city> -->
                     <city>Le Havre</city>
                     <street>Rue Michel Ange</street>
                     <number>76</number>
