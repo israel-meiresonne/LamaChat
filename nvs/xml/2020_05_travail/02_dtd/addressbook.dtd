@@ -1,0 +1,85 @@
+<!--- addressbook.dtd -->
+
+<!-- ENTITY -->
+<!ENTITY % min_iso_code "xml:lang (aa|ab|ae|af|ak|am|an|ar|as|av|ay|az|ba|be|bg|bh|bi|bm|bn|bo|br|bs|ca|ce|ch|co|cr|cs|cu|cv|cy|da|de|dv|dz|ee|el|en|eo|es|et|eu|fa|ff|fi|fj|fo|fr|fy|ga|gd|gl|gn|gu|gv|ha|he|hi|ho|hr|ht|hu|hy|hz|ia|id|ie|ig|ii|ik|io|is|it|iu|ja|jv|ka|kg|ki|kj|kk|kl|km|kn|ko|kr|ks|ku|kv|kw|ky|la|lb|lg|li|ln|lo|lt|lu|lv|mg|mh|mi|mk|ml|mn|mo|mr|ms|mt|my|na|nb|nd|ne|ng|nl|nn|no|nr|nv|ny|oc|oj|om|or|os|pa|pi|pl|ps|pt|qu|rc|rm|rn|ro|ru|rw|sa|sc|sd|se|sg|sh|si|sk|sl|sm|sn|so|sq|sr|ss|st|su|sv|sw|ta|te|tg|th|ti|tk|tl|tn|to|tr|ts|tt|tw|ty|ug|uk|ur|uz|ve|vi|vo|wa|wo|xh|yi|yo|za|zh|zu) #REQUIRED">
+
+<!-- <!ELEMENT addressbook (persons|countries)*> -->
+<!ELEMENT addressbook (persons, countries)>
+<!ATTLIST addressbook xmlns CDATA #IMPLIED>
+
+<!ELEMENT persons (person)*>
+
+<!-- <!ELEMENT person (identity|addresses|relations)*> -->
+<!ELEMENT person (identity, addresses, relations)*>
+<!-- <!ATTLIST person id CDATA #IMPLIED> -->
+<!ATTLIST person id CDATA #REQUIRED>
+
+<!-- <!ELEMENT identity (lastname|firstnames|sex|birth|death)*> -->
+<!ELEMENT identity (lastname, firstnames, sex, birth, death)>
+
+<!ELEMENT lastname (#PCDATA)>
+
+<!-- <!ELEMENT firstnames (firstname)*> -->
+<!ELEMENT firstnames (firstname)+>
+
+<!ELEMENT firstname (#PCDATA)>
+
+<!ELEMENT sex (#PCDATA)>
+
+<!ELEMENT birth (#PCDATA)>
+
+<!ELEMENT death (#PCDATA)>
+
+<!-- <!ELEMENT addresses (postal|emails|phones)*> -->
+<!ELEMENT addresses (postal, emails, phones)>
+
+<!-- <!ELEMENT postal (country_id|postalcode|city|street|number)*> -->
+<!ELEMENT postal (country_id, postalcode, city, street, number)>
+
+<!ELEMENT country_id (#PCDATA)>
+
+<!ELEMENT postalcode (#PCDATA)>
+
+<!ELEMENT city (#PCDATA)>
+
+<!ELEMENT street (#PCDATA)>
+
+<!ELEMENT number (#PCDATA)>
+
+<!ELEMENT emails (email)*>
+
+<!ELEMENT email (#PCDATA)>
+<!-- <!ATTLIST email use CDATA #IMPLIED> -->
+<!ATTLIST email use (PRIVATE|PROFESSIONAL|OTHER) #REQUIRED>
+
+<!ELEMENT phones (phone)*>
+
+<!ELEMENT phone (#PCDATA)>
+<!-- <!ATTLIST phone use CDATA #IMPLIED
+                type CDATA #IMPLIED> -->
+<!ATTLIST phone use (PRIVATE|PROFESSIONAL|OTHER) #REQUIRED
+                type (LANDLINE|CELLPHONE|IPPHONE|OTHER) #REQUIRED>
+
+<!ELEMENT relations (relation)*>
+
+<!-- <!ELEMENT relation (person_id|level)*> -->
+<!ELEMENT relation (person_id,level)>
+
+<!ELEMENT person_id (#PCDATA)>
+
+<!ELEMENT level (#PCDATA)>
+
+<!ELEMENT countries (country)*>
+
+<!-- <!ELEMENT country (alpha2code|names|callingcode)*> -->
+<!ELEMENT country (alpha2code,names,callingcode)>
+
+<!ELEMENT alpha2code (#PCDATA)>
+
+<!ELEMENT names (name)*>
+
+<!ELEMENT name (#PCDATA)>
+<!-- <!ATTLIST name xml:lang CDATA #IMPLIED> -->
+<!ATTLIST name %min_iso_code;>
+
+<!ELEMENT callingcode (#PCDATA)>
