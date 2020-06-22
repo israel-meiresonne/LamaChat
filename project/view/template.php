@@ -4,11 +4,14 @@
 <meta charset="UTF-8">
 <base href="<?= $webRoot ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="content/css/src.css">
 <link rel="stylesheet" href="content/css/element.css">
 <link rel="stylesheet" href="content/css/home.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+
+<script src="content/js/home.js"></script>
 <style>
 
 </style>
@@ -39,10 +42,10 @@
         <div class="window-display-middle">
             <div class="form-switcher-container">
                 <div class="switcher-button-div">
-                    <button id="sign_up_switcher" class="blue-button-focus remove-button-default-att">nouveau membre</button>
+                    <button id="sign_up_switcher" data-window_id="sign_up_window" class="switcher-button blue-button-focus remove-button-default-att">nouveau membre</button>
                 </div>
                 <div class="switcher-button-div">
-                    <button id="sign_in_switcher" class="blue-button-unfocus remove-button-default-att">déjà membre</button>
+                    <button id="sign_in_switcher" data-window_id="sign_in_window" class="switcher-button blue-button-unfocus remove-button-default-att">déjà membre</button>
                 </div>
             </div>
             <div class="form-container">
