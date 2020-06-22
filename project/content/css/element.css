@@ -142,7 +142,7 @@
     -ms-appearance: none;
     width: 100%;
     height: 45px;
-    padding: 15px 0 0;
+    padding: 15px 5px 0;
     /* background-color: #fff; */
     /* border: #00174F 1px solid; */
     color: var(--color-text-05);

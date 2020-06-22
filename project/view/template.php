@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 
 <script src="content/js/home.js"></script>
+<script src="content/js/element.js"></script>
 <style>
 
 </style>

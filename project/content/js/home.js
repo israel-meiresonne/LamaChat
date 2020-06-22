@@ -1,5 +1,4 @@
 (function () {
-    const TS = 450;
     $(document).ready(function () {
         $("#sign_up_switcher, #sign_in_switcher").click(function () {
             var windId = this.getAttribute("data-window_id");
