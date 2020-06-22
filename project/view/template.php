@@ -5,7 +5,7 @@
 <base href="<?= $webRoot ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="content/css/w3_home.css">
+<link rel="stylesheet" href="content/css/src.css">
 <link rel="stylesheet" href="content/css/element.css">
 <link rel="stylesheet" href="content/css/home.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
@@ -14,7 +14,6 @@
 </style>
 
 <body>
-
     <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
         <div class="esi-logo-container">
             <div class="img-text-wrap">
@@ -38,22 +37,76 @@
             </div>
         </div>
         <div class="window-display-middle">
-            <!-- <h1 class="w3-jumbo w3-animate-top">COMING SOON</h1>
-            <hr class="w3-border-grey" style="margin:auto;width:40%">
-            <p class="w3-large w3-center">35 days left</p> -->
-            <div class="sign_form-container">
-                <form id="sign_form">
-                    <div class="input-set">
-                        <div class="input-container">
-                            <div class="input-wrap">
-                                <label class="input-label" for="sign_form_pseudo">choisis un pseudo</label>
-                                <input id="sign_form_pseudo" class="input-tag" type="text" name="sign_form_pseudo" placeholder="choisis un pseudo">
-                                <p class="comment"></p>
+            <div class="form-switcher-container">
+                <div class="switcher-button-div">
+                    <button id="sign_up_switcher" class="blue-button-focus remove-button-default-att">nouveau membre</button>
+                </div>
+                <div class="switcher-button-div">
+                    <button id="sign_in_switcher" class="blue-button-unfocus remove-button-default-att">déjà membre</button>
+                </div>
+            </div>
+            <div class="form-container">
+                <div id="sign_up_window" class="sign_form-container">
+                    <form id="sign_up_form" class="sign_form">
+                        <div class="input-set">
+                            <div class="input-container">
+                                <div class="input-wrap">
+                                    <label class="input-label" for="sign_up_pseudo">pseudo</label>
+                                    <input id="sign_up_pseudo" class="input-tag" type="text" name="pseudo" placeholder="pseudo">
+                                    <p class="comment"></p>
+                                </div>
+                            </div>
+                            <div class="input-container">
+                                <div class="input-wrap">
+                                    <label class="input-label" for="sign_up_firstname">prénom</label>
+                                    <input id="sign_up_firstname" class="input-tag" type="text" name="firstname" placeholder="prénom">
+                                    <p class="comment"></p>
+                                </div>
+                            </div>
+                            <div class="input-container">
+                                <div class="input-wrap">
+                                    <label class="input-label" for="sign_up_lastname">nom</label>
+                                    <input id="sign_up_lastname" class="input-tag" type="text" name="lastname" placeholder="nom">
+                                    <p class="comment"></p>
+                                </div>
+                            </div>
+                            <div class="input-container">
+                                <div class="input-wrap">
+                                    <label class="input-label" for="sign_up_password">mot de passe</label>
+                                    <input id="sign_up_password" class="input-tag" type="password" name="password" placeholder="mot de passe">
+                                    <p class="comment"></p>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                </form>
+                    </form>
+                    <div class="sign_form-button-div">
+                        <button id="sign_up_button" for="sign_up" class="blue-button remove-button-default-att">s'inscrire</button>
+                    </div>
+                </div>
+                <div id="sign_in_window" class="sign_form-container display_none">
+                    <form id="sign_in_button_form" class="sign_form">
+                        <div class="input-set">
+                            <div class="input-container">
+                                <div class="input-wrap">
+                                    <label class="input-label" for="sign_up_pseudo">pseudo</label>
+                                    <input id="sign_up_pseudo" class="input-tag" type="text" name="pseudo" placeholder="pseudo">
+                                    <p class="comment"></p>
+                                </div>
+                            </div>
+                            <div class="input-container">
+                                <div class="input-wrap">
+                                    <label class="input-label" for="sign_up_password">mot de passe</label>
+                                    <input id="sign_up_password" class="input-tag" type="password" name="password" placeholder="mot de passe">
+                                    <p class="comment"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="sign_form-button-div">
+                        <button id="sign_in_button" for="sign_in_button_form" class="blue-button remove-button-default-att">se connecter</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -5,14 +5,37 @@
 
 .window-display-middle {
     width: 50%;
-    height: 50vh;
+    /* height: 50vh; */
     margin: auto;
     padding: 10px;
     border-radius: 5px;
     background-color: var(--color-white);
 }
 
-.input-container{
+.form-switcher-container {
+    display: flex;
+}
+
+.switcher-button-div {
+    width: 50%;
+    padding: 0 5px;
+}
+
+.sign_form {
+    margin-bottom: 30px;
+}
+
+.sign_form-container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.input-container {
     /* width: 50%; */
-margin: 0 auto;
+    margin: 0 auto;
+}
+
+.sign_form-button-div {
+    width: 50%;
+    margin: 0 auto;
 }
