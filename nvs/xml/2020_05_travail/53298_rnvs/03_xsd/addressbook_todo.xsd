@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- addressbook.xsd -->
+<xsd:schema targetNamespace="https://esi-bru.be/WEBR4" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:esi="https://esi-bru.be/WEBR4" elementFormDefault="qualified">
+
+    <!-- Import xml: namespace : pour xml:lang -->
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
+
+    <!-- person -->
+
+    <xsd:simpleType name="IdType">
+        <!-- TODO: compléter ici -->
+    </xsd:simpleType>
+
+    <!-- identity -->
+
+    <xsd:simpleType name="LastnameType">
+        <xsd:restriction base="xsd:string"/>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="FirstnameType">
+        <xsd:restriction base="xsd:string"/>
+    </xsd:simpleType>
+
+    <xsd:complexType name="FirstnamesType">
+        <!-- TODO: compléter ici -->
+    </xsd:complexType>
+
+    <xsd:simpleType name="SexType">
+        <!-- TODO: compléter ici -->
+    </xsd:simpleType>
+
+    <xsd:simpleType name="BirthType">
+        <xsd:restriction base="xsd:date"/>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="DeathDateType">
+        <xsd:restriction base="xsd:date"/>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="NoDeathDateType">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="NULL"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="DeathType">
+        <!-- TODO: compléter ici -->
+    </xsd:simpleType>
+
+    <xsd:complexType name="IdentityType">
+        <xsd:sequence>
+            <xsd:element name="lastname" type="esi:LastnameType"/>
+            <xsd:element name="firstnames" type="esi:FirstnamesType"/>
+            <xsd:element name="sex" type="esi:SexType"/>
+            <xsd:element name="birth" type="esi:BirthType"/>
+            <xsd:element name="death" type="esi:DeathType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- addresses -->
+
+    <!-- postal -->
+
+    <xsd:simpleType name="PostalcodeType">
+        <xsd:restriction base="xsd:string"/>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="CityType">
+        <xsd:restriction base="xsd:string"/>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="StreetType">
+        <xsd:restriction base="xsd:string"/>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="NumberTypeType">
+        <xsd:restriction base="xsd:string"/>
+    </xsd:simpleType>
+
+    <xsd:complexType name="PostalType">
+        <xsd:sequence>
+            <xsd:element name="country_id" type="esi:Alpha2codeType"/>
+            <xsd:element name="postalcode" type="esi:PostalcodeType"/>
+            <xsd:element name="city" type="esi:CityType"/>
+            <xsd:element name="street" type="esi:StreetType"/>
+            <xsd:element name="number" type="esi:NumberTypeType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- emails -->
+
+    <xsd:simpleType name="EmailValueType">
+        <!-- TODO: compléter ici -->
+    </xsd:simpleType>
+
+    <xsd:simpleType name="EmailUseType">
+        <!-- TODO: compléter ici -->
+    </xsd:simpleType>
+
+    <xsd:complexType name="EmailType">
+        <!-- TODO: compléter ici -->
+    </xsd:complexType>
+
+    <xsd:complexType name="EmailsType">
+        <!-- TODO: compléter ici -->
+    </xsd:complexType>
+
+    <!-- phones -->
+
+    <xsd:simpleType name="PhoneNumberType">
+        <!-- TODO: compléter ici -->
+    </xsd:simpleType>
+
+    <xsd:simpleType name="PhoneUseType">
+        <!-- TODO: compléter ici -->
+    </xsd:simpleType>
+
+    <xsd:simpleType name="PhoneTypeType">
+        <!-- TODO: compléter ici -->
+    </xsd:simpleType>
+
+    <xsd:complexType name="PhoneType">
+        <xsd:simpleContent>
+            <xsd:extension base="esi:PhoneNumberType">
+                <xsd:attribute name="use" type="esi:PhoneUseType" use="required"/>
+                <xsd:attribute name="type" type="esi:PhoneTypeType" use="required"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="PhonesType">
+        <xsd:sequence>
+            <xsd:element name="phone" type="esi:PhoneType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- addresses -->
+
+    <xsd:complexType name="AddressesType">
+        <xsd:sequence>
+            <xsd:element name="postal" type="esi:PostalType"/>
+            <xsd:element name="emails" type="esi:EmailsType"/>
+            <xsd:element name="phones" type="esi:PhonesType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- relations -->
+
+    <xsd:simpleType name="LevelType">
+        <!-- TODO: compléter ici -->
+    </xsd:simpleType>
+
+    <xsd:complexType name="RelationType">
+        <xsd:sequence>
+            <xsd:element name="person_id" type="esi:IdType"/>
+            <xsd:element name="level" type="esi:LevelType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RelationsType">
+        <xsd:sequence>
+            <xsd:element name="relation" type="esi:RelationType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="PersonType">
+        <!-- TODO: compléter ici -->
+    </xsd:complexType>
+
+    <!-- persons -->
+
+    <xsd:complexType name="PersonsType">
+        <xsd:sequence>
+            <xsd:element name="person" type="esi:PersonType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- countries -->
+
+    <xsd:simpleType name="Alpha2codeType">
+        <!-- TODO: compléter ici -->
+    </xsd:simpleType>
+
+    <xsd:complexType name="NameType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <!-- https://stackoverflow.com/questions/7502382/how-to-allow-xmllang-attribute-in-xmlschema -->
+                <xsd:attribute ref="xml:lang" use="required"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:simpleType name="CallingcodeType">
+        <!-- TODO: compléter ici -->
+    </xsd:simpleType>
+
+    <xsd:complexType name="NamesType">
+        <xsd:sequence>
+            <xsd:element name="name" type="esi:NameType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="CountryType">
+        <xsd:sequence>
+            <xsd:element name="alpha2code" type="esi:Alpha2codeType"/>
+            <xsd:element name="names" type="esi:NamesType"/>
+            <xsd:element name="callingcode" type="esi:CallingcodeType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="CountriesType">
+        <xsd:sequence>
+            <xsd:element name="country" type="esi:CountryType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- addressbook -->
+
+    <xsd:complexType name="AddressbookType">
+        <xsd:sequence>
+            <xsd:element name="persons" type="esi:PersonsType"/>
+            <xsd:element name="countries" type="esi:CountriesType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- global element -->
+
+    <xsd:element name="addressbook" type="esi:AddressbookType">
+        <!-- on désire unicité au sein du document -->
+        <xsd:key name="idCountry">
+            <!-- person doit être unique -->
+            <xsd:selector xpath="esi:countries/esi:country"/>
+            <!-- id utilisé pour tester l'unicité -->
+            <xsd:field xpath="esi:alpha2code"/>
+        </xsd:key>
+        <!-- keyref au même niveau que key -->
+        <xsd:keyref name="refIdCountry" refer="esi:idCountry">
+            <xsd:selector xpath="esi:persons/esi:person/esi:addresses/esi:postal"/>
+            <xsd:field xpath="esi:country_id"/>
+        </xsd:keyref>
+    </xsd:element>
+
+</xsd:schema>
