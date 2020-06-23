@@ -163,3 +163,51 @@
 .msg-status .v_symbol-wrap, .msg-status .o_symbol-wrap {
     margin: auto;
 }
+
+.msg_sender-container {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    padding: 10px 15px;
+    bottom: 0;
+    background-color: var(--color-grey);
+}
+
+.msg_sender {
+    /* display: flex; */
+    width: 80%;
+}
+
+.msg_sender-inner{
+    display: flex;
+    height: 100%;
+    padding: 0 10px;
+    border-radius: 21px;
+    background-color: var(--color-white);
+}
+
+.msg_sender-placeholder {
+    position: absolute;
+    top: 16px;
+    left: 30px;
+    color: var(--color-grey-esi-08);
+}
+
+.msg_sender-input {
+    width: 100%;
+    margin: auto 0;
+    padding-left: 5px;
+    color: var(--color-text-08);
+    border-radius: var(--border-float-radius);
+    z-index: 1;
+}
+
+.msg_sender-button-set {
+    display: flex;
+    width: 20%;
+}
+
+.msg_sender-button-div {
+    width: 50%;
+    padding: 0 5px;
+}

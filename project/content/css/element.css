@@ -1,11 +1,13 @@
 :root {
     /*———————————————————————————————— COLOR DOWN ———————————————————————————*/
-    --color-grey-esi: #C6C6C7;
+    --color-grey: #e5e5e6;
     --color-blue_esi: #7fc9f3;
     --color-blue-conv: #a1d0f7;
     --color-grey-esi: #75766a;
+    --color-grey-esi-08: rgba(117, 118, 106, .5);
     --color-white: #fff;
-    --color-text-05: rgba(14, 36, 57, 0.5);
+    --color-text-08: rgba(14, 36, 57, .8);
+    --color-text-05: rgba(14, 36, 57, .5);
     --color-green: #23CBA7;
     /*———————————————————————————————— COLOR UP —————————————————————————————*/
     /*———————————————————————————————— FONT-FAMILY DOWN —————————————————————*/

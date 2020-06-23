@@ -124,6 +124,22 @@ $this->title = "Discussions";
                 </div>
             </div>
         </div>
+        <div class="msg_sender-container">
+            <div class="msg_sender">
+            <div class="msg_sender-inner">
+                <div class="msg_sender-placeholder">Entrer votre message</div>
+                <div class="msg_sender-input" contenteditable="true"></div>
+            </div>
+            </div>
+            <div class="msg_sender-button-set">
+                <div class="msg_sender-button-div">
+                    <button id="send_txt_msg" class="blue-button remove-button-default-att">send</button>
+                </div>
+                <div class="msg_sender-button-div">
+                    <button id="send_img_msg" class="blue-button remove-button-default-att">upload</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="Jane" class="discusion-container w3-container person">
