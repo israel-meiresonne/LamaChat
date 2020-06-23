@@ -1,7 +1,4 @@
 (function () {
-    TS = 450;
-    BNR = 1000000;
-
     randomInt = function (number) {
         return parseInt(Math.random() * number);
     }
