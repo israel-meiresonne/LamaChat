@@ -3,9 +3,27 @@ $this->title = "Discussions";
 ?>
 <!-- Side Navigation -->
 <nav class="w3-sidebar w3-bar-block w3-collapse w3-white w3-animate-left w3-card" style="z-index:3;width:320px;" id="mySidebar">
-    <a href="javascript:void(0)" class="w3-bar-item w3-button w3-border-bottom w3-large"><img src="https://www.w3schools.com/images/w3schools.png" style="width:60%;"></a>
+    <div class="menu-container">
+        <div class="profile">
+            <div class="img_text_down-wrap">
+                <div class="img_text_down-img-div">
+                    <div class="img_text_down-img-inner">
+                        <img src="content/images/static/default-user-picture.png">
+                    </div>
+                </div>
+                <div class="img_text_down-text-div">
+                    <span>Bob_Mak</span>
+                </div>
+            </div>
+        </div>
+        <div class="menu-setting">
+            <button id="setting_button" class="img-button remove-button-default-att">
+                <img src="content/images/static/icons8-settings-128.png">
+            </button>
+        </div>
+    </div>
     <a href="javascript:void(0)" onclick="w3_close()" title="Close Sidemenu" class="w3-bar-item w3-button w3-hide-large w3-large">Close <i class="fa fa-remove"></i></a>
-    <a href="javascript:void(0)" class="w3-bar-item w3-button w3-dark-grey w3-button w3-hover-black w3-left-align" onclick="document.getElementById('id01').style.display='block'">New Message <i class="w3-padding fa fa-pencil"></i></a>
+    <a href="javascript:void(0)" class="w3-bar-item w3-button w3-dark-grey w3-button w3-hover-black w3-left-align" onclick="">New Message <i class="w3-padding fa fa-pencil"></i></a>
     <a id="myBtn" onclick="myFunc('Demo1')" href="javascript:void(0)" class="w3-bar-item w3-button"><i class="fa fa-inbox w3-margin-right"></i>Inbox (3)<i class="fa fa-caret-down w3-margin-left"></i></a>
     <div id="Demo1" class="w3-hide w3-animate-left">
         <a href="javascript:void(0)" class="w3-bar-item w3-button w3-border-bottom test w3-hover-light-grey" onclick="openMail('Borge');w3_close();" id="firstTab">
@@ -35,9 +53,9 @@ $this->title = "Discussions";
 
 <!-- Modal that pops up when you click on "New Message" -->
 <div id="id01" class="w3-modal" style="z-index:4">
-    <div class="w3-modal-content w3-animate-zoom">
+    <div class="w3-modal-content">
         <div class="w3-container w3-padding w3-red">
-            <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-red w3-right w3-xxlarge"><i class="fa fa-remove"></i></span>
+            <span id="setting_close_button" class="w3-button w3-red w3-right w3-xxlarge"><i class="fa fa-remove"></i></span>
             <h2>Send Mail</h2>
         </div>
         <div class="w3-panel">
@@ -126,10 +144,10 @@ $this->title = "Discussions";
         </div>
         <div class="msg_sender-container">
             <div class="msg_sender">
-            <div class="msg_sender-inner">
-                <div class="msg_sender-placeholder">Entrer votre message</div>
-                <div class="msg_sender-input" contenteditable="true"></div>
-            </div>
+                <div class="msg_sender-inner">
+                    <div class="msg_sender-placeholder">Entrer votre message</div>
+                    <div class="msg_sender-input" contenteditable="true"></div>
+                </div>
             </div>
             <div class="msg_sender-button-set">
                 <div class="msg_sender-button-div">

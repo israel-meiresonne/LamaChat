@@ -9,6 +9,22 @@
             $(x).addClass("display_none");
         }
     }
+    fadeOn = function (x) {
+        if (!($(x).css("display") == "block")) {
+            $(x).addClass("zoom_in");
+            $(x).fadeIn(TS, function () {
+                $(this).removeClass("zoom_in");
+            });
+        }
+    }
+    fadeOff = function (x) {
+        if (($(x).css("display") == "block")) {
+            $(x).addClass("zoom_out");
+            $(x).fadeOut(TS, function () {
+                $(this).removeClass("zoom_out");
+            });
+        }
+    }
     $(document).ready(function () {
         /*————————————————————— SIGN PAGE DOWN ——————————————————————————————*/
         $("#sign_up_switcher, #sign_in_switcher").click(function () {
@@ -40,6 +56,14 @@
             } else {
                 displayOff(p);
             }
+        });
+        $("#setting_button").click(function () {
+            var x = $("#id01");
+            fadeOn(x);
+        });
+        $("#setting_close_button").click(function () {
+            var x = $("#id01");
+            fadeOff(x);
         });
         /*————————————————————— DISCUSSION PAGE UP ——————————————————————————*/
     });

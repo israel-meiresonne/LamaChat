@@ -174,8 +174,7 @@
 }
 
 .msg_sender {
-    /* display: flex; */
-    width: 90%;
+    width: 80%;
 }
 
 .msg_sender-inner{
@@ -204,10 +203,22 @@
 
 .msg_sender-button-set {
     display: flex;
-    width: 10%;
+    width: 20%;
 }
 
 .msg_sender-button-div {
     width: 50%;
     padding: 0 5px;
+}
+
+.menu-container{
+    display: flex;
+padding: 10px;
+}
+.menu-setting{
+    display: flex;
+    margin-left: auto;
+}
+.menu-setting button{
+    margin: auto;
 }

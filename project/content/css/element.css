@@ -34,6 +34,40 @@
 }
 
 /*————————————————————— DISPLAY-NONE UP —————————————————————————————————————*/
+/*————————————————————— ZOOM DOWN ———————————————————————————————————————————*/
+@keyframes zoom_in {
+    0% {
+        transform: scale(0,0);
+    }
+    50% {
+        transform: scale(1.2,1.2);
+    }
+    100% {
+        transform: scale(1,1);
+    }
+}
+
+.zoom_in {
+    animation: zoom_in var(--transition-time);
+}
+
+@keyframes zoom_out {
+    0% {
+        transform: scale(1,1);
+    }
+    /* 50% {
+        transform: scale(1.2,1.2);
+    } */
+    100% {
+        transform: scale(0,0);
+        display: none;
+    }
+}
+
+.zoom_out {
+	animation: zoom_out var(--transition-time);
+}
+/*————————————————————— ZOOM UP —————————————————————————————————————————————*/
 
 /*————————————————————— BUTTON TO DEFAULT DOWN ——————————————————————————————*/
 
@@ -268,6 +302,32 @@
 }
 
 /*————————————————————— IMG-BUTTON UP ———————————————————————————————————————*/
+/*————————————————————— IMG-TEXT_BOTTOM DOWN ——————————————————*/
+
+.img_text_down-wrap {
+    width: 100%;
+}
+
+.img_text_down-img-div {
+    margin-bottom: 5px;
+}
+
+.img_text_down-img-inner {
+    margin: 0 auto;
+    width: 50px;
+}
+
+.img_text_down-img-inner img {
+    width: 100%;
+}
+
+.img_text_down-text-div {
+    width: 100%;
+    position: relative;
+    text-align: center;
+}
+
+/*————————————————————— IMG-TEXT_BOTTOM UP ——————————————————*/
 
 /*————————————————————— V_SYMBOLE DOWN ——————————————————————————————————————*/
 
