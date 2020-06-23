@@ -63,7 +63,7 @@
 }
 
 .msg-window-inner {
-    padding: 10px;
+    padding: 10px 30px;
 }
 
 .msg-wrap {
@@ -103,14 +103,43 @@
 .msg-left {
     max-width: 80%;
     margin-right: auto;
-    background-color: var(--color-blue-other_conv);
+    background-color: var(--color-blue-conv);
+}
+
+.msg-left::after {
+    content: '';
+    position: absolute;
+    top: 2.5px;
+    left: -3px;
+    width: 10px;
+    height: 10px;
+    border-color: var(--color-blue-conv);
+    border-width: 0 1px 1px 0;
+    border-style: solid;
+    pointer-events: none;
+    transform: rotate(-45deg);
+    background-color: var(--color-blue-conv);
 }
 
 .msg-right {
     max-width: 80%;
     margin-left: auto;
     background-color: var(--color-blue_esi);
-    /* color: var(--color-white); */
+}
+
+.msg-right::after {
+    content: '';
+    position: absolute;
+    top: 2.5px;
+    right: -3px;
+    width: 10px;
+    height: 10px;
+    border-color: var(--color-blue_esi);
+    border-width: 0 1px 1px 0;
+    border-style: solid;
+    pointer-events: none;
+    transform: rotate(-45deg);
+    background-color: var(--color-blue_esi);
 }
 
 .msg-info {
@@ -127,10 +156,10 @@
     margin-right: 5px;
 }
 
-.msg-status{
+.msg-status {
     display: flex;
 }
 
-.msg-status .v_symbol-wrap, .msg-status .o_symbol-wrap{
+.msg-status .v_symbol-wrap, .msg-status .o_symbol-wrap {
     margin: auto;
 }
