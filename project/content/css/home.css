@@ -40,3 +40,28 @@
     width: 50%;
     margin: 0 auto;
 }
+
+/*—————————————————————— DISCUSSIONS DOWN ———————————————————————————————————*/
+.w3-main{
+    height: 100%;
+}
+.msg-window{
+    position: relative;
+    height: 100%;
+    padding: 0;
+}
+.msg-window-inner{
+    padding: 10px;
+}
+.msg-wrap {
+    position: relative;
+}
+
+.msg-background {
+    position: absolute;
+    background-image: url('../images/static/conv-default-background.jpg');
+    height: 100%;
+    width: 100%;
+    background-position: center;
+    background-size: cover;
+}
