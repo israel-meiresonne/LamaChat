@@ -2,6 +2,7 @@
     /*———————————————————————————————— COLOR DOWN ———————————————————————————*/
     --color-grey-esi: #C6C6C7;
     --color-blue_esi: #7fc9f3;
+    --color-blue-other_conv: #a1d0f7;
     --color-grey-esi: #75766a;
     --color-white: #fff;
     --color-text-05: rgba(14, 36, 57, 0.5);
@@ -24,13 +25,14 @@
     /*———————————————————————————————— TRANSITION UP ————————————————————————*/
 }
 
-
-
 /*————————————————————— DISPLAY-NONE DOWN ———————————————————————————————————*/
-.display_none{
+
+.display_none {
     display: none;
 }
+
 /*————————————————————— DISPLAY-NONE UP —————————————————————————————————————*/
+
 /*————————————————————— BUTTON TO DEFAULT DOWN ——————————————————————————————*/
 
 .remove-button-default-att {
@@ -233,7 +235,7 @@
     cursor: pointer;
 }
 
-.blue-button-focus{
+.blue-button-focus {
     width: 100%;
     height: 33px;
     border-radius: var(--border-float-radius);
@@ -248,3 +250,53 @@
 }
 
 /*————————————————————— BLUE-BUTTON UP ——————————————————————————————————————*/
+
+/*————————————————————— V_SYMBOLE DOWN ——————————————————————————————————————*/
+
+.v_symbol-wrap {
+    position: relative;
+    width: 15px;
+    height: 15px;
+}
+
+.v_symbol-wrap .v_symbol-vertical {
+    display: block;
+    position: absolute;
+    width: 1px;
+    height: 100%;
+    left: 50%;
+    border-style: solid;
+    border-width: 0 1px 0 0;
+    transform: rotate(38deg);
+}
+
+.v_symbol-wrap .v_symbol-horizontal {
+    display: block;
+    position: absolute;
+    width: 1px;
+    height: 7px;
+    top: 7px;
+    left: 2px;
+    border-style: solid;
+    border-width: 0 1px 0 0;
+    transform: rotate(-30deg);
+}
+
+/*————————————————————— V_SYMBOLE UP ————————————————————————————————————————*/
+
+/*————————————————————— V_SYMBOLE UP ————————————————————————————————————————*/
+
+.o_symbol-wrap {
+    position: relative;
+    width: 10px;
+    height: 10px;
+}
+
+.o_symbol {
+    width: 100%;
+    height: 100%;
+    border: var(--color-white) 1px solid;
+    border-radius: 50%;
+}
+
+/*————————————————————— V_SYMBOLE UP ————————————————————————————————————————*/

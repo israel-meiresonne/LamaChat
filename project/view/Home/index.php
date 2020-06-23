@@ -75,19 +75,52 @@ $this->title = "Discussions";
             <div class="msg-wrap">
                 <div class="msg-text msg-left">
                     <span>🤬Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec🥶</span>
-                </div>
-                <div class="msg-info">
-                    <span class="msg-time">19:17</span>
-                    <div class="msg-status"></div>
+                    <div class="msg-info">
+                        <div class="msg-info-inner">
+                            <span class="msg-time">19:17</span>
+                            <div class="msg-status">
+                                <div class="v_symbol-wrap">
+                                    <span class="v_symbol-vertical"></span>
+                                    <span class="v_symbol-horizontal"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="msg-wrap">
-                <div class="msg-text msg-right">
-                    <span>Ut velit mauris, egestas sed, gravida nec, ornare ut, mi.🤬</span>
+                <div class="msg-wrap-inner">
+                    <div class="msg-text msg-right">
+                        <span>Ut velit mauris, egestas sed, gravida nec, ornare ut, mi.🤬</span>
+                        <div class="msg-info">
+                            <div class="msg-info-inner">
+                                <span class="msg-time">19:17</span>
+                                <div class="msg-status">
+                                    <div class="o_symbol-wrap">
+                                        <div class="o_symbol"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="msg-info">
-                    <span class="msg-time">19:17</span>
-                    <div class="msg-status"></div>
+            </div>
+            <div class="msg-wrap">
+                <div class="msg-wrap-inner">
+                    <div class="msg-text msg-right">
+                        <span>🤬Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec🥶</span>
+                        <div class="msg-info">
+                            <div class="msg-info-inner">
+                                <span class="msg-time">19:17</span>
+                                <div class="msg-status">
+                                    <div class="v_symbol-wrap">
+                                        <span class="v_symbol-vertical"></span>
+                                        <span class="v_symbol-horizontal"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
