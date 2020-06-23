@@ -253,6 +253,22 @@
 
 /*————————————————————— BLUE-BUTTON UP ——————————————————————————————————————*/
 
+/*————————————————————— IMG-BUTTON DOWN —————————————————————————————————————*/
+
+.img-button {
+    width: 100%;
+    height: 33px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.img-button img{
+    height: 100%;
+}
+
+/*————————————————————— IMG-BUTTON UP ———————————————————————————————————————*/
+
 /*————————————————————— V_SYMBOLE DOWN ——————————————————————————————————————*/
 
 .v_symbol-wrap {

@@ -175,7 +175,7 @@
 
 .msg_sender {
     /* display: flex; */
-    width: 80%;
+    width: 90%;
 }
 
 .msg_sender-inner{
@@ -204,7 +204,7 @@
 
 .msg_sender-button-set {
     display: flex;
-    width: 20%;
+    width: 10%;
 }
 
 .msg_sender-button-div {

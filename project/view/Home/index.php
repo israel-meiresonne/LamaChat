@@ -133,10 +133,14 @@ $this->title = "Discussions";
             </div>
             <div class="msg_sender-button-set">
                 <div class="msg_sender-button-div">
-                    <button id="send_txt_msg" class="blue-button remove-button-default-att">send</button>
+                    <button id="send_txt_msg" class="img-button remove-button-default-att">
+                        <img src="content/images/static/icons8-email-send-96.png">
+                    </button>
                 </div>
                 <div class="msg_sender-button-div">
-                    <button id="send_img_msg" class="blue-button remove-button-default-att">upload</button>
+                    <button id="send_img_msg" class="img-button remove-button-default-att">
+                        <img src="content/images/static/icons8-image-100.png">
+                    </button>
                 </div>
             </div>
         </div>
