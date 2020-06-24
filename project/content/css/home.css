@@ -1,3 +1,7 @@
+:focus {
+	outline:none;
+}
+
 .esi-logo-container {
     width: 200px;
     padding: 20px;
@@ -313,4 +317,23 @@
 
 .contact-table .img-button {
     height: 50px;
+}
+
+/*—————————————————————— SEARCH WINDOW DOWN —————————————————————————————————*/
+#search_window .w3-panel{
+    margin: 0;
+    padding: 0;
+}
+#search_window .msg_sender-container{
+    position: relative;
+}
+#search_window .msg_sender-container .msg_sender{
+    margin: 0 auto;
+}
+#search_window .msg_sender-container .msg_sender-inner{
+    position: relative;
+}
+#search_window .msg_sender-container .msg_sender-placeholder{
+    top: 0;
+    left: 14px;
 }

@@ -156,18 +156,10 @@ $this->title = "Discussions";
                                 <img src="content/images/static/default-user-picture.png">
                             </button>
                         </td>
-                        <td>
-                            <span>Bob_Mak</span>
-                        </td>
-                        <td>
-                            <button id="sign_in_button" for="sign_in_button_form" class="standard-button red-button remove-button-default-att">supprimer</button>
-                        </td>
-                        <td>
-                            <button id="sign_in_button" for="sign_in_button_form" class="standard-button orange-button remove-button-default-att">bloquer</button>
-                        </td>
-                        <td>
-                            <button id="sign_in_button" for="sign_in_button_form" class="standard-button blue-button remove-button-default-att">écrire</button>
-                        </td>
+                        <td><span>Bob_Mak</span></td>
+                        <td><button data-contact_pseudo="" class="standard-button red-button remove-button-default-att">supprimer</button></td>
+                        <td><button data-contact_pseudo="" class="standard-button orange-button remove-button-default-att">bloquer</button></td>
+                        <td><button data-contact_pseudo="" class="standard-button blue-button remove-button-default-att">écrire</button></td>
                     </tr>
                     <tr>
                         <td>
@@ -175,18 +167,10 @@ $this->title = "Discussions";
                                 <img src="content/images/static/default-user-picture.png">
                             </button>
                         </td>
-                        <td>
-                            <span>HervDon</span>
-                        </td>
-                        <td>
-                            <button data-contact_pseudo="" class="remove_contact_btn standard-button red-button remove-button-default-att">supprimer</button>
-                        </td>
-                        <td>
-                            <button data-contact_pseudo="" class="remove_contact_btn standard-button orange-button remove-button-default-att">bloquer</button>
-                        </td>
-                        <td>
-                            <button data-contact_pseudo="" class="remove_contact_btn standard-button blue-button remove-button-default-att">écrire</button>
-                        </td>
+                        <td><span>HervDon</span></td>
+                        <td><button data-contact_pseudo="" class="remove_contact_btn standard-button red-button remove-button-default-att">supprimer</button></td>
+                        <td><button data-contact_pseudo="" class="remove_contact_btn standard-button orange-button remove-button-default-att">bloquer</button></td>
+                        <td><button data-contact_pseudo="" class="remove_contact_btn standard-button blue-button remove-button-default-att">écrire</button></td>
                     </tr>
                     <tr>
                         <td>
@@ -194,18 +178,12 @@ $this->title = "Discussions";
                                 <img src="content/images/static/default-user-picture.png">
                             </button>
                         </td>
-                        <td>
-                            <span>TOMTOM</span>
-                        </td>
-                        <td>
-                            <button id="sign_in_button" for="sign_in_button_form" class="standard-button red-button remove-button-default-att">supprimer</button>
-                        </td>
+                        <td><span>TOMTOM</span></td>
+                        <td><button id="sign_in_button" for="sign_in_button_form" class="standard-button red-button remove-button-default-att">supprimer</button></td>
                         <td>
                             <button id="sign_in_button" for="sign_in_button_form" class="standard-button orange-button remove-button-default-att">bloquer</button>
                         </td>
-                        <td>
-                            <button id="sign_in_button" for="sign_in_button_form" class="standard-button blue-button remove-button-default-att">écrire</button>
-                        </td>
+                        <td><button id="sign_in_button" for="sign_in_button_form" class="standard-button blue-button remove-button-default-att">écrire</button></td>
                     </tr>
                 </table>
             </div>
@@ -216,11 +194,53 @@ $this->title = "Discussions";
     <div class="w3-modal-content">
         <div class="w3-container w3-padding w3-red">
             <span id="search_close_button" class="w3-button w3-red w3-right w3-xxlarge"><i class="fa fa-remove"></i></span>
-            <h2>contacts</h2>
+            <h2>recherche</h2>
         </div>
         <div class="w3-panel">
             <div class="setting-content">
-
+                <div class="msg_sender-container">
+                    <div class="msg_sender">
+                        <div class="msg_sender-inner">
+                            <div class="msg_sender-placeholder">Entrer pseuajouterdo, nom ou prénom</div>
+                            <div class="msg_sender-input" contenteditable="true"></div>
+                        </div>
+                    </div>
+                </div>
+                <table class="contact-table">
+                    <tr>
+                        <td>
+                            <button id="search_button" class="img-button remove-button-default-att">
+                                <img src="content/images/static/default-user-picture.png">
+                            </button>
+                        </td>
+                        <td><span>Bob_Mak</span></td>
+                        <td><button id="sign_in_button" for="sign_in_button_form" class="standard-button green-button remove-button-default-att">ajouter</button></td>
+                        <td><button id="sign_in_button" for="sign_in_button_form" class="standard-button orange-button remove-button-default-att">bloquer</button></td>
+                        <td><button id="sign_in_button" for="sign_in_button_form" class="standard-button blue-button remove-button-default-att">écrire</button></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button id="search_button" class="img-button remove-button-default-att">
+                                <img src="content/images/static/default-user-picture.png">
+                            </button>
+                        </td>
+                        <td><span>HervDon</span></td>
+                        <td><button data-contact_pseudo="" class="remove_contact_btn standard-button green-button remove-button-default-att">ajouter</button></td>
+                        <td><button data-contact_pseudo="" class="remove_contact_btn standard-button orange-button remove-button-default-att">bloquer</button></td>
+                        <td><button data-contact_pseudo="" class="remove_contact_btn standard-button blue-button remove-button-default-att">écrire</button></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button id="search_button" class="img-button remove-button-default-att">
+                                <img src="content/images/static/default-user-picture.png">
+                            </button>
+                        </td>
+                        <td><span>TOMTOM</span></td>
+                        <td><button id="sign_in_button" for="sign_in_button_form" class="standard-button green-button remove-button-default-att">ajouter</button></td>
+                        <td><button id="sign_in_button" for="sign_in_button_form" class="standard-button orange-button remove-button-default-att">bloquer</button></td>
+                        <td><button id="sign_in_button" for="sign_in_button_form" class="standard-button blue-button remove-button-default-att">écrire</button></td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
