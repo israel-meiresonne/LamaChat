@@ -65,6 +65,10 @@
             var x = $("#id01");
             fadeOff(x);
         });
+        $(".setting-content .data-key_value-value").click(function(){
+            $(this).attr("contenteditable", true);
+            $(this).focus();
+        });
         /*————————————————————— DISCUSSION PAGE UP ——————————————————————————*/
     });
 }).call(this);

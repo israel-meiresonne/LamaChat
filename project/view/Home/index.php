@@ -60,10 +60,23 @@ $this->title = "Discussions";
         </div>
         <div class="w3-panel">
             <div class="setting-content">
+                <div class="edit-profile-img">
+                    <div class="img_text_down-wrap">
+                        <div class="img_text_down-img-div">
+                            <div class="img_text_down-img-inner">
+                                <img src="content/images/static/default-user-picture.png">
+                            </div>
+                        </div>
+                        <div class="img_text_down-text-div">
+                            <button id="edit_img_btn" class="blue-button remove-button-default-att">modifier</button>
+                            <input type="file" accept=".jpg, .jpeg" name="profil_img">
+                        </div>
+                    </div>
+                </div>
                 <h3>profil</h3>
                 <div class="data-key_value-wrap">
                     <span class="data-key_value-key">pseudo:</span>
-                    <span class="data-key_value-value" contenteditable="true">Bob_Mak</span>
+                    <span class="data-key_value-value">Bob_Mak</span>
                 </div>
                 <div class="data-key_value-wrap">
                     <span class="data-key_value-key">prénom:</span>
@@ -79,7 +92,7 @@ $this->title = "Discussions";
                 </div>
                 <div class="more-info-title">
                     <h3>plus d'infomations</h3>
-                    <div class="setting-add-info">
+                    <div class="setting-add-info" style="display: none;">
                         <button id="setting_save_btn" class="blue-button remove-button-default-att">
                             <div class="plus_symbol-wrap">
                                 <span class="plus_symbol-vertical"></span>

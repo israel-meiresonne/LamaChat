@@ -230,9 +230,37 @@
 }
 
 .w3-panel {
-    margin-top: 0;
+    /* margin-top: 0; */
     padding: 0 16px 15px;
 }
+
+.edit-profile-img{
+    width: 110px;
+}
+.edit-profile-img .img_text_down-img-inner{
+    width: auto;
+}
+
+.edit-profile-img .img_text_down-text-div input{
+    display: none;
+}
+
+.setting-content .data-key_value-value[contenteditable="true"]{
+    min-width: 50px;
+    padding: 0 5px;
+    color: var(--color-white);
+    border-radius: var(--border-float-radius);
+    background-color: var(--color-blue-conv);
+}
+.setting-content .data-key_value-value::-moz-selection { /* Code for Firefox */
+    color: var(--color-text-08);
+    background: var(--color-yellow);
+  }
+
+  .setting-content .data-key_value-value::selection {
+    color: var(--color-text-08);
+    background: var(--color-yellow);
+  }
 
 .more-info-title{
     display: flex;
