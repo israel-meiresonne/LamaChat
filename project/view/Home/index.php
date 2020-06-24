@@ -287,7 +287,7 @@ $this->title = "Discussions";
                                 <span class="msg-time">19:17</span>
                                 <div class="msg-status">
                                     <div class="o_symbol-wrap">
-                                        <div class="o_symbol"></div>
+                                        <div class="o_symbol infiny_rotate"></div>
                                     </div>
                                 </div>
                             </div>

@@ -88,6 +88,20 @@
 }
 
 /*————————————————————— ZOOM UP —————————————————————————————————————————————*/
+/*————————————————————— INFINY ROTATE DOWN ——————————————————————————————————*/
+/*————————————————————— INFINY ROTATE UP ————————————————————————————————————*/
+/* try animation: http://jsfiddle.net/no2r4y83/14/ */
+@keyframes infiny_rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+.infiny_rotate {
+    animation: infiny_rotate var(--transition-time-picture) infinite;
+}
 
 /*————————————————————— BUTTON TO DEFAULT DOWN ——————————————————————————————*/
 
