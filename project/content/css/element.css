@@ -27,6 +27,20 @@
     /*———————————————————————————————— TRANSITION UP ————————————————————————*/
 }
 
+/*————————————————————— UL TO DEFAULT DOWN ——————————————————————————————————*/
+
+.remove-ul-default-att {
+    list-style-type: none;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 0;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 0;
+    margin-top: 0;
+}
+
+/*————————————————————— UL TO DEFAULT UP ————————————————————————————————————*/
+
 /*————————————————————— DISPLAY-NONE DOWN ———————————————————————————————————*/
 
 .display_none {
@@ -34,16 +48,18 @@
 }
 
 /*————————————————————— DISPLAY-NONE UP —————————————————————————————————————*/
+
 /*————————————————————— ZOOM DOWN ———————————————————————————————————————————*/
+
 @keyframes zoom_in {
     0% {
-        transform: scale(0,0);
+        transform: scale(0, 0);
     }
     50% {
-        transform: scale(1.2,1.2);
+        transform: scale(1.2, 1.2);
     }
     100% {
-        transform: scale(1,1);
+        transform: scale(1, 1);
     }
 }
 
@@ -53,20 +69,21 @@
 
 @keyframes zoom_out {
     0% {
-        transform: scale(1,1);
+        transform: scale(1, 1);
     }
     /* 50% {
         transform: scale(1.2,1.2);
     } */
     100% {
-        transform: scale(0,0);
+        transform: scale(0, 0);
         display: none;
     }
 }
 
 .zoom_out {
-	animation: zoom_out var(--transition-time);
+    animation: zoom_out var(--transition-time);
 }
+
 /*————————————————————— ZOOM UP —————————————————————————————————————————————*/
 
 /*————————————————————— BUTTON TO DEFAULT DOWN ——————————————————————————————*/
@@ -179,7 +196,7 @@
     appearance: none;
     -ms-appearance: none;
     width: 100%;
-    height: 45px;
+    /* height: 45px; */
     padding: 15px 5px 0;
     /* background-color: #fff; */
     /* border: #00174F 1px solid; */
@@ -297,11 +314,12 @@
     cursor: pointer;
 }
 
-.img-button img{
+.img-button img {
     height: 100%;
 }
 
 /*————————————————————— IMG-BUTTON UP ———————————————————————————————————————*/
+
 /*————————————————————— IMG-TEXT_BOTTOM DOWN ——————————————————*/
 
 .img_text_down-wrap {
@@ -328,7 +346,37 @@
 }
 
 /*————————————————————— IMG-TEXT_BOTTOM UP ——————————————————*/
+/*————————————————————— PLUS_SYMBOLE DOWN ———————————————————*/
 
+.plus_symbol-wrap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.plus_symbol-wrap .plus_symbol-vertical {
+    display: block;
+    position: absolute;
+    width: 1px;
+    height: 100%;
+    left: 50%;
+    border-style: solid;
+    border-width: 0 1px 0 0;
+}
+
+.plus_symbol-wrap .plus_symbol-horizontal {
+    display: block;
+    position: relative;
+    width: 1px;
+    height: 100%;
+    position: absolute;
+    left: 50%;
+    border-style: solid;
+    border-width: 0 1px 0 0;
+    transform: rotate(90deg);
+}
+
+/*————————————————————— PLUS_SYMBOLE UP —————————————————————*/
 /*————————————————————— V_SYMBOLE DOWN ——————————————————————————————————————*/
 
 .v_symbol-wrap {

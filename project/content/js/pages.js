@@ -9,18 +9,18 @@
             $(x).addClass("display_none");
         }
     }
-    fadeOn = function (x) {
+    fadeOn = function (x, t = TS) {
         if (!($(x).css("display") == "block")) {
             $(x).addClass("zoom_in");
-            $(x).fadeIn(TS, function () {
+            $(x).fadeIn(t, function () {
                 $(this).removeClass("zoom_in");
             });
         }
     }
-    fadeOff = function (x) {
+    fadeOff = function (x, t = TS) {
         if (($(x).css("display") == "block")) {
             $(x).addClass("zoom_out");
-            $(x).fadeOut(TS, function () {
+            $(x).fadeOut(t, function () {
                 $(this).removeClass("zoom_out");
             });
         }

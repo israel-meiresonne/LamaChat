@@ -31,7 +31,7 @@
     margin: 0 auto;
 }
 
-.input-container {
+.form-container .input-container {
     /* width: 50%; */
     margin: 0 auto;
 }
@@ -177,7 +177,7 @@
     width: 80%;
 }
 
-.msg_sender-inner{
+.msg_sender-inner {
     display: flex;
     height: 100%;
     padding: 0 10px;
@@ -211,14 +211,54 @@
     padding: 0 5px;
 }
 
-.menu-container{
+.menu-container {
     display: flex;
-padding: 10px;
+    padding: 10px;
 }
-.menu-setting{
+
+.menu-setting {
     display: flex;
     margin-left: auto;
 }
-.menu-setting button{
+
+.menu-setting button {
     margin: auto;
+}
+
+.setting-content {
+    margin-bottom: 20px;
+}
+
+.w3-panel {
+    margin-top: 0;
+    padding: 0 16px 15px;
+}
+
+.more-info-title{
+    display: flex;
+}
+
+.setting-content h3 {
+    color: var(--color-text-08);
+    text-decoration: underline;
+}
+
+.setting-content h3::first-letter {
+    text-transform: capitalize;
+}
+
+.setting-add-info {
+    width: 20px;
+    height: 20px;
+    margin: auto 5px;
+}
+.setting-add-info button{
+    height: 100%;
+}
+.setting-save{
+    display: flex;
+}
+.setting-save button{
+    width: 100px;
+    margin-left: auto;
 }

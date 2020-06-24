@@ -56,19 +56,63 @@ $this->title = "Discussions";
     <div class="w3-modal-content">
         <div class="w3-container w3-padding w3-red">
             <span id="setting_close_button" class="w3-button w3-red w3-right w3-xxlarge"><i class="fa fa-remove"></i></span>
-            <h2>Send Mail</h2>
+            <h2>Réglages</h2>
         </div>
         <div class="w3-panel">
-            <label>To</label>
-            <input class="w3-input w3-border w3-margin-bottom" type="text">
-            <label>From</label>
-            <input class="w3-input w3-border w3-margin-bottom" type="text">
-            <label>Subject</label>
-            <input class="w3-input w3-border w3-margin-bottom" type="text">
-            <input class="w3-input w3-border w3-margin-bottom" style="height:150px" placeholder="What's on your mind?">
-            <div class="w3-section">
-                <a class="w3-button w3-red" onclick="document.getElementById('id01').style.display='none'">Cancel  <i class="fa fa-remove"></i></a>
-                <a class="w3-button w3-light-grey w3-right" onclick="document.getElementById('id01').style.display='none'">Send  <i class="fa fa-paper-plane"></i></a>
+            <div class="setting-content">
+                <h3>profil</h3>
+                <div class="data-key_value-wrap">
+                    <span class="data-key_value-key">pseudo:</span>
+                    <span class="data-key_value-value" contenteditable="true">Bob_Mak</span>
+                </div>
+                <div class="data-key_value-wrap">
+                    <span class="data-key_value-key">prénom:</span>
+                    <span class="data-key_value-value">bob</span>
+                </div>
+                <div class="data-key_value-wrap">
+                    <span class="data-key_value-key">nom:</span>
+                    <span class="data-key_value-value">makinson</span>
+                </div>
+                <div class="data-key_value-wrap">
+                    <span class="data-key_value-key">status:</span>
+                    <span class="data-key_value-value">Aliquam convallis sollicitudin purus. Praesent aliquam, enim at fermentum mollis, ligula massa adipiscing nisl, ac euismod nibh nisl eu lectus. Fusce vulputate sem at sapien. Vivamus leo. Aliquam euismod libero eu enim. Nulla nec felis sed leo placerat imperdiet.</span>
+                </div>
+                <div class="more-info-title">
+                    <h3>plus d'infomations</h3>
+                    <div class="setting-add-info">
+                        <button id="setting_save_btn" class="blue-button remove-button-default-att">
+                            <div class="plus_symbol-wrap">
+                                <span class="plus_symbol-vertical"></span>
+                                <span class="plus_symbol-horizontal"></span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                <div class="setting-job-set">
+                    <ul class="remove-ul-default-att">
+                        <li>
+                            <div class="data-key_value-wrap">
+                                <span class="data-key_value-key">date de naissance:</span>
+                                <span class="data-key_value-value">30 juin 1997</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="data-key_value-wrap">
+                                <span class="data-key_value-key">activité:</span>
+                                <span class="data-key_value-value">comptable</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="data-key_value-wrap">
+                                <span class="data-key_value-key">hobbit:</span>
+                                <span class="data-key_value-value">basketball</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="setting-save">
+                <button id="setting_save_btn" class="blue-button remove-button-default-att">enregistrer</button>
             </div>
         </div>
     </div>
