@@ -64,12 +64,12 @@ $this->title = "Discussions";
                     <div class="img_text_down-wrap">
                         <div class="img_text_down-img-div">
                             <div class="img_text_down-img-inner">
-                                <img src="content/images/static/default-user-picture.png">
+                                <img id="edit_img" src="content/images/static/default-user-picture.png">
                             </div>
                         </div>
                         <div class="img_text_down-text-div">
                             <button id="edit_img_btn" class="blue-button remove-button-default-att">modifier</button>
-                            <input type="file" accept=".jpg, .jpeg" name="profil_img">
+                            <input id="edit_img_input" type="file" accept=".jpg, .jpeg, .png" name="profil_img">
                         </div>
                     </div>
                 </div>

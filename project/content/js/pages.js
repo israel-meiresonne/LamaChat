@@ -25,6 +25,10 @@
             });
         }
     }
+    updateImg = function(img, inp){
+        var f = inp.files[0];
+        img.src = window.URL.createObjectURL(f);
+    }
     $(document).ready(function () {
         /*————————————————————— SIGN PAGE DOWN ——————————————————————————————*/
         $("#sign_up_switcher, #sign_in_switcher").click(function () {
@@ -68,6 +72,13 @@
         $(".setting-content .data-key_value-value").click(function(){
             $(this).attr("contenteditable", true);
             $(this).focus();
+        });
+        $("#edit_img_btn").click(function(){
+            $("input[type='file']").click();
+        });
+        $("#edit_img_input").change(function () {
+            var img =  $("#edit_img")[0];
+            updateImg(img, this);
         });
         /*————————————————————— DISCUSSION PAGE UP ——————————————————————————*/
     });
