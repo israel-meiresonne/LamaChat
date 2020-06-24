@@ -16,7 +16,17 @@ $this->title = "Discussions";
                 </div>
             </div>
         </div>
-        <div class="menu-setting">
+        <div class="menu-btn menu-contact">
+            <button id="contact_button" class="img-button remove-button-default-att">
+                <img src="content/images/static/icons8-address-book-80.png">
+            </button>
+        </div>
+        <div class="menu-btn menu-search">
+            <button id="search_button" class="img-button remove-button-default-att">
+                <img src="content/images/static/icons8-search-64.png">
+            </button>
+        </div>
+        <div class="menu-btn menu-setting">
             <button id="setting_button" class="img-button remove-button-default-att">
                 <img src="content/images/static/icons8-settings-128.png">
             </button>
@@ -68,7 +78,7 @@ $this->title = "Discussions";
                             </div>
                         </div>
                         <div class="img_text_down-text-div">
-                            <button id="edit_img_btn" class="blue-button remove-button-default-att">modifier</button>
+                            <button id="edit_img_btn" class="standard-button blue-button remove-button-default-att">modifier</button>
                             <input id="edit_img_input" type="file" accept=".jpg, .jpeg, .png" name="profil_img">
                         </div>
                     </div>
@@ -93,7 +103,7 @@ $this->title = "Discussions";
                 <div class="more-info-title">
                     <h3>plus d'infomations</h3>
                     <div class="setting-add-info" style="display: none;">
-                        <button id="setting_save_btn" class="blue-button remove-button-default-att">
+                        <button id="setting_save_btn" class="standard-button blue-button remove-button-default-att">
                             <div class="plus_symbol-wrap">
                                 <span class="plus_symbol-vertical"></span>
                                 <span class="plus_symbol-horizontal"></span>
@@ -125,7 +135,92 @@ $this->title = "Discussions";
                 </div>
             </div>
             <div class="setting-save">
-                <button id="setting_save_btn" class="blue-button remove-button-default-att">enregistrer</button>
+                <button id="setting_save_btn" class="standard-button blue-button remove-button-default-att">enregistrer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="contact_window" class="w3-modal" style="z-index:4">
+    <div class="w3-modal-content">
+        <div class="w3-container w3-padding w3-red">
+            <span id="contact_close_button" class="w3-button w3-red w3-right w3-xxlarge"><i class="fa fa-remove"></i></span>
+            <h2>contacts</h2>
+        </div>
+        <div class="w3-panel">
+            <div class="setting-content">
+                <table class="contact-table">
+                    <tr>
+                        <td>
+                            <button id="search_button" class="img-button remove-button-default-att">
+                                <img src="content/images/static/default-user-picture.png">
+                            </button>
+                        </td>
+                        <td>
+                            <span>Bob_Mak</span>
+                        </td>
+                        <td>
+                            <button id="sign_in_button" for="sign_in_button_form" class="standard-button red-button remove-button-default-att">supprimer</button>
+                        </td>
+                        <td>
+                            <button id="sign_in_button" for="sign_in_button_form" class="standard-button orange-button remove-button-default-att">bloquer</button>
+                        </td>
+                        <td>
+                            <button id="sign_in_button" for="sign_in_button_form" class="standard-button blue-button remove-button-default-att">écrire</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button id="search_button" class="img-button remove-button-default-att">
+                                <img src="content/images/static/default-user-picture.png">
+                            </button>
+                        </td>
+                        <td>
+                            <span>HervDon</span>
+                        </td>
+                        <td>
+                            <button data-contact_pseudo="" class="remove_contact_btn standard-button red-button remove-button-default-att">supprimer</button>
+                        </td>
+                        <td>
+                            <button data-contact_pseudo="" class="remove_contact_btn standard-button orange-button remove-button-default-att">bloquer</button>
+                        </td>
+                        <td>
+                            <button data-contact_pseudo="" class="remove_contact_btn standard-button blue-button remove-button-default-att">écrire</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button id="search_button" class="img-button remove-button-default-att">
+                                <img src="content/images/static/default-user-picture.png">
+                            </button>
+                        </td>
+                        <td>
+                            <span>TOMTOM</span>
+                        </td>
+                        <td>
+                            <button id="sign_in_button" for="sign_in_button_form" class="standard-button red-button remove-button-default-att">supprimer</button>
+                        </td>
+                        <td>
+                            <button id="sign_in_button" for="sign_in_button_form" class="standard-button orange-button remove-button-default-att">bloquer</button>
+                        </td>
+                        <td>
+                            <button id="sign_in_button" for="sign_in_button_form" class="standard-button blue-button remove-button-default-att">écrire</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="search_window" class="w3-modal" style="z-index:4">
+    <div class="w3-modal-content">
+        <div class="w3-container w3-padding w3-red">
+            <span id="search_close_button" class="w3-button w3-red w3-right w3-xxlarge"><i class="fa fa-remove"></i></span>
+            <h2>contacts</h2>
+        </div>
+        <div class="w3-panel">
+            <div class="setting-content">
+
             </div>
         </div>
     </div>

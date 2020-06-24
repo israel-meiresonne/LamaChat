@@ -61,6 +61,7 @@
                 displayOff(p);
             }
         });
+
         $("#setting_button").click(function () {
             var x = $("#id01");
             fadeOn(x);
@@ -79,6 +80,24 @@
         $("#edit_img_input").change(function () {
             var img =  $("#edit_img")[0];
             updateImg(img, this);
+        });
+
+        $("#contact_button").click(function () {
+            var x = $("#contact_window");
+            fadeOn(x);
+        });
+        $("#contact_close_button").click(function () {
+            var x = $("#contact_window");
+            fadeOff(x);
+        });
+        
+        $("#search_button").click(function () {
+            var x = $("#search_window");
+            fadeOn(x);
+        });
+        $("#search_close_button").click(function () {
+            var x = $("#search_window");
+            fadeOff(x);
         });
         /*————————————————————— DISCUSSION PAGE UP ——————————————————————————*/
     });

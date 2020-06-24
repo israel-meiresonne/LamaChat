@@ -10,6 +10,8 @@
     --color-text-05: rgba(14, 36, 57, .5);
     --color-green: #23CBA7;
     --color-yellow: yellow;
+    --color-red: #AF3134;
+    --color-orange: #F3B212;
     /*———————————————————————————————— COLOR UP —————————————————————————————*/
     /*———————————————————————————————— FONT-FAMILY DOWN —————————————————————*/
     --main-font-family: "Raleway", sans-serif;
@@ -250,15 +252,52 @@
 
 /*————————————————————— INPUT UP ————————————————————————————————————————————*/
 
-/*————————————————————— BLUE-BUTTON DOWN ————————————————————————————————————*/
+/*————————————————————— COLOR BUTTON DOWN ———————————————————————————————————*/
 
 .blue-button {
-    width: 100%;
-    height: 33px;
-    border-radius: var(--border-float-radius);
     color: var(--color-blue_esi);
     background-color: var(--color-white);
     border: var(--color-blue_esi) 1px solid;
+}
+
+.blue-button:hover {
+    color: var(--color-white);
+    background-color: var(--color-blue_esi);
+    border: var(--color-blue_esi) 1px;
+}
+
+.red-button {
+    color: var(--color-red);
+    background-color: var(--color-white);
+    border: var(--color-red) 1px solid;
+}
+
+.red-button:hover {
+    color: var(--color-white);
+    background-color: var(--color-red);
+    border: var(--color-red) 1px;
+}
+
+.orange-button {
+    color: var(--color-orange);
+    background-color: var(--color-white);
+    border: var(--color-orange) 1px solid;
+}
+
+.orange-button:hover {
+    color: var(--color-white);
+    background-color: var(--color-orange);
+    border: var(--color-orange) 1px;
+}
+
+/*————————————————————— COLOR BUTTON UP —————————————————————————————————————*/
+
+/*————————————————————— BUTTON DOWN ————————————————————————————————————*/
+
+.standard-button {
+    width: 100%;
+    height: 33px;
+    border-radius: var(--border-float-radius);
     text-transform: capitalize;
     box-shadow: var(--box-shadow);
     transition: var(--transition-time);
@@ -266,10 +305,7 @@
     cursor: pointer;
 }
 
-.blue-button:hover {
-    color: var(--color-white);
-    background-color: var(--color-blue_esi);
-    border: var(--color-blue_esi) 1px;
+.standard-button:hover {
     border: double;
     transition: var(--transition-time);
     -moz-transition: var(--transition-time);
@@ -303,7 +339,7 @@
     cursor: pointer;
 }
 
-/*————————————————————— BLUE-BUTTON UP ——————————————————————————————————————*/
+/*————————————————————— BUTTON UP ——————————————————————————————————————*/
 
 /*————————————————————— IMG-BUTTON DOWN —————————————————————————————————————*/
 
@@ -347,6 +383,7 @@
 }
 
 /*————————————————————— IMG-TEXT_BOTTOM UP ——————————————————*/
+
 /*————————————————————— PLUS_SYMBOLE DOWN ———————————————————*/
 
 .plus_symbol-wrap {
@@ -378,6 +415,7 @@
 }
 
 /*————————————————————— PLUS_SYMBOLE UP —————————————————————*/
+
 /*————————————————————— V_SYMBOLE DOWN ——————————————————————————————————————*/
 
 .v_symbol-wrap {

@@ -27,10 +27,10 @@ $this->title = "S'inscrire"/* Se Connecter*/;
     <div class="window-display-middle">
         <div class="form-switcher-container">
             <div class="switcher-button-div">
-                <button id="sign_up_switcher" data-window_id="sign_up_window" class="switcher-button blue-button-focus remove-button-default-att">nouveau membre</button>
+                <button id="sign_up_switcher" data-window_id="sign_up_window" class="switcher-button standard-button blue-button-focus remove-button-default-att">nouveau membre</button>
             </div>
             <div class="switcher-button-div">
-                <button id="sign_in_switcher" data-window_id="sign_in_window" class="switcher-button blue-button-unfocus remove-button-default-att">déjà membre</button>
+                <button id="sign_in_switcher" data-window_id="sign_in_window" class="switcher-button standard-button blue-button-unfocus remove-button-default-att">déjà membre</button>
             </div>
         </div>
         <div class="form-container">
@@ -69,7 +69,7 @@ $this->title = "S'inscrire"/* Se Connecter*/;
 
                 </form>
                 <div class="sign_form-button-div">
-                    <button id="sign_up_button" for="sign_up" class="blue-button remove-button-default-att">s'inscrire</button>
+                    <button id="sign_up_button" for="sign_up" class="standard-button blue-button remove-button-default-att">s'inscrire</button>
                 </div>
             </div>
             <div id="sign_in_window" class="sign_form-container display_none">
@@ -92,7 +92,7 @@ $this->title = "S'inscrire"/* Se Connecter*/;
                     </div>
                 </form>
                 <div class="sign_form-button-div">
-                    <button id="sign_in_button" for="sign_in_button_form" class="blue-button remove-button-default-att">se connecter</button>
+                    <button id="sign_in_button" for="sign_in_button_form" class="standard-button blue-button remove-button-default-att">se connecter</button>
                 </div>
             </div>
         </div>

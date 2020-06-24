@@ -216,12 +216,12 @@
     padding: 10px;
 }
 
-.menu-setting {
+.menu-btn {
     display: flex;
     margin-left: auto;
 }
 
-.menu-setting button {
+.menu-btn button {
     margin: auto;
 }
 
@@ -234,35 +234,38 @@
     padding: 0 16px 15px;
 }
 
-.edit-profile-img{
+.edit-profile-img {
     width: 110px;
 }
-.edit-profile-img .img_text_down-img-inner{
+
+.edit-profile-img .img_text_down-img-inner {
     width: auto;
 }
 
-.edit-profile-img .img_text_down-text-div input{
+.edit-profile-img .img_text_down-text-div input {
     display: none;
 }
 
-.setting-content .data-key_value-value[contenteditable="true"]{
+.setting-content .data-key_value-value[contenteditable="true"] {
     min-width: 50px;
     padding: 0 5px;
     color: var(--color-white);
     border-radius: var(--border-float-radius);
     background-color: var(--color-blue-conv);
 }
-.setting-content .data-key_value-value::-moz-selection { /* Code for Firefox */
+
+.setting-content .data-key_value-value::-moz-selection {
+    /* Code for Firefox */
     color: var(--color-text-08);
     background: var(--color-yellow);
-  }
+}
 
-  .setting-content .data-key_value-value::selection {
+.setting-content .data-key_value-value::selection {
     color: var(--color-text-08);
     background: var(--color-yellow);
-  }
+}
 
-.more-info-title{
+.more-info-title {
     display: flex;
 }
 
@@ -280,13 +283,34 @@
     height: 20px;
     margin: auto 5px;
 }
-.setting-add-info button{
+
+.setting-add-info button {
     height: 100%;
 }
-.setting-save{
+
+.setting-save {
     display: flex;
 }
-.setting-save button{
+
+.setting-save button {
     width: 100px;
     margin-left: auto;
+}
+
+/*—————————————————————— CONTACT WINDOW DOWN ————————————————————————————————*/
+
+.contact-table {
+    width: 100%;
+}
+
+.contact-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.contact-table td {
+    padding: 0 5px;
+}
+
+.contact-table .img-button {
+    height: 50px;
 }
