@@ -3,7 +3,7 @@
 /**
  * This class represents an User
  */
-class User
+class User extends Model
 {
     /**
      * Holds the user's pseudo
@@ -30,7 +30,8 @@ class User
     private $lastname;
 
     /**
-     * Holds the user's informations NOTE: use the information type as access key
+     * Holds the user's informations 
+     * + NOTE: use the information name as access key
      * @var string[]
      */
     private $informations;
@@ -55,7 +56,7 @@ class User
 
     /**
      * Holds user's discussion. 
-     * NOTE: use as access key the UNIX time of the last message sended in one discussion
+     * + NOTE: use as access key the UNIX time of the last message sended in one discussion
      * @var Discussion[]
      */
     private $discussions;

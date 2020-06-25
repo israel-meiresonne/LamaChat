@@ -2,7 +2,7 @@
 /**
  * This class represents a Discussion
  */
-class Discussion
+class Discussion extends Model
 {
     /**
      * Holds discussion's identifiant
@@ -30,7 +30,7 @@ class Discussion
 
     /**
      * Holds discussion's messages
-     * NOTE: use as access key the unix time of the creation date of the message
+     * + NOTE: use as access key the unix time of the creation date of the message
      * @var Message[]
      */
     private $messages;

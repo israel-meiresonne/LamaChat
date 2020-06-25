@@ -1,8 +1,6 @@
 <?php
 
-require_once 'framework/Controller.php';
-
-class ControllerHome extends Controller
+class ControllerHome extends ControllerAuthentication
 {
 
     public function __construct()
