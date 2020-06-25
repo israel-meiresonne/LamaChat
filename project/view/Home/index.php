@@ -36,7 +36,7 @@ $this->title = "Discussions";
     <a href="javascript:void(0)" class="w3-bar-item w3-button w3-dark-grey w3-button w3-hover-black w3-left-align" onclick="">New Message <i class="w3-padding fa fa-pencil"></i></a>
     <a id="myBtn" onclick="myFunc('Demo1')" href="javascript:void(0)" class="w3-bar-item w3-button"><i class="fa fa-inbox w3-margin-right"></i>Inbox (3)<i class="fa fa-caret-down w3-margin-left"></i></a>
     <div id="Demo1" class="w3-hide w3-animate-left">
-        <a href="javascript:void(0)" class="w3-bar-item w3-button w3-border-bottom test w3-hover-light-grey" onclick="openMail('Borge');w3_close();" id="firstTab">
+        <a href="javascript:void(0)" class="w3-bar-item w3-button w3-border-bottom test w3-hover-light-grey" onclick="openMail('Borge');w3_close();">
             <div class="w3-container">
                 <img class="w3-round w3-margin-right" src="content/images/static/default-user-picture.png" style="width:15%;"><span class="w3-opacity w3-large">Borge Refsnes</span>
                 <h6>Subject: Remember Me</h6>

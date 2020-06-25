@@ -38,12 +38,10 @@
 
     $(document).ready(function () {
         var openInbox = document.getElementById("myBtn");
-        openInbox.click();
-
-        // openMail("Borge")
+        $(openInbox).click();
         
-        var openTab = document.getElementById("firstTab");
-        openTab.click();
+        // var openTab = document.getElementById("firstTab");
+        // openTab.click();
 
     });
 }).call(this);
