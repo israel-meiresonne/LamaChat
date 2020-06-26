@@ -73,7 +73,7 @@ $this->title = "S'inscrire"/* Se Connecter*/;
                 </div>
             </div>
             <div id="sign_in_window" class="sign_form-container display_none">
-                <form id="sign_in_button_form" class="sign_form">
+                <form id="sign_in_form" class="sign_form">
                     <div class="input-set">
                         <div class="input-container">
                             <div class="input-wrap">
@@ -92,7 +92,7 @@ $this->title = "S'inscrire"/* Se Connecter*/;
                     </div>
                 </form>
                 <div class="sign_form-button-div">
-                    <button id="sign_in_button" for="sign_in_button_form" class="standard-button blue-button remove-button-default-att">se connecter</button>
+                    <button id="sign_in_button" for="sign_in_form" class="standard-button blue-button remove-button-default-att">se connecter</button>
                 </div>
             </div>
         </div>

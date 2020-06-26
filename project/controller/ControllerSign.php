@@ -15,7 +15,12 @@ class ControllerSign extends ControllerAuthentication
     /**
      * Action used to Perform a new user registration 
      */
-    const RESPONSE_SIGN_UP = "rspSignUp";
+    const ACTION_SIGN_IN = "signIn";
+
+    // /**
+    //  * Action used to Perform a new user registration 
+    //  */
+    // const ACTION_SIGN_UP = "rspSignUp";
 
     /**
      * Input names
@@ -47,7 +52,24 @@ class ControllerSign extends ControllerAuthentication
             $user = new User($_POST[self::INPUT_PSEUDO], $_POST[self::INPUT_PSW], $_POST[self::INPUT_FIRSTNAME], $_POST[self::INPUT_LASTNAME]);
             if($user->signUp($response)){
                 $webRoot = Configuration::get("webRoot", "/");
-                $response->addResult(self::RESPONSE_SIGN_UP, $webRoot.ControllerHome::HOME);
+                $response->addResult(self::ACTION_SIGN_UP, $webRoot.ControllerHome::HOME);
+            }
+        }
+        echo json_encode($response->getAttributs());
+    }
+
+    /**
+     * Perform a sign in of a user
+     */
+    public function signIn(){
+        $response = new Response();
+        $this->checkInput(self::PSEUDO, self::INPUT_PSEUDO, $_POST[self::INPUT_PSEUDO], $response, true);
+        $this->checkInput(null, self::INPUT_PSW, $_POST[self::INPUT_PSW], $response, true);
+        if(!$response->containError()){
+            $user = new User($_POST[self::INPUT_PSEUDO], $_POST[self::INPUT_PSW]);
+            if($user->signIn($response)){
+                $webRoot = Configuration::get("webRoot", "/");
+                $response->addResult(self::ACTION_SIGN_IN, $webRoot.ControllerHome::HOME);
             }
         }
         echo json_encode($response->getAttributs());

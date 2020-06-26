@@ -1,4 +1,4 @@
-<?= require_once "controller/ControllerSign.php"?>
+<?php require_once "controller/ControllerSign.php";?>
 <!DOCTYPE html>
 <html lang="fr">
 <title><?= $title ?></title>
@@ -27,7 +27,7 @@
         const BNR = 1000000;
         const webRoot = <?= $webRoot ?>;
         const ACTION_SIGN_UP = "<?= ControllerSign::ACTION_SIGN_UP ?>";
-        const RESPONSE_SIGN_UP = "<?= ControllerSign::RESPONSE_SIGN_UP ?>";
+        const ACTION_SIGN_IN = "<?= ControllerSign::ACTION_SIGN_IN ?>";
         const FATAL_ERROR = "<?= MyError::FATAL_ERROR ?>";
     </script>
     <?= $content ?>
