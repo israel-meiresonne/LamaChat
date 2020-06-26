@@ -69,7 +69,7 @@ $this->title = "S'inscrire"/* Se Connecter*/;
 
                 </form>
                 <div class="sign_form-button-div">
-                    <button id="sign_up_button" for="sign_up" class="standard-button blue-button remove-button-default-att">s'inscrire</button>
+                    <button id="sign_up_button" for="sign_up_form" class="standard-button blue-button remove-button-default-att">s'inscrire</button>
                 </div>
             </div>
             <div id="sign_in_window" class="sign_form-container display_none">

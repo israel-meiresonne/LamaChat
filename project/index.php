@@ -1,5 +1,4 @@
 <?php
-
 // rnvs : début
 require 'framework/Configuration.php';
 $verboseError = Configuration::get("verboseError");
