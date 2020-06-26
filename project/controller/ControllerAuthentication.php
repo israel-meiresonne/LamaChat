@@ -18,9 +18,9 @@ abstract class ControllerAuthentication extends Controller
     /**
      * Holds REGEX for input type
      */
-    const PSEUDO_REGEX = "#^[a-zA-Z]+[a-zA-Z0-9-_]*$#";
-    const NAME_REGEX = "#^[a-zA-Z-]+$#";
-    const PASSWORD_REGEX = "#^[a-zA-Z]+[a-zA-Z0-9-_]+$#";
+    private const PSEUDO_REGEX = "#^[a-zA-Z]+[a-zA-Z0-9-_]*$#";
+    private const NAME_REGEX = "#^[a-zA-Z-]+$#";
+    private const PASSWORD_REGEX = "#^[a-zA-Z]+[a-zA-Z0-9-_]+$#";
 
     /**
      * Check if data's format is correct

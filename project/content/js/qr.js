@@ -4,6 +4,10 @@
         $(x).slideDown(TS);
     }
 
+    popAlert = function(msg){
+        window.alert(msg);
+    }
+
 
     const jx = function (action, jxd, rspf, lds, cbkSND = function () { }, cbkRSP = function () { }) {
         $(lds).fadeIn(TS, cbkSND());
@@ -32,13 +36,16 @@
     }
 
     const signUpRSP = function (r) {
-        if (!r.isSuccess) {
+        if (r.isSuccess) {
+            window.location.assign(r.results[RESPONSE_SIGN_UP]);
+        } else {
             console.log("rsp fail: ", r);
             var ks = Object.keys(r.errors);
             ks.forEach(k => {
                 var x = $("#sign_up_form input[name='"+ k +"'] + .comment");
                 var err = r.errors[k].message;
                 addErr(x, err);
+                (k == FATAL_ERROR) ? popAlert(r.errors[k].message) : null;
             });
         }
     }

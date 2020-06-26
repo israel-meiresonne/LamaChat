@@ -1,7 +1,9 @@
 <?php
 
 require_once 'ControllerAuthentication.php';
+require_once 'ControllerHome.php';
 require_once 'model/Response.php';
+require_once 'model/User.php';
 
 class ControllerSign extends ControllerAuthentication
 {
@@ -9,6 +11,11 @@ class ControllerSign extends ControllerAuthentication
      * Action used to Perform a new user registration 
      */
     const ACTION_SIGN_UP = "signUp";
+
+    /**
+     * Action used to Perform a new user registration 
+     */
+    const RESPONSE_SIGN_UP = "rspSignUp";
 
     /**
      * Input names
@@ -32,15 +39,17 @@ class ControllerSign extends ControllerAuthentication
      */
     public function signUp(){
         $response = new Response();
-        // try {
-        //     $request = new Request(array_merge($_GET, $_POST));
-        // } catch (\Throwable $th) {
-        //     //throw $th;
-        // }
         $this->checkInput(self::PSEUDO, self::INPUT_PSEUDO, $_POST[self::INPUT_PSEUDO], $response, true);
         $this->checkInput(self::NAME, self::INPUT_FIRSTNAME, $_POST[self::INPUT_FIRSTNAME], $response, true);
         $this->checkInput(self::NAME, self::INPUT_LASTNAME, $_POST[self::INPUT_LASTNAME], $response, true);
         $this->checkInput(self::PASSWORD, self::INPUT_PSW, $_POST[self::INPUT_PSW], $response, true);
+        if(!$response->containError()){
+            $user = new User($_POST[self::INPUT_PSEUDO], $_POST[self::INPUT_PSW], $_POST[self::INPUT_FIRSTNAME], $_POST[self::INPUT_LASTNAME]);
+            if($user->signUp($response)){
+                $webRoot = Configuration::get("webRoot", "/");
+                $response->addResult(self::RESPONSE_SIGN_UP, $webRoot.ControllerHome::HOME);
+            }
+        }
         echo json_encode($response->getAttributs());
     }
 }
