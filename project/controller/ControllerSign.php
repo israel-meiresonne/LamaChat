@@ -50,7 +50,8 @@ class ControllerSign extends ControllerAuthentication
         $this->checkInput(self::PASSWORD, self::INPUT_PSW, $_POST[self::INPUT_PSW], $response, true);
         if(!$response->containError()){
             $user = new User($_POST[self::INPUT_PSEUDO], $_POST[self::INPUT_PSW], $_POST[self::INPUT_FIRSTNAME], $_POST[self::INPUT_LASTNAME]);
-            if($user->signUp($response)){
+            $session = $this->request->getSession();
+            if($user->signUp($response, $session)){
                 $webRoot = Configuration::get("webRoot", "/");
                 $response->addResult(self::ACTION_SIGN_UP, $webRoot.ControllerHome::HOME);
             }
@@ -67,7 +68,8 @@ class ControllerSign extends ControllerAuthentication
         $this->checkInput(null, self::INPUT_PSW, $_POST[self::INPUT_PSW], $response, true);
         if(!$response->containError()){
             $user = new User($_POST[self::INPUT_PSEUDO], $_POST[self::INPUT_PSW]);
-            if($user->signIn($response)){
+            $session = $this->request->getSession();
+            if($user->signIn($response, $session)){
                 $webRoot = Configuration::get("webRoot", "/");
                 $response->addResult(self::ACTION_SIGN_IN, $webRoot.ControllerHome::HOME);
             }

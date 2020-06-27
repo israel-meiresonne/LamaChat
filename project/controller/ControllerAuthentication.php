@@ -9,7 +9,8 @@ require_once 'model/MyError.php';
 abstract class ControllerAuthentication extends Controller
 {
     /**
-     * Holds the input type
+     * Holds the input types
+     * @var string
      */
     protected const PSEUDO = "pseudo";
     protected const NAME = "name";  // handle space and `-`
@@ -17,6 +18,7 @@ abstract class ControllerAuthentication extends Controller
 
     /**
      * Holds REGEX for input type
+     * @var string
      */
     private const PSEUDO_REGEX = "#^[a-zA-Z]+[a-zA-Z0-9-_]*$#";
     private const NAME_REGEX = "#^[A-zÀ-ú]+$#";
