@@ -7,6 +7,8 @@ require_once 'model/User.php';
 
 class ControllerSign extends ControllerAuthentication
 {
+    const CTR_NAME = "sign";
+
     /**
      * Action used to Perform a new user registration 
      */
@@ -36,6 +38,7 @@ class ControllerSign extends ControllerAuthentication
 
     public function index()
     {
+        $this->secureSession();
         $this->generateView();
     }
 
@@ -53,7 +56,7 @@ class ControllerSign extends ControllerAuthentication
             $session = $this->request->getSession();
             if($user->signUp($response, $session)){
                 $webRoot = Configuration::get("webRoot", "/");
-                $response->addResult(self::ACTION_SIGN_UP, $webRoot.ControllerHome::HOME);
+                $response->addResult(self::ACTION_SIGN_UP, $webRoot.ControllerHome::CTR_NAME);
             }
         }
         echo json_encode($response->getAttributs());
@@ -71,7 +74,7 @@ class ControllerSign extends ControllerAuthentication
             $session = $this->request->getSession();
             if($user->signIn($response, $session)){
                 $webRoot = Configuration::get("webRoot", "/");
-                $response->addResult(self::ACTION_SIGN_IN, $webRoot.ControllerHome::HOME);
+                $response->addResult(self::ACTION_SIGN_IN, $webRoot.ControllerHome::CTR_NAME);
             }
         }
         echo json_encode($response->getAttributs());

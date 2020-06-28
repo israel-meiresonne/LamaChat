@@ -4,7 +4,7 @@ require_once 'ControllerAuthentication.php';
 
 class ControllerHome extends ControllerAuthentication
 {
-    const HOME = "home";
+    const CTR_NAME = "home";
 
     public function __construct()
     {
@@ -12,6 +12,7 @@ class ControllerHome extends ControllerAuthentication
 
     public function index()
     {
+        $this->secureSession();
         $this->generateView();
     }
 }

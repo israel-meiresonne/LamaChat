@@ -64,31 +64,90 @@ class User extends Model
     private $discussions;
 
     /**
-     * Holds a couple of public and private key
-     * @var resource of type (OpenSSL key) 
+     * Holds a private key
+     * @var string
      */
-    private $keys;
+    private $privK;
+
+    /**
+     * Holds a public key
+     * @var string
+     */
+    private $pubK;
 
     /**
      * Access key for session valeus
      * @var string
      */
-    private const SESSION_PRIVATE_K = "privk";
-    private const SESSION_PUBLIC_K = "pubk";
+    public const SESSION_PRIVATE_K = "privk";
+    public const SESSION_PUBLIC_K = "pubk";
 
     /**
-     * Constructor for user unregistered
+     * Constructor for user
      * @param string $pseudo user's pseudo
      * @param string $password user's password
      * @param string $firstname user's firstname
      * @param string $lastname user's lastname
      */
-    function __construct($pseudo, $password, $firstname = null, $lastname = null)
+    function __construct()
+    {
+        $args = func_get_args();
+        switch (func_num_args()) {
+            case 0:
+                $this->__construct0();
+                break;
+            case 2:
+                $this->__construct2($args[0], $args[1]);
+                break;
+            case 4:
+                $this->__construct4($args[0], $args[1], $args[2], $args[3]);
+                break;
+        }
+    }
+
+    /**
+     * Constructor for user
+     * @param string $pseudo user's pseudo
+     * @param string $password user's password
+     */
+    private function __construct0()
+    {
+    }
+
+    /**
+     * Constructor for user
+     * @param string $pseudo user's pseudo
+     * @param string $password user's password
+     */
+    private function __construct2($pseudo, $password)
+    {
+        $this->pseudo = $pseudo;
+        $this->password = $password;
+    }
+
+    /**
+     * Constructor for user
+     * @param string $pseudo user's pseudo
+     * @param string $password user's password
+     * @param string $firstname user's firstname
+     * @param string $lastname user's lastname
+     */
+    private function __construct4($pseudo, $password, $firstname, $lastname)
     {
         $this->pseudo = $pseudo;
         $this->firstname = $firstname;
         $this->lastname = $lastname;
-        $this->password = (isset($firstname) && isset($lastname)) ? $this->encrypt($password) : $password;
+        $this->password = $this->encrypt($password);
+    }
+
+    /**
+     * Setter for keys attribut
+     * @param string $privK user's private key
+     * @param string $pubK user's public key
+     */
+    public function setkeys($privK, $pubK){
+        $this->privK = $privK;
+        $this->pubK = $pubK;
     }
 
     /**
@@ -149,6 +208,61 @@ class User extends Model
         return ($pseudos->rowCount() > 0);
     }
 
+    /**
+     * Check if user exist in the database and full its attributs
+     * @return boolean true if the user exist in the database else false
+     */
+    public function userExist(){
+        if (empty($this->privK) || empty($this->pubK)) {
+            throw new Exception("Private and public key must first be initialized");
+        }
+        $sql = "SELECT * 
+        FROM `UsersKeys`
+        WHERE privateK = '$this->privK' AND publicK = '$this->pubK'
+        ORDER BY `keySetDate` DESC";
+        $keys = parent::executeRequest($sql);
+        if($keys->rowCount() == 1){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Set user's properties
+     * @param string $privK user's private key
+     * @param string $pubK user's public key
+     */
+    public function setProperties(){
+        if (empty($this->privK) || empty($this->pubK)) {
+            throw new Exception("Private and public key must first be initialized");
+        }
+        $sql = "SELECT * 
+        FROM `UsersKeys` uk
+        JOIN `Users` u on uk.pseudo_ = u.pseudo
+        WHERE privateK = '$this->privK' AND publicK = '$this->pubK'
+        ORDER BY `uk`.`keySetDate` DESC";
+        $userPDO = parent::executeRequest($sql);
+        if($userPDO->rowCount() == 1){
+            $user = $userPDO->fetch();
+            $this->pseudo = $user["pseudo"];
+            $this->firstname = $user["firstname"];
+            $this->lastname = $user["lastname"];
+            $this->picture = $user["picture"];
+            $this->status = $user["status"];
+            $this->permission = $user["permission"];
+    
+            
+            $sql = "SELECT * FROM `Users_ Informations` WHERE pseudo_ = '$this->pseudo'";
+            $infosPDO = parent::executeRequest($sql);
+            if($infosPDO->rowCount() > 0){
+                $this->informations = [];
+                while($infoLine = $infosPDO->fetch()){
+                    $this->informations[$infoLine["information_"]] = $infoLine["value"];
+                }
+            }
+        }
+    }
+
     /** 
      * Crypt the password passed in parm
      * @param string $password password to crypt
@@ -204,7 +318,13 @@ class User extends Model
             "private_key_bits" => 4096,
             "private_key_type" => OPENSSL_KEYTYPE_RSA,
         );
-        $this->keys = openssl_pkey_new($config);
+        $keys = openssl_pkey_new($config);
+        openssl_pkey_export($keys, $privK);
+        $pubK = openssl_pkey_get_details($keys);
+        $pubK = $pubK["key"];
+
+        $this->privK = $privK;
+        $this->pubK = $pubK;
     }
 
     /**
@@ -213,11 +333,10 @@ class User extends Model
      */
     private function getPrivateKey()
     {
-        if ((!isset($this->keys)) || empty($this->keys)) {
+        if ((!isset($this->privK)) || empty($this->privK)) {
             $this->generateKeys();
         }
-        openssl_pkey_export($this->keys, $privK);
-        return $privK;
+        return $this->privK;
     }
 
     /**
@@ -226,11 +345,9 @@ class User extends Model
      */
     private function getPublicKey()
     {
-        if ((!isset($this->keys)) || empty($this->keys)) {
+        if ((!isset($this->pubK)) || empty($this->pubK)) {
             $this->generateKeys();
         }
-        $pubK = openssl_pkey_get_details($this->keys);
-        $pubK = $pubK["key"];
-        return $pubK;
+        return $this->pubK;
     }
 }
