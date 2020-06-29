@@ -1,6 +1,7 @@
 <?php
 
 require_once 'framework/Model.php';
+require_once 'Discussion.php';
 
 /**
  * This class represents an User
@@ -57,7 +58,7 @@ class User extends Model
     private $permission;
 
     /**
-     * Holds user's discussion. 
+     * Holds user's discussion ordered from newest to oldest
      * + NOTE: use as access key the UNIX time of the last message sended in one discussion
      * @var Discussion[]
      */
@@ -141,13 +142,196 @@ class User extends Model
     }
 
     /**
+     * Getter for user's pseudo
+     * @return string user's pseudo
+     */
+    public function getPseudo()
+    {
+        return $this->pseudo;
+    }
+
+    /**
+     * Getter for user's firstname
+     * @return string user's firstname
+     */
+    public function getFirstname()
+    {
+        return $this->firstname;
+    }
+
+    /**
+     * Getter for user's lastname
+     * @return string user's lastname
+     */
+    public function getLastname()
+    {
+        return $this->lastname;
+    }
+
+    /**
+     * Getter for user's informations
+     * @return string[] user's informations
+     */
+    public function getInformations()
+    {
+        return $this->informations;
+    }
+
+    /**
+     * Getter for user's picture
+     * @return string user's picture
+     */
+    public function getPicture()
+    {
+        return $this->picture;
+    }
+
+    /**
+     * Getter for user's discussions
+     * @return Discussion[] user's discussions
+     */
+    public function getDiscussions()
+    {
+        return $this->discussions;
+    }
+
+    /**
+     * Getter for user's status
+     * @return string user's status
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+
+    /**
+     * Setter for user's pseudo
+     * @param string user's pseudo
+     */
+    public function setPseudo($pseudo)
+    {
+        $this->pseudo = $pseudo;
+    }
+
+    /**
+     * Setter for user's firstname
+     * @param string user's firstname
+     */
+    public function setFirstname($firstname)
+    {
+        $this->firstname = $firstname;
+    }
+
+    /**
+     * Setter for user's lastname
+     * @param string user's lastname
+     */
+    public function setLastname($lastname)
+    {
+        $this->lastname = $lastname;
+    }
+
+    /**
+     * Setter for user's picture
+     * @param string user's picture
+     */
+    public function setPicture($picture)
+    {
+        $this->picture = $picture;
+    }
+
+    /**
+     * Setter for user's status
+     * @param string user's status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * Setter for user's permission
+     * @param string user's permission
+     */
+    public function setPermission($permission)
+    {
+        $this->permission = $permission;
+    }
+
+
+    /**
      * Setter for keys attribut
      * @param string $privK user's private key
      * @param string $pubK user's public key
      */
-    public function setkeys($privK, $pubK){
+    public function setkeys($privK, $pubK)
+    {
         $this->privK = $privK;
         $this->pubK = $pubK;
+    }
+
+    /**
+     * Initialize discussion
+     */
+    public function setDiscussions()
+    {
+        if (empty($this->pseudo) || empty($this->pseudo)) {
+            throw new Exception("User's pseudo must first be initialized");
+        }
+        $sql = "SELECT * 
+        FROM `Discussions` d
+        JOIN `Participants` p ON d.discuID = p.discuId
+        WHERE pseudo_ = '$this->pseudo'";
+        $pdo = parent::executeRequest($sql);
+        $this->discussions = [];
+        if($pdo->rowCount() > 0){
+            while($pdoLine = $pdo->fetch()){
+                $discuID = $pdoLine["discuID"];
+                $setDate = $pdoLine["discuSetDate"];
+                $discuName = empty($pdoLine["discuName"]) ? null : $pdoLine["discuName"];
+                $discu = new Discussion($discuID, $setDate, $discuName);
+                $discu->setParticipants();
+                $discu->setMessages();
+                $this->discussions[strtotime($setDate)] = $discu;
+            }
+        }
+        krsort($this->discussions);
+    }
+
+    /**
+     * Set user's properties
+     */
+    public function setProperties()
+    {
+        if (empty($this->privK) || empty($this->pubK)) {
+            throw new Exception("Private and public key must first be initialized");
+        }
+        $sql = "SELECT * 
+        FROM `UsersKeys` uk
+        JOIN `Users` u on uk.pseudo_ = u.pseudo
+        WHERE privateK = '$this->privK' AND publicK = '$this->pubK'
+        ORDER BY `uk`.`keySetDate` DESC";
+        $userPDO = parent::executeRequest($sql);
+        if ($userPDO->rowCount() == 1) {
+            $user = $userPDO->fetch();
+            $this->pseudo = $user["pseudo"];
+            $this->firstname = $user["firstname"];
+            $this->lastname = $user["lastname"];
+            $this->picture = $user["picture"];
+            $this->status = $user["status"];
+            $this->permission = $user["permission"];
+
+
+            $sql = "SELECT * FROM `Users_ Informations` WHERE pseudo_ = '$this->pseudo'";
+            $infosPDO = parent::executeRequest($sql);
+            if ($infosPDO->rowCount() > 0) {
+                $this->informations = [];
+                while ($infoLine = $infosPDO->fetch()) {
+                    $this->informations[$infoLine["information_"]] = $infoLine["value"];
+                }
+            }
+        }
     }
 
     /**
@@ -212,7 +396,8 @@ class User extends Model
      * Check if user exist in the database and full its attributs
      * @return boolean true if the user exist in the database else false
      */
-    public function userExist(){
+    public function userExist()
+    {
         if (empty($this->privK) || empty($this->pubK)) {
             throw new Exception("Private and public key must first be initialized");
         }
@@ -221,46 +406,10 @@ class User extends Model
         WHERE privateK = '$this->privK' AND publicK = '$this->pubK'
         ORDER BY `keySetDate` DESC";
         $keys = parent::executeRequest($sql);
-        if($keys->rowCount() == 1){
+        if ($keys->rowCount() == 1) {
             return true;
         }
         return false;
-    }
-
-    /**
-     * Set user's properties
-     * @param string $privK user's private key
-     * @param string $pubK user's public key
-     */
-    public function setProperties(){
-        if (empty($this->privK) || empty($this->pubK)) {
-            throw new Exception("Private and public key must first be initialized");
-        }
-        $sql = "SELECT * 
-        FROM `UsersKeys` uk
-        JOIN `Users` u on uk.pseudo_ = u.pseudo
-        WHERE privateK = '$this->privK' AND publicK = '$this->pubK'
-        ORDER BY `uk`.`keySetDate` DESC";
-        $userPDO = parent::executeRequest($sql);
-        if($userPDO->rowCount() == 1){
-            $user = $userPDO->fetch();
-            $this->pseudo = $user["pseudo"];
-            $this->firstname = $user["firstname"];
-            $this->lastname = $user["lastname"];
-            $this->picture = $user["picture"];
-            $this->status = $user["status"];
-            $this->permission = $user["permission"];
-    
-            
-            $sql = "SELECT * FROM `Users_ Informations` WHERE pseudo_ = '$this->pseudo'";
-            $infosPDO = parent::executeRequest($sql);
-            if($infosPDO->rowCount() > 0){
-                $this->informations = [];
-                while($infoLine = $infosPDO->fetch()){
-                    $this->informations[$infoLine["information_"]] = $infoLine["value"];
-                }
-            }
-        }
     }
 
     /** 

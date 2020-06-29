@@ -13,6 +13,8 @@ class ControllerHome extends ControllerAuthentication
     public function index()
     {
         $this->secureSession();
-        $this->generateView();
+        $this->user->setProperties();
+        $this->user->setDiscussions();
+        $this->generateView(array("user" => $this->user));
     }
 }
