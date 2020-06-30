@@ -65,6 +65,19 @@ class User extends Model
     private $discussions;
 
     /**
+     * Holds user's contacts
+     * + NOTE: use the user's pseudo as access key
+     * @var User[]
+     */
+    private $contacts;
+
+    /**
+     * Holds the relationship between the contact and a user
+     * @var string 
+     */
+    private $relationship;
+
+    /**
      * Holds a private key
      * @var string
      */
@@ -82,6 +95,13 @@ class User extends Model
      */
     public const SESSION_PRIVATE_K = "privk";
     public const SESSION_PUBLIC_K = "pubk";
+
+    /**
+     * Relationship available values
+     * @var string
+     */
+    public const KNOW = "know";
+    public const BLOCKED = "blocked";
 
     /**
      * Constructor for user
@@ -187,6 +207,15 @@ class User extends Model
     }
 
     /**
+     * Getter for user's status
+     * @return string user's status
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
      * Getter for user's discussions
      * @return Discussion[] user's discussions
      */
@@ -196,14 +225,21 @@ class User extends Model
     }
 
     /**
-     * Getter for user's status
-     * @return string user's status
+     * Getter for user's contact
+     * @return Contacts[] user's contacts
      */
-    public function getStatus()
+    public function getContacts()
     {
-        return $this->status;
+        return $this->contacts;
     }
 
+    /**
+     * Getter for contact's relationship
+     * @return string contact's relationship
+     */
+    public function getRelationship(){
+        return $this->relationship;
+    }
 
     /**
      * Setter for user's pseudo
@@ -259,6 +295,13 @@ class User extends Model
         $this->permission = $permission;
     }
 
+    /**
+     * Setter for contact's relationship
+     */
+    public function setRelationship($relationship){
+        $this->relationship = $relationship;
+    }
+
 
     /**
      * Setter for keys attribut
@@ -285,8 +328,8 @@ class User extends Model
         WHERE pseudo_ = '$this->pseudo'";
         $pdo = parent::executeRequest($sql);
         $this->discussions = [];
-        if($pdo->rowCount() > 0){
-            while($pdoLine = $pdo->fetch()){
+        if ($pdo->rowCount() > 0) {
+            while ($pdoLine = $pdo->fetch()) {
                 $discuID = $pdoLine["discuID"];
                 $setDate = $pdoLine["discuSetDate"];
                 $discuName = empty($pdoLine["discuName"]) ? null : $pdoLine["discuName"];
@@ -322,16 +365,55 @@ class User extends Model
             $this->status = $user["status"];
             $this->permission = $user["permission"];
 
-
             $sql = "SELECT * FROM `Users_ Informations` WHERE pseudo_ = '$this->pseudo'";
             $infosPDO = parent::executeRequest($sql);
+            $this->informations = [];
             if ($infosPDO->rowCount() > 0) {
-                $this->informations = [];
                 while ($infoLine = $infosPDO->fetch()) {
                     $this->informations[$infoLine["information_"]] = $infoLine["value"];
                 }
             }
         }
+    }
+
+    /**
+     * 
+     */
+    public function setContacts()
+    {
+        if (empty($this->pseudo) || empty($this->pseudo)) {
+            throw new Exception("User's pseudo must first be initialized");
+        }
+        $sql = "SELECT * 
+        FROM `Contacts` c
+        JOIN `Users` u ON c.contact = u.pseudo
+        WHERE pseudo_ = '$this->pseudo'";
+        $pdo = parent::executeRequest($sql);
+        $this->contacts = [];
+        if ($pdo->rowCount() > 0) {
+            while ($pdoLine = $pdo->fetch()) {
+                $user = $this->createContact($pdoLine);
+                $this->contacts[$user->getPseudo()] = $user;
+            }
+        }
+    }
+
+    /**
+     * Create a new User
+     * @param string[] $pdoLine line from database witch contain user's properties
+     * @return User a User instance
+     */
+    protected function createContact($pdoLine)
+    {
+        $contact = new User();
+        $contact->setPseudo($pdoLine["contact"]);
+        $contact->setFirstname($pdoLine["firstname"]);
+        $contact->setLastname($pdoLine["lastname"]);
+        $contact->setPicture($pdoLine["picture"]);
+        $contact->setStatus($pdoLine["status"]);
+        $contact->setPermission($pdoLine["permission"]);
+        $contact->setRelationship($pdoLine["contactStatus"]);
+        return $contact;
     }
 
     /**

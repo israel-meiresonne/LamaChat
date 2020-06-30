@@ -21,7 +21,7 @@ class Discussion extends Model
 
     /**
      * Holds discussion's participants
-     * + NOTE: use as access key the user's pseudo
+     * + NOTE: use the user's pseudo as access key
      * @var User[]
      */
     private $participants;

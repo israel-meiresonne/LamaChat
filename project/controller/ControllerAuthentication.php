@@ -27,7 +27,7 @@ abstract class ControllerAuthentication extends Controller
      * @var string
      */
     private const PSEUDO_REGEX = "#^[a-zA-Z]+[a-zA-Z0-9-_]*$#";
-    private const NAME_REGEX = "#^[A-zÀ-ú]+$#";
+    private const NAME_REGEX = "#^[A-zÀ-ú-]+$#";
     private const PASSWORD_REGEX = "#^[a-zA-Z]+[a-zA-Z0-9-_]+$#";
 
     /**

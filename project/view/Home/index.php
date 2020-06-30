@@ -165,7 +165,36 @@ $this->title = "Discussions";
         <div class="w3-panel">
             <div class="setting-content">
                 <table class="contact-table">
-                    <tr>
+                    <?php
+                    $contacts = $user->getContacts();
+                    foreach ($contacts as $contact) :
+                    ?>
+                        <tr>
+                            <td>
+                                <button class="img-button remove-button-default-att">
+                                    <img src="content/images/user-profile/<?= $contact->getPicture() ?>">
+                                </button>
+                            </td>
+                            <td><span><?= $contact->getPseudo() ?></span></td>
+                            <td><button class="standard-button red-button remove-button-default-att">supprimer</button></td>
+                            <?php
+                            switch ($contact->getRelationship()):
+                                case User::KNOW:
+                            ?>
+                                    <td><button class="standard-button orange-button remove-button-default-att">bloquer</button></td>
+                                <?php
+                                    break;
+                                case User::BLOCKED:
+                                ?>
+                                    <td><button class="standard-button red-button remove-button-default-att">débloquer</button></td>
+                            <?php
+                                    break;
+                            endswitch; 
+                            ?>
+                            <td><button class="standard-button blue-button remove-button-default-att">écrire</button></td>
+                        </tr>
+                    <?php endforeach; ?>
+                    <!-- <tr>
                         <td>
                             <button id="search_button" class="img-button remove-button-default-att">
                                 <img src="content/images/user-profile/default-user-picture.png">
@@ -199,12 +228,13 @@ $this->title = "Discussions";
                             <button id="sign_in_button" for="sign_in_button_form" class="standard-button orange-button remove-button-default-att">bloquer</button>
                         </td>
                         <td><button id="sign_in_button" for="sign_in_button_form" class="standard-button blue-button remove-button-default-att">écrire</button></td>
-                    </tr>
+                    </tr> -->
                 </table>
             </div>
         </div>
     </div>
 </div>
+
 <div id="search_window" class="w3-modal" style="z-index:4">
     <div class="w3-modal-content">
         <div class="w3-container w3-padding w3-red">
@@ -216,7 +246,7 @@ $this->title = "Discussions";
                 <div class="msg_sender-container">
                     <div class="msg_sender">
                         <div class="msg_sender-inner">
-                            <div class="msg_sender-placeholder">Entrer pseuajouterdo, nom ou prénom</div>
+                            <div class="msg_sender-placeholder">Entrer pseudo, nom ou prénom</div>
                             <div class="msg_sender-input" contenteditable="true"></div>
                         </div>
                     </div>

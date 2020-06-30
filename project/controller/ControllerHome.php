@@ -15,6 +15,7 @@ class ControllerHome extends ControllerAuthentication
         $this->secureSession();
         $this->user->setProperties();
         $this->user->setDiscussions();
+        $this->user->setContacts();
         $this->generateView(array("user" => $this->user));
     }
 }
