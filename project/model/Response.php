@@ -31,6 +31,14 @@ class Response
     }
 
     /**
+     * Setter for response's success status
+     * @param boolean $isSuccess success status
+     */
+    public function setIsSuccess($isSuccess){
+        $this->isSuccess = $isSuccess;
+    }
+
+    /**
      * To get a result stored at the key given in param
      * @return string result stored at the key given in param
      */

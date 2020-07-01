@@ -39,6 +39,13 @@ class Discussion extends Model
      */
     private $messages;
 
+    /**
+     * Access key for discussion's id
+     */
+    public const DISCU_ID = "discuID";
+
+
+
     public function __construct($discuID, $setDate, $discuName = null)
     {
         $this->discuID = $discuID;
@@ -68,6 +75,9 @@ class Discussion extends Model
      */
     public function setMessages()
     {
+        if (!isset($this->participants)) {
+            throw new Exception("Discussion's participants must first be initialized");
+        }
         $sql = "SELECT * 
         FROM `Messages` m
         JOIN `Users` u ON m.from_pseudo  = u.pseudo
@@ -90,8 +100,8 @@ class Discussion extends Model
     }
 
     /**
-     * Getter for user's discussion id (identifiant)
-     * @return string user's discussion id (identifiant)
+     * Getter for discussion's id (identifiant)
+     * @return string discussion's id (identifiant)
      */
     public function getDiscuID()
     {
@@ -99,8 +109,8 @@ class Discussion extends Model
     }
 
     /**
-     * Getter for user's discussion name
-     * @return string user's discussion name
+     * Getter for discussion's name
+     * @return string discussion's name
      */
     public function getDiscuName()
     {
@@ -108,8 +118,17 @@ class Discussion extends Model
     }
 
     /**
-     * Getter for user's discussion messages
-     * @return Message[] user's discussion messages
+     * Getter for discussion's creation date
+     * @return string discussion's creation date
+     */
+    public function getSetDate()
+    {
+        return $this->setDate;
+    }
+
+    /**
+     * Getter for discussion's messages
+     * @return Message[] discussion's messages
      */
     public function getMessages()
     {
@@ -167,5 +186,56 @@ class Discussion extends Model
         $user->setStatus($pdoLine["status"]);
         $user->setPermission($pdoLine["permission"]);
         return $user;
+    }
+
+        /**
+     * Generate a alpha numerique sequence in specified length
+     * @param int $length
+     * @return string alpha numerique sequence in specified length
+     */
+    // private function generateCode($length)
+    private static function generateCode($length)
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
+        $sequence = '';
+        $nbChar = strlen($characters) - 1;
+        for ($i = 0; $i < $length; $i++) {
+            $index = rand(0, $nbChar);
+            $sequence .= $characters[$index];
+        }
+
+        return $sequence;
+    }
+
+    /**
+     * Genarate a sequence code of $length characteres in format 
+     * CC...YYMMDDHHmmSSssCC... where C is a alpha numerique sequence. 
+     * NOTE: length must be strictly over 14 characteres cause it's the size of the 
+     * date time sequence
+     * @param int $length the total length
+     * @throws Exception if $length is under or equals 14
+     * @return string a alpha numerique sequence with more than 14 
+     * characteres 
+     */
+    public static function generateDateCode($length)
+    {
+        $sequence = date("YmdHis");
+        $nbChar = strlen($sequence);
+        if ($length <= $nbChar) {
+            throw new Exception('$length must be strictly over 14');
+        }
+        $nbCharToAdd = $length - $nbChar;
+        switch ($nbCharToAdd % 2) {
+            case 0:
+                $nbCharLeft = $nbCharRight = ($nbCharToAdd / 2);
+                break;
+            case 1:
+                $nbCharLeft = ($nbCharToAdd - 1) / 2;
+                $nbCharRight = $nbCharLeft + 1;
+                break;
+        }
+        $sequence = self::generateCode($nbCharLeft) . $sequence . self::generateCode($nbCharRight);
+        $sequence = strtolower($sequence);
+        return $sequence;
     }
 }

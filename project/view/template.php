@@ -1,4 +1,5 @@
 <?php require_once "controller/ControllerSign.php";?>
+<?php //require_once "controller/ControllerHome.php";?>
 <!DOCTYPE html>
 <html lang="fr">
 <title><?= $title ?></title>
@@ -26,9 +27,20 @@
         const TS = 450;
         const BNR = 1000000;
         const webRoot = <?= $webRoot ?>;
+        // controller Sign
         const ACTION_SIGN_UP = "<?= ControllerSign::ACTION_SIGN_UP ?>";
         const ACTION_SIGN_IN = "<?= ControllerSign::ACTION_SIGN_IN ?>";
+        // controller Home
+        const ACTION_ADD_CONTACT = "<?= ControllerHome::ACTION_ADD_CONTACT ?>";
+        const ACTION_REMOVE_CONTACT = "<?= ControllerHome::ACTION_REMOVE_CONTACT ?>";
+        const ACTION_BLOCK_CONTACT = "<?= ControllerHome::ACTION_BLOCK_CONTACT ?>";
+        const ACTION_UNLOCK_CONTACT = "<?= ControllerHome::ACTION_UNLOCK_CONTACT ?>";
+        const ACTION_WRITE_CONTACT = "<?= ControllerHome::ACTION_WRITE_CONTACT ?>";
+        const RSP_WRITE_MENU = "<?= ControllerHome::RSP_WRITE_MENU ?>";
+        const RSP_WRITE_DISCU_FEED = "<?= ControllerHome::RSP_WRITE_DISCU_FEED ?>";
+        // other keys
         const FATAL_ERROR = "<?= MyError::FATAL_ERROR ?>";
+        const DISCU_ID = "<?= Discussion::DISCU_ID ?>";
     </script>
     <?= $content ?>
 </body>

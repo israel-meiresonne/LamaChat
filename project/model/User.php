@@ -104,6 +104,12 @@ class User extends Model
     public const BLOCKED = "blocked";
 
     /**
+     * PDOStatement success code
+     * @var string
+     */
+    private const PDO_SUCCEESS = "00000";
+
+    /**
      * Constructor for user
      * @param string $pseudo user's pseudo
      * @param string $password user's password
@@ -226,7 +232,7 @@ class User extends Model
 
     /**
      * Getter for user's contact
-     * @return Contacts[] user's contacts
+     * @return User[] user's contacts
      */
     public function getContacts()
     {
@@ -237,7 +243,8 @@ class User extends Model
      * Getter for contact's relationship
      * @return string contact's relationship
      */
-    public function getRelationship(){
+    public function getRelationship()
+    {
         return $this->relationship;
     }
 
@@ -298,7 +305,8 @@ class User extends Model
     /**
      * Setter for contact's relationship
      */
-    public function setRelationship($relationship){
+    public function setRelationship($relationship)
+    {
         $this->relationship = $relationship;
     }
 
@@ -319,7 +327,7 @@ class User extends Model
      */
     public function setDiscussions()
     {
-        if (empty($this->pseudo) || empty($this->pseudo)) {
+        if (empty($this->pseudo)) {
             throw new Exception("User's pseudo must first be initialized");
         }
         $sql = "SELECT * 
@@ -330,16 +338,27 @@ class User extends Model
         $this->discussions = [];
         if ($pdo->rowCount() > 0) {
             while ($pdoLine = $pdo->fetch()) {
-                $discuID = $pdoLine["discuID"];
-                $setDate = $pdoLine["discuSetDate"];
-                $discuName = empty($pdoLine["discuName"]) ? null : $pdoLine["discuName"];
-                $discu = new Discussion($discuID, $setDate, $discuName);
-                $discu->setParticipants();
-                $discu->setMessages();
-                $this->discussions[strtotime($setDate)] = $discu;
+                $discu = $this->createDiscussion($pdoLine);
+                $unix = strtotime($discu->getSetDate());
+                $this->discussions[$unix] = $discu;
             }
         }
         krsort($this->discussions);
+    }
+
+    /**
+     * Create a new Discussion
+     * @param string[] $pdoLine line from database witch contain discussion's properties
+     * @return Discussion a Discussion instance
+     */
+    public function createDiscussion($pdoLine){
+        $discuID = $pdoLine["discuID"];
+        $setDate = $pdoLine["discuSetDate"];
+        $discuName = empty($pdoLine["discuName"]) ? null : $pdoLine["discuName"];
+        $discu = new Discussion($discuID, $setDate, $discuName);
+        $discu->setParticipants();
+        $discu->setMessages();
+        return $discu;
     }
 
     /**
@@ -377,11 +396,11 @@ class User extends Model
     }
 
     /**
-     * 
+     * Setter for user's contacts attribut
      */
     public function setContacts()
     {
-        if (empty($this->pseudo) || empty($this->pseudo)) {
+        if (empty($this->pseudo)) {
             throw new Exception("User's pseudo must first be initialized");
         }
         $sql = "SELECT * 
@@ -427,7 +446,7 @@ class User extends Model
         if (!$this->pseudoExist()) {
             $sql = "INSERT INTO `Users`(`pseudo`, `password`, `firstname`, `lastname`) VALUES (?,?,?,?)";
             $pdoState = parent::executeRequest($sql, array($this->pseudo, $this->password, $this->firstname, $this->lastname));
-            if ($pdoState->errorInfo()[0] != "00000") {
+            if ($pdoState->errorInfo()[0] != self::PDO_SUCCEESS) {
                 $errMsg = "désolé, une erreur s'est produite lors de votre inscription!";
                 $response->addError($errMsg, MyError::FATAL_ERROR);
                 return false;
@@ -435,7 +454,7 @@ class User extends Model
             return $this->saveKeys($response, $session);
         }
         $errMsg = "ce pseudo existe déjà!";
-        $response->addError($errMsg, ControllerSign::INPUT_PSEUDO);
+        $response->addError($errMsg, ControllerSecure::KEY_PSEUDO);
         return false;
     }
 
@@ -452,14 +471,14 @@ class User extends Model
             $passHash = parent::executeRequest($sql)->fetch()["password"];
             if (!($this->passMatchHash($this->password, $passHash))) {
                 $errMsg = "le pseudo ou le mot de passe est incorrect!";
-                $response->addError($errMsg, ControllerSign::INPUT_PSEUDO);
-                $response->addError($errMsg, ControllerSign::INPUT_PSW);
+                $response->addError($errMsg, ControllerSecure::KEY_PSEUDO);
+                $response->addError($errMsg, ControllerSecure::KEY_PSW);
                 return false;
             }
             return $this->saveKeys($response, $session);
         }
         $errMsg = "ce pseudo n'existe pas!";
-        $response->addError($errMsg, ControllerSign::INPUT_PSEUDO);
+        $response->addError($errMsg, ControllerSecure::KEY_PSEUDO);
         return false;
     }
 
@@ -529,7 +548,7 @@ class User extends Model
         // save keys in the database
         $sql = "INSERT INTO `UsersKeys`(`pseudo_`, `keySetDate`, `privateK`, `publicK`) VALUES (?,?,?,?)";
         $pdoState = parent::executeRequest($sql, array($this->pseudo, date('Y-m-d H:i:s'), $privK, $pubK));
-        if ($pdoState->errorInfo()[0] != "00000") {
+        if ($pdoState->errorInfo()[0] != self::PDO_SUCCEESS) {
             $errMsg = "désolé, une erreur s'est produite lors de votre connection!";
             $response->addError($errMsg, MyError::FATAL_ERROR);
             return false;
@@ -580,5 +599,127 @@ class User extends Model
             $this->generateKeys();
         }
         return $this->pubK;
+    }
+
+    /**
+     * Perform an remove of a contact from the current user
+     * @param string $pseudo contact to remove's pseudo
+     * @param Response $response to push in occured errors
+     */
+    public function removeContact($pseudo, $response)
+    {
+        if (empty($this->pseudo)) {
+            throw new Exception("Private and public key must first be initialized");
+        }
+        $sql = "DELETE FROM `Contacts` WHERE `Contacts`.`pseudo_` = '$this->pseudo' AND `Contacts`.`contact` = '$pseudo'";
+        $pdo = parent::executeRequest($sql);
+        if ($pdo->errorInfo()[0] != self::PDO_SUCCEESS) {
+            $errMsg = "désolé, une erreur s'est produite lors de la suppression de '$pseudo'!";
+            $response->addError($errMsg, MyError::FATAL_ERROR);
+        }
+    }
+
+    /**
+     * Perform a blockage of a contact from the current user
+     * @param string $pseudo contact to block's pseudo
+     * @param Response $response to push in occured errors
+     */
+    public function blockContact($pseudo, $response)
+    {
+        if (empty($this->pseudo)) {
+            throw new Exception("Private and public key must first be initialized");
+        }
+        $sql = "UPDATE `Contacts` SET `contactStatus` = 'blocked' WHERE `Contacts`.`pseudo_` = '$this->pseudo' AND `Contacts`.`contact` = '$pseudo';";
+        $pdo = parent::executeRequest($sql);
+        if ($pdo->errorInfo()[0] != self::PDO_SUCCEESS) {
+            $errMsg = "désolé, une erreur s'est produite lors de la tentative de bloquage de '$pseudo'!";
+            $response->addError($errMsg, MyError::FATAL_ERROR);
+        }
+    }
+
+    /**
+     * Perform a unlock of a contact from the current user
+     * @param string $pseudo contact to unlock's pseudo
+     * @param Response $response to push in occured errors
+     */
+    public function unlockContact($pseudo, $response)
+    {
+        if (empty($this->pseudo)) {
+            throw new Exception("Private and public key must first be initialized");
+        }
+        $sql = "UPDATE `Contacts` SET `contactStatus` = 'know' WHERE `Contacts`.`pseudo_` = '$this->pseudo' AND `Contacts`.`contact` = '$pseudo';";
+        $pdo = parent::executeRequest($sql);
+        if ($pdo->errorInfo()[0] != self::PDO_SUCCEESS) {
+            $errMsg = "désolé, une erreur s'est produite lors de la tentative de débloquage de '$pseudo'!";
+            $response->addError($errMsg, MyError::FATAL_ERROR);
+        }
+    }
+
+    /**
+     * Create a new discussion between current user and his contact
+     * @param string $pseudo pseudo of the contact to discus with
+     * @param Response $response to push in occured errors
+     * @return Discussion|null discussion between current user and his contact
+     */
+    public function writeContact($pseudo, $response)
+    {
+        if (empty($this->pseudo)) {
+            throw new Exception("Private and public key must first be initialized");
+        }
+        $sql = "SELECT *
+        FROM `Participants` p1
+        JOIN `Discussions` d ON p1.discuId = d.discuID
+        WHERE p1.pseudo_ = '$this->pseudo' 
+            AND p1.discuId IN (SELECT p2.discuId
+                               FROM `Participants` p2
+                               WHERE p2.pseudo_ = '$pseudo')";
+        $pdo = parent::executeRequest($sql);
+        if ($pdo->errorInfo()[0] == self::PDO_SUCCEESS) {
+            if (($pdo->rowCount() == 1)) {
+                $pdoLine = $pdo->fetch();
+                return $this->createDiscussion($pdoLine);
+            } else {
+                $discu = $this->createDiscussionWith($pseudo, $response);
+                $discu->setParticipants();
+                $discu->setMessages();
+                return $discu;
+            }
+        } else {
+            $errMsg = "désolé, une erreur s'est produite lors de votre tentative d'écrire à '$pseudo'!";
+            $response->addError($errMsg, MyError::FATAL_ERROR);
+        }
+        return null;
+    }
+
+    /**
+     * Create a new discussion between current user and his contact
+     * @param string $pseudo pseudo of the contact to discus with
+     * @param Response $response to push in occured errors
+     * @return Discussion|null discussion between current user and his contact
+     */
+    private function createDiscussionWith($pseudo, $response) {
+        if (empty($this->pseudo)) {
+            throw new Exception("Private and public key must first be initialized");
+        }
+        $sql = "INSERT INTO `Discussions` (`discuID`, `discuSetDate`) VALUES (?, ?);
+                INSERT INTO `Participants` (`discuId`, `pseudo_`) VALUES (?, ?), (?, ?);";
+        $discuID = Discussion::generateDateCode(25);
+        $setDate = date('Y-m-d H:i:s');
+        $datas = [
+            $discuID,
+            $setDate,
+            $discuID,
+            $this->pseudo,
+            $discuID,
+            $pseudo
+        ];
+        $pdo = parent::executeRequest($sql, $datas);
+        if($pdo->errorInfo()[0] == self::PDO_SUCCEESS){
+            return new Discussion($discuID, $setDate);
+        } else {
+            $errMsg = "désolé, une erreur s'est produite lors de votre tentative d'écrire à '$pseudo'!";
+            $response->addError($errMsg, MyError::FATAL_ERROR);
+        }
+        return null;
     }
 }
