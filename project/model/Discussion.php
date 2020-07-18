@@ -236,6 +236,6 @@ class Discussion extends Model
         }
         $sequence = self::generateCode($nbCharLeft) . $sequence . self::generateCode($nbCharRight);
         $sequence = strtolower($sequence);
-        return $sequence;
+        return str_shuffle($sequence);
     }
 }

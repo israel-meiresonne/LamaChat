@@ -22,11 +22,22 @@
         });
     }
 
-    const animReplace = function (x, y) {
-        $(x).fadeOut(TS, function () {
-            $(this).parent().replaceWith(y);
-            $(y).fadeIn(TS);
-        })
+    const replaceBtn = function (x, y) {
+        $(x).parent().replaceWith(y);
+        // $(x).fadeOut(TS, function () {
+        //     $(y).fadeIn(TS);
+        // })
+    }
+
+    var isTyping;
+    endKeyup = function () {
+        var a = arguments;
+        window.addEventListener('keyup', function (event) {
+            window.clearTimeout(isTyping);
+            isTyping = setTimeout(function () {
+                a[0](a[1]);
+            }, TS * 1.5);
+        }, false);
     }
 
 
@@ -38,6 +49,7 @@
             data: jxd,
             dataType: 'json',
             success: function (r) {
+                console.log("response: ", r);
                 $(lds).fadeOut(TS, cbkRSP());
                 rspf(r, x);
             }
@@ -52,19 +64,45 @@
         var x = datas.x;
         var cbkSND = datas.cbkSND;
         var cbkRSP = datas.cbkRSP;
-        console.log("action", webRoot + action);
-        console.log("send:", jxd);
+        console.log("action", webRoot + action, "send: ", jxd);
+        // console.log();
         jx(action, jxd, rspf, lds, x, cbkSND, cbkRSP);
     }
 
-    addContact = function (k, d) { }
+    searchContact = function (d) {
+        var map = { [RSP_SEARCH_KEY]: d };
+        var param = mapToParam(map);
+        var datasSND = {
+            "action": ACTION_SEARCH_CONTACT,
+            "jxd": param,
+            "rspf": searchRSP,
+            "lds": "#isLoading",
+        };
+        SND(datasSND);
+    }
 
-    removeContact = function (k, d) {
+    addContact = function (id, k, d) {
+        var map = { [k]: d };
+        var param = mapToParam(map);
+        // var x = $("#search_window button[onclick=\"addContact('" + k + "', '" + d + "')\"]")[0];
+        var x = $("#" + id)[0];
+        var datasSND = {
+            "action": ACTION_ADD_CONTACT,
+            "jxd": param,
+            "rspf": addContactRSP,
+            "lds": "#isLoading",
+            "x": x
+        };
+        SND(datasSND);
+    }
+
+    removeContact = function (id, k, d) {
         var remove = window.confirm("Voulez-vous vraiment supprimer ce contact?");
         if (remove) {
             var map = { [k]: d };
             var param = mapToParam(map);
-            var x = $("#contact_window button[onclick=\"removeContact('" + k + "', '" + d + "')\"]")[0];
+            // var x = $("#contact_window button[onclick=\"removeContact('" + k + "', '" + d + "')\"]")[0];
+            var x = $("#" + id)[0];
             var datasSND = {
                 "action": ACTION_REMOVE_CONTACT,
                 "jxd": param,
@@ -77,12 +115,13 @@
         }
     }
 
-    blockContact = function (k, d) {
+    blockContact = function (id, k, d) {
         var remove = window.confirm("Voulez-vous vraiment bloquer ce contact?");
         if (remove) {
             var map = { [k]: d };
             var param = mapToParam(map);
-            var x = $("#contact_window button[onclick=\"blockContact('" + k + "', '" + d + "')\"]")[0];
+            // var x = $("#contact_window button[onclick=\"blockContact('" + k + "', '" + d + "')\"]")[0];
+            var x = $("#" + id)[0];
             var datasSND = {
                 "action": ACTION_BLOCK_CONTACT,
                 "jxd": param,
@@ -94,10 +133,11 @@
         }
     }
 
-    unlockContact = function (k, d) {
+    unlockContact = function (id, k, d) {
         var map = { [k]: d };
         var param = mapToParam(map);
-        var x = $("#contact_window button[onclick=\"unlockContact('" + k + "', '" + d + "')\"]")[0];
+        // var x = $("#contact_window button[onclick=\"unlockContact('" + k + "', '" + d + "')\"]")[0];
+        var x = $("#" + id)[0];
         var datasSND = {
             "action": ACTION_UNLOCK_CONTACT,
             "jxd": param,
@@ -108,10 +148,11 @@
         SND(datasSND);
     }
 
-    writeContact = function (k, d) {
+    writeContact = function (id, k, d) {
         var map = { [k]: d };
         var param = mapToParam(map);
-        var x = $("#contact_window button[onclick=\"writeContact('" + k + "', '" + d + "')\"]")[0];
+        // var x = $("#contact_window button[onclick=\"writeContact('" + k + "', '" + d + "')\"]")[0];
+        var x = $("#" + id)[0];
         var datasSND = {
             "action": ACTION_WRITE_CONTACT,
             "jxd": param,
@@ -122,13 +163,10 @@
         SND(datasSND);
     }
 
-
     const signUpRSP = function (r) {
         if (r.isSuccess) {
-            console.log("rsp success: ", r);
             window.location.assign(r.results[ACTION_SIGN_UP]);
         } else {
-            console.log("rsp fail: ", r);
             var ks = Object.keys(r.errors);
             ks.forEach(k => {
                 var x = $("#sign_up_form input[name='" + k + "'] + .comment");
@@ -141,10 +179,8 @@
 
     const signInRSP = function (r) {
         if (r.isSuccess) {
-            console.log("rsp success: ", r);
             window.location.assign(r.results[ACTION_SIGN_IN]);
         } else {
-            console.log("rsp fail: ", r);
             var ks = Object.keys(r.errors);
             ks.forEach(k => {
                 var x = $("#sign_in_form input[name='" + k + "'] + .comment");
@@ -155,48 +191,64 @@
         }
     }
 
+    const searchRSP = function (r) {
+        if (r.isSuccess) {
+            $("#search_window .contact-table").html(r.results[RSP_SEARCH_KEY]);
+        } else {
+            if (r.errors[FATAL_ERROR] != null) {
+                popAlert(r.errors[FATAL_ERROR].message);
+            }
+        }
+    }
+
+    const addContactRSP = function (r, x) {
+        if (r.isSuccess) {
+            var y = r.results[ACTION_ADD_CONTACT];
+            replaceBtn(x, y);
+        } else {
+            popAlert(r.errors[FATAL_ERROR].message);
+        }
+    }
+
     const removeContactRSP = function (r, x) {
         if (r.isSuccess) {
-            console.log("rsp success: ", r);
-            var p = $(x).parent().parent()[0];
-            removeTag(p);
+            var wId = $(x).attr("data-window");
+            console.log(x);
+            console.log(wId);
+            if (wId == "contact_window") {
+                var p = $(x).parent().parent()[0];
+                removeTag(p);
+            } else if (wId == "search_window") {
+                addContactRSP(r, x);
+            }
         } else {
-            console.log("rsp fail: ", r);
             popAlert(r.errors[FATAL_ERROR].message);
         }
     }
 
     const blockContactRSP = function (r, x) {
         if (r.isSuccess) {
-            console.log("rsp success: ", r);
             var y = r.results[ACTION_BLOCK_CONTACT];
-            animReplace(x, y);
+            replaceBtn(x, y);
         } else {
-            console.log("rsp fail: ", r);
             popAlert(r.errors[FATAL_ERROR].message);
         }
     }
 
     const unlockContactRSP = function (r, x) {
         if (r.isSuccess) {
-            console.log("rsp success: ", r);
             var y = r.results[ACTION_UNLOCK_CONTACT];
-            animReplace(x, y);
+            replaceBtn(x, y);
         } else {
-            console.log("rsp fail: ", r);
             popAlert(r.errors[FATAL_ERROR].message);
         }
     }
 
     const writeRSP = function (r, x) {
         if (r.isSuccess) {
-            console.log("rsp success: ", r);
-            console.log(x);
             var chat = $("#" + r.results[DISCU_ID]);
             var wId = $(x).attr("data-windCloseBtn");
             var closeBtn = $("#" + wId + " .w3-button")[0];
-            console.log("wId", wId);
-            console.log("closeBtn", closeBtn);
             if (chat.length == 0) {
                 $(closeBtn).click();
                 $("#Demo1").prepend(r.results[RSP_WRITE_MENU]);
@@ -204,16 +256,23 @@
             } else {
                 $(closeBtn).click();
             }
-            var m = $("nav a[data-menuDiscuId='"+ r.results[DISCU_ID] +"']")[0];
+            var m = $("nav a[data-menuDiscuId='" + r.results[DISCU_ID] + "']")[0];
             $(m).click();
         } else {
-            console.log("rsp fail: ", r);
-            console.log(x);
             popAlert(r.errors[FATAL_ERROR].message);
         }
     }
 
-
+    const getContactTableRSP = function (r, d) {
+        if (r.isSuccess) {
+            $(d.y).html(r.results[ACTION_GET_CONTACT_TABLE]);
+            fadeOn(d.x);
+        } else {
+            if (r.errors[FATAL_ERROR] != null) {
+                popAlert(r.errors[FATAL_ERROR].message);
+            }
+        }
+    }
 
     $(document).ready(function () {
         $("#sign_up_button").click(function () {
@@ -240,6 +299,27 @@
                 "jxd": param,
                 "rspf": signInRSP,
                 "lds": "#isLoading",
+            };
+            SND(datasSND);
+        });
+        // var c = function (m) {
+        //     console.log(m);
+        // }
+        $("#search_contact_input").keyup(function () {
+            var d = $(this).text();
+            // ((m != "") && (m != null)) ? endKeyup(searchContact, m) : null;
+            endKeyup(searchContact, d);
+        });
+
+        $("#contact_button").click(function () {
+            var x = $("#contact_window")[0];
+            var y = $("#contact_window .setting-content")[0];
+            var datasSND = {
+                "action": ACTION_GET_CONTACT_TABLE,
+                "jxd": "",
+                "rspf": getContactTableRSP,
+                "lds": "#isLoading",
+                "x": { "x": x, "y": y }
             };
             SND(datasSND);
         });

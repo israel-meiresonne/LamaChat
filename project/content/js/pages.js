@@ -82,10 +82,6 @@
             updateImg(img, this);
         });
 
-        $("#contact_button").click(function () {
-            var x = $("#contact_window");
-            fadeOn(x);
-        });
         $("#contact_close_button").click(function () {
             var x = $("#contact_window");
             fadeOff(x);
@@ -97,6 +93,8 @@
         });
         $("#search_close_button").click(function () {
             var x = $("#search_window");
+            $("#search_contact_input").text("");
+            $("#search_window .contact-table").text("")
             fadeOff(x);
         });
         /*————————————————————— DISCUSSION PAGE UP ——————————————————————————*/

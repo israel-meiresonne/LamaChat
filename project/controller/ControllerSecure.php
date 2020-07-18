@@ -30,6 +30,7 @@ abstract class ControllerSecure extends Controller
     protected const PSEUDO = "pseudo";
     protected const NAME = "name";  // handle space and `-`
     protected const PASSWORD = "psw";
+    protected const KEY_SEARCH = "search";
 
     /**
      * Holds REGEX for input type
