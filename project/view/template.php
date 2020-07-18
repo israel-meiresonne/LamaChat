@@ -42,6 +42,7 @@
         const ACTION_UNLOCK_CONTACT = "<?= ControllerHome::ACTION_UNLOCK_CONTACT ?>";
         const ACTION_WRITE_CONTACT = "<?= ControllerHome::ACTION_WRITE_CONTACT ?>";
         const ACTION_GET_CONTACT_TABLE = "<?= ControllerHome::ACTION_GET_CONTACT_TABLE ?>";
+        const ACTION_SIGN_OUT = "<?= ControllerHome::ACTION_SIGN_OUT ?>";
         // keys
         const RSP_SEARCH_KEY = "<?= ControllerHome::RSP_SEARCH_KEY ?>";
         const RSP_WRITE_MENU = "<?= ControllerHome::RSP_WRITE_MENU ?>";

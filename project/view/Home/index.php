@@ -1,5 +1,8 @@
 <?php
 $this->title = "Discussions";
+$discussions = $user->getDiscussions();
+$nbDiscu = count($discussions);
+$discuTitle = ($nbDiscu > 0) ? "Discussions (".$nbDiscu.")" : "Discussion (".$nbDiscu.")";
 ?>
 <!-- Side Navigation -->
 <nav class="w3-sidebar w3-bar-block w3-collapse w3-white w3-animate-left w3-card" style="z-index:3;width:320px;" id="mySidebar">
@@ -33,8 +36,9 @@ $this->title = "Discussions";
         </div>
     </div>
     <a href="javascript:void(0)" onclick="w3_close()" title="Close Sidemenu" class="w3-bar-item w3-button w3-hide-large w3-large">Close <i class="fa fa-remove"></i></a>
-    <a href="javascript:void(0)" class="w3-bar-item w3-button w3-dark-grey w3-button w3-hover-black w3-left-align" onclick="">New Message <i class="w3-padding fa fa-pencil"></i></a>
-    <a id="myBtn" onclick="myFunc('Demo1')" href="javascript:void(0)" class="w3-bar-item w3-button"><i class="fa fa-inbox w3-margin-right"></i>Inbox (3)<i class="fa fa-caret-down w3-margin-left"></i></a>
+    <!-- <a href="javascript:void(0)" class="w3-bar-item w3-button w3-dark-grey w3-button w3-hover-black w3-left-align" onclick="">New Message <i class="w3-padding fa fa-pencil"></i></a> -->
+    <button id="log_out_btn" class="w3-bar-item w3-button"><i class="fa fa-sign-out" aria-hidden="true"></i>Se déconnecter</button>
+    <a id="myBtn" onclick="myFunc('Demo1')" href="javascript:void(0)" class="w3-bar-item w3-button"><i class="fa fa-inbox w3-margin-right"></i><?= $discuTitle ?><i class="fa fa-caret-down w3-margin-left"></i></a>
 
     <div id="Demo1" class="w3-hide w3-animate-left">
         <?php
@@ -42,7 +46,7 @@ $this->title = "Discussions";
          * @var User
          */
         $user = $user;
-        $discussions = $user->getDiscussions();
+        // $discussions = $user->getDiscussions();
         // var_dump($discussions);
         foreach ($discussions as $discu) :
             $corresp = $discu->getCorrespondent($user->getPseudo());
@@ -75,9 +79,8 @@ $this->title = "Discussions";
             </div>
         </a> -->
     </div>
-    <a href="#" class="w3-bar-item w3-button"><i class="fa fa-paper-plane w3-margin-right"></i>Sent</a>
-    <a href="#" class="w3-bar-item w3-button"><i class="fa fa-hourglass-end w3-margin-right"></i>Drafts</a>
-    <a href="#" class="w3-bar-item w3-button"><i class="fa fa-trash w3-margin-right"></i>Trash</a>
+    <!-- <a href="#" class="w3-bar-item w3-button"><i class="fa fa-paper-plane w3-margin-right"></i>Sent</a> -->
+    <!-- <a href="#" class="w3-bar-item w3-button"><i class="fa fa-hourglass-end w3-margin-right"></i>Drafts</a> -->
 </nav>
 
 <div id="id01" class="w3-modal" style="z-index:4">

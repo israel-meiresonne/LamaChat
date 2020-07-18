@@ -191,6 +191,10 @@
         }
     }
 
+    const signOutRSP = function (r) {
+        window.location.assign(r.results[ACTION_SIGN_OUT]);
+    }
+
     const searchRSP = function (r) {
         if (r.isSuccess) {
             $("#search_window .contact-table").html(r.results[RSP_SEARCH_KEY]);
@@ -322,6 +326,20 @@
                 "x": { "x": x, "y": y }
             };
             SND(datasSND);
+        });
+
+        $("#log_out_btn").click(function () {
+            var lo = window.confirm("Voulez-vous vraiment vous déconnecter?");
+            if (lo) {
+                var datasSND = {
+                    "action": ACTION_SIGN_OUT,
+                    "jxd": "",
+                    "rspf": signOutRSP,
+                    "lds": "#isLoading",
+                    "x": ""
+                };
+                SND(datasSND);
+            }
         });
     });
 }).call(this);

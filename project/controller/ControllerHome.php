@@ -17,6 +17,7 @@ class ControllerHome extends ControllerSecure
     public const ACTION_UNLOCK_CONTACT = "home/unlockContact";
     public const ACTION_WRITE_CONTACT = "home/writeContact";
     public const ACTION_GET_CONTACT_TABLE = "home/getContactTable";
+    public const ACTION_SIGN_OUT = "home/signOut";
 
     /**
      * Access key for actions's responses
@@ -39,6 +40,22 @@ class ControllerHome extends ControllerSecure
         $this->generateView(array("user" => $this->user));
     }
 
+    /**
+     * Sign out the current user
+     */
+    public function signOut()
+    {
+        $this->secureSession();
+        $response = new Response();
+        $this->destroyAccess();
+        $webRoot = Configuration::get("webRoot", "/");
+        $response->addResult(self::ACTION_SIGN_OUT, $webRoot . ControllerSign::CTR_NAME);
+        echo json_encode($response->getAttributs());
+    }
+
+    /**
+     * Look for contact
+     */
     public function searchContact()
     {
         $this->secureSession();

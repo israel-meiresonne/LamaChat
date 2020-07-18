@@ -66,6 +66,16 @@ abstract class ControllerSecure extends Controller
     }
 
     /**
+     * Destroy user's access to perform a sign out
+     * @return boolean true if its success else false
+     */
+    protected function destroyAccess()
+    {
+        $session = $this->request->getSession();
+        $session->destroy();
+    }
+
+    /**
      * Initialize the user attribut
      */
     private function setUser()
