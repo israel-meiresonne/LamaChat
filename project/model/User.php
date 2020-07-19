@@ -227,6 +227,7 @@ class User extends Model
      */
     public function getDiscussions()
     {
+        (!isset($this->discussions)) ? $this->setDiscussions() : null;
         return $this->discussions;
     }
 
@@ -327,6 +328,7 @@ class User extends Model
      */
     public function setDiscussions()
     {
+        $this->setProperties();
         if (empty($this->pseudo)) {
             throw new Exception("User's pseudo must first be initialized");
         }
@@ -360,6 +362,40 @@ class User extends Model
         $discu->setParticipants();
         $discu->setMessages();
         return $discu;
+    }
+
+    /**
+     * Remove current user from a discussion
+     * @param string $discuID discussion's id
+     * @param Response $response to push in occured errors
+     */
+    public function removeDiscussion($discuID, $response)
+    {
+        $sql = "DELETE FROM `Discussions` WHERE `discuID` = '$discuID'";
+        $pdo = parent::executeRequest($sql);
+        if ($pdo->errorInfo()[0] != self::PDO_SUCCEESS) {
+            $errMsg = $pdo->errorInfo()[1];
+            $response->addError($errMsg, MyError::FATAL_ERROR);
+        } else {
+            $this->unsetDiscussion($discuID);
+        }
+    }
+
+    /**
+     * To destroy a discussion
+     * @param string $discuID discussion's id
+     */
+    private function unsetDiscussion($discuID)
+    {
+        $discussions = $this->getDiscussions();
+        if (count($discussions) > 0) {
+            foreach ($discussions as $key => $discu) {
+                if ($discu->getDiscuID() == $discuID) {
+                    $this->discussions[$key] = null;
+                    unset($this->discussions[$key]);
+                }
+            }
+        }
     }
 
     /**

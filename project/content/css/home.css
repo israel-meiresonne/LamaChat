@@ -1,5 +1,5 @@
 :focus {
-	outline:none;
+    outline: none;
 }
 
 .esi-logo-container {
@@ -46,6 +46,11 @@
 }
 
 /*—————————————————————— DISCUSSIONS DOWN ———————————————————————————————————*/
+
+.discu-btn {
+    position: absolute;
+    right: 0;
+}
 
 .w3-main {
     height: 100%;
@@ -105,7 +110,7 @@
     border-radius: var(--border-float-radius);
 }
 
-.msg-text .o_symbol{
+.msg-text .o_symbol {
     border: var(--color-white) solid;
     border-width: 2px 0 0 0;
 }
@@ -337,20 +342,25 @@
 }
 
 /*—————————————————————— SEARCH WINDOW DOWN —————————————————————————————————*/
-#search_window .w3-panel{
+
+#search_window .w3-panel {
     margin: 0;
     padding: 0;
 }
-#search_window .msg_sender-container{
+
+#search_window .msg_sender-container {
     position: relative;
 }
-#search_window .msg_sender-container .msg_sender{
+
+#search_window .msg_sender-container .msg_sender {
     margin: 0 auto;
 }
-#search_window .msg_sender-container .msg_sender-inner{
+
+#search_window .msg_sender-container .msg_sender-inner {
     position: relative;
 }
-#search_window .msg_sender-container .msg_sender-placeholder{
+
+#search_window .msg_sender-container .msg_sender-placeholder {
     top: 0;
     left: 14px;
 }

@@ -1,6 +1,7 @@
 <?php
 
 require_once 'ControllerSecure.php';
+require_once 'model/Discussion.php';
 
 class ControllerHome extends ControllerSecure
 {
@@ -18,6 +19,7 @@ class ControllerHome extends ControllerSecure
     public const ACTION_WRITE_CONTACT = "home/writeContact";
     public const ACTION_GET_CONTACT_TABLE = "home/getContactTable";
     public const ACTION_SIGN_OUT = "home/signOut";
+    public const ACTION_REMOVE_DISCU = "home/removeDiscussion";
 
     /**
      * Access key for actions's responses
@@ -202,6 +204,22 @@ class ControllerHome extends ControllerSecure
                 $response->addResult(Discussion::DISCU_ID, $discu->getDiscuID());
                 $response->addResult(self::RSP_WRITE_MENU, $discuMenu);
                 $response->addResult(self::RSP_WRITE_DISCU_FEED, $discuFeed);
+            }
+        }
+        echo json_encode($response->getAttributs());
+    }
+
+    public function removeDiscussion()
+    {
+        $this->secureSession();
+        $response = new Response();
+        $this->checkData(self::PALPHA_NUMERIC_REGEX, Discussion::DISCU_ID, $_POST[Discussion::DISCU_ID], $response, true);
+        if (!$response->containError()) {
+            $discuID = $_POST[Discussion::DISCU_ID];
+            $this->user->setProperties();
+            $this->user->removeDiscussion($discuID, $response);
+            if (!$response->containError()) {
+                $response->addResult(self::ACTION_REMOVE_DISCU, $discuID);
             }
         }
         echo json_encode($response->getAttributs());

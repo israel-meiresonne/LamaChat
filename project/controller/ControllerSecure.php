@@ -31,6 +31,7 @@ abstract class ControllerSecure extends Controller
     protected const NAME = "name";  // handle space and `-`
     protected const PASSWORD = "psw";
     protected const KEY_SEARCH = "search";
+    protected const ALPHA_NUMERIC = "alpha_numeric";
 
     /**
      * Holds REGEX for input type
@@ -39,6 +40,7 @@ abstract class ControllerSecure extends Controller
     private const PSEUDO_REGEX = "#^[a-zA-Z]+[a-zA-Z0-9-_]*$#";
     private const NAME_REGEX = "#^[A-zÀ-ú-]+$#";
     private const PASSWORD_REGEX = "#^[a-zA-Z]+[a-zA-Z0-9-_]+$#";
+    const PALPHA_NUMERIC_REGEX = "#^[a-zA-Z0-9]+$#";
 
     /**
      * Check if user's is allowed to access to one page
@@ -129,6 +131,13 @@ abstract class ControllerSecure extends Controller
             case self::PASSWORD:
                 if (preg_match(self::PASSWORD_REGEX, $value) != 1) {
                     $errorMsg = "les valeurs autorisées pour ce champ sont les lettres, les chiffres, '-' et '_' sans espace";
+                    $response->addError($errorMsg, $key);
+                }
+                break;
+            
+            case self::ALPHA_NUMERIC:
+                if (preg_match(self::PALPHA_NUMERIC_REGEX, $value) != 1) {
+                    $errorMsg = "les valeurs autorisées pour ce champ sont les lettres et les chiffres sans espace";
                     $response->addError($errorMsg, $key);
                 }
                 break;

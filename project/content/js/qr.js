@@ -16,8 +16,13 @@
         return jQuery.param(map);
     }
 
-    const removeTag = function (x) {
+    const removeFade = function (x) {
         $(x).fadeOut(TS, function () {
+            $(this).remove();
+        });
+    }
+    const removeUp = function (x) {
+        $(x).slideUp(); (TS, function () {
             $(this).remove();
         });
     }
@@ -163,6 +168,23 @@
         SND(datasSND);
     }
 
+    removeDiscu = function (id, k, d) {
+        var remove = window.confirm("Voulez-vous vraiment supprimer cette discussion?");
+        if (remove) {
+            var x = $("#" + id)[0];
+            var map = { [k]: d };
+            var param = mapToParam(map);
+            var datasSND = {
+                "action": ACTION_REMOVE_DISCU,
+                "jxd": param,
+                "rspf": removeDiscuRSP,
+                "lds": "#isLoading",
+                "x": x
+            };
+            SND(datasSND);
+        }
+    }
+
     const signUpRSP = function (r) {
         if (r.isSuccess) {
             window.location.assign(r.results[ACTION_SIGN_UP]);
@@ -221,7 +243,7 @@
             console.log(wId);
             if (wId == "contact_window") {
                 var p = $(x).parent().parent()[0];
-                removeTag(p);
+                removeFade(p);
             } else if (wId == "search_window") {
                 addContactRSP(r, x);
             }
@@ -255,7 +277,10 @@
             var closeBtn = $("#" + wId + " .w3-button")[0];
             if (chat.length == 0) {
                 $(closeBtn).click();
-                $("#Demo1").prepend(r.results[RSP_WRITE_MENU]);
+                var e = $.parseHTML(r.results[RSP_WRITE_MENU]);
+                $(e).css("display", "none");
+                $("#Demo1").prepend(e);
+                $(e).slideDown(TS);
                 $("#discussion_feed .content").prepend(r.results[RSP_WRITE_DISCU_FEED]);
             } else {
                 $(closeBtn).click();
@@ -271,6 +296,20 @@
         if (r.isSuccess) {
             $(d.y).html(r.results[ACTION_GET_CONTACT_TABLE]);
             fadeOn(d.x);
+        } else {
+            if (r.errors[FATAL_ERROR] != null) {
+                popAlert(r.errors[FATAL_ERROR].message);
+            }
+        }
+    }
+
+    const removeDiscuRSP = function (r) {
+        if (r.isSuccess) {
+            var discuID = r.results[ACTION_REMOVE_DISCU];
+            var x = $("#Demo1 a[data-menudiscuid='" + discuID + "']");
+            var y = $("#" + discuID);
+            removeUp(x);
+            removeFade(y);
         } else {
             if (r.errors[FATAL_ERROR] != null) {
                 popAlert(r.errors[FATAL_ERROR].message);
@@ -340,6 +379,10 @@
                 };
                 SND(datasSND);
             }
+        });
+
+        $(".discu-btn").click(function () {
+            console.log(this);
         });
     });
 }).call(this);

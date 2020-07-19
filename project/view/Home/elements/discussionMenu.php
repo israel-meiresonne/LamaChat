@@ -1,9 +1,15 @@
-<!-- 
-need: 
-    $corresp => User witch who the urrent user is chatting
-    $discu => current user's discussion with participants and messages setted
--->
-<a data-menuDiscuId="<?= $discu->getDiscuID() ?>" href="javascript:void(0)" class="w3-bar-item w3-button w3-border-bottom test w3-hover-light-grey" onclick="openMail('<?= $discu->getDiscuID() ?>');w3_close();">
+<?php
+
+/**
+ * ——————————————————————————————— NEED —————————————————————————————————————
+ * @param string $corresp User with who the current user is chatting
+ * @param string $discu current user's discussion with participants and messages setted
+ */
+$btnId = "rmvBtn" . Discussion::generateDateCode(25);
+$discuId = $discu->getDiscuID();
+?>
+<a data-menuDiscuId="<?= $discuId ?>" href="javascript:void(0)" class="w3-bar-item w3-button w3-border-bottom test w3-hover-light-grey" onclick="openMail('<?= $discuId ?>');w3_close();">
+    <button id="<?= $btnId ?>" onclick="removeDiscu('<?= $btnId ?>', '<?= Discussion::DISCU_ID ?>', '<?= $discuId ?>')" class="discu-btn w3-button"><i class="fa fa-remove" aria-hidden="true"></i></button>
     <div class="w3-container">
         <img class="w3-round w3-margin-right" src="content/images/user-profile/<?= $corresp->getPicture() ?>" style="width:15%;"><span class="w3-opacity w3-large"><?= $corresp->getFirstname() . " " . $corresp->getLastname() ?></span>
         <?php
