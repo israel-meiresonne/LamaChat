@@ -185,6 +185,19 @@
         }
     }
 
+    openProfile = function (k, d) {
+        var map = { [k]: d };
+        var param = mapToParam(map);
+        var datasSND = {
+            "action": ACTION_OPEN_PROFILE,
+            "jxd": param,
+            "rspf": openProfileRSP,
+            "lds": "#isLoading",
+            "x": ""
+        };
+        SND(datasSND);
+    }
+
     const signUpRSP = function (r) {
         if (r.isSuccess) {
             window.location.assign(r.results[ACTION_SIGN_UP]);
@@ -317,6 +330,18 @@
         }
     }
 
+    const openProfileRSP = function (r){
+        if(r.isSuccess){
+            var w = $("#user_profile");
+            $(w).find(".w3-panel").html(r.results[ACTION_OPEN_PROFILE]);
+            fadeOn(w);
+        } else {
+            if (r.errors[FATAL_ERROR] != null) {
+                popAlert(r.errors[FATAL_ERROR].message);
+            }
+        }
+    }
+
     $(document).ready(function () {
         $("#sign_up_button").click(function () {
             var formId = $(this).attr("for");
@@ -379,10 +404,6 @@
                 };
                 SND(datasSND);
             }
-        });
-
-        $(".discu-btn").click(function () {
-            console.log(this);
         });
     });
 }).call(this);

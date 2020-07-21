@@ -11,7 +11,7 @@ $discuTitle = ($nbDiscu > 0) ? "Discussions (".$nbDiscu.")" : "Discussion (".$nb
             <div class="img_text_down-wrap">
                 <div class="img_text_down-img-div">
                     <div class="img_text_down-img-inner">
-                        <img src="content/images/user-profile/<?= $user->getPicture() ?>">
+                        <img src="content/images/user-profile/<?= $user->getPicture() ?>" onclick="openProfile('<?= ControllerSecure::KEY_PSEUDO ?>', '<?= $user->getPseudo() ?>')">
                     </div>
                 </div>
                 <div class="img_text_down-text-div">
@@ -59,28 +59,7 @@ $discuTitle = ($nbDiscu > 0) ? "Discussions (".$nbDiscu.")" : "Discussion (".$nb
             ?>
 
         <?php endforeach; ?>
-        <!-- <a href="javascript:void(0)" class="w3-bar-item w3-button w3-border-bottom test w3-hover-light-grey" onclick="openMail('Borge');w3_close();">
-            <div class="w3-container">
-                <img class="w3-round w3-margin-right" src="content/images/user-profile/default-user-picture.png" style="width:15%;"><span class="w3-opacity w3-large">Borge Refsnes</span>
-                <h6>Subject: Remember Me</h6>
-                <p>Hello, i just wanted to let you know that i'll be home at...</p>
-            </div>
-        </a>
-        <a href="javascript:void(0)" class="w3-bar-item w3-button w3-border-bottom test w3-hover-light-grey" onclick="openMail('Jane');w3_close();">
-            <div class="w3-container">
-                <img class="w3-round w3-margin-right" src="content/images/user-profile/default-user-picture.png" style="width:15%;"><span class="w3-opacity w3-large">Jane Doe</span>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
-            </div>
-        </a>
-        <a href="javascript:void(0)" class="w3-bar-item w3-button w3-border-bottom test w3-hover-light-grey" onclick="openMail('John');w3_close();">
-            <div class="w3-container">
-                <img class="w3-round w3-margin-right" src="content/images/user-profile/default-user-picture.png" style="width:15%;"><span class="w3-opacity w3-large">John Doe</span>
-                <p>Welcome!</p>
-            </div>
-        </a> -->
     </div>
-    <!-- <a href="#" class="w3-bar-item w3-button"><i class="fa fa-paper-plane w3-margin-right"></i>Sent</a> -->
-    <!-- <a href="#" class="w3-bar-item w3-button"><i class="fa fa-hourglass-end w3-margin-right"></i>Drafts</a> -->
 </nav>
 
 <div id="id01" class="w3-modal" style="z-index:4">
@@ -192,41 +171,21 @@ $discuTitle = ($nbDiscu > 0) ? "Discussions (".$nbDiscu.")" : "Discussion (".$nb
                     </div>
                 </div>
                 <table class="contact-table">
-                    <!-- <tr>
-                        <td>
-                            <button id="search_button" class="img-button remove-button-default-att">
-                                <img src="content/images/user-profile/default-user-picture.png">
-                            </button>
-                        </td>
-                        <td><span>Bob_Mak</span></td>
-                        <td><button id="sign_in_button" for="sign_in_button_form" class="standard-button green-button remove-button-default-att">ajouter</button></td>
-                        <td><button id="sign_in_button" for="sign_in_button_form" class="standard-button orange-button remove-button-default-att">bloquer</button></td>
-                        <td><button id="sign_in_button" for="sign_in_button_form" class="standard-button blue-button remove-button-default-att">écrire</button></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <button id="search_button" class="img-button remove-button-default-att">
-                                <img src="content/images/user-profile/default-user-picture.png">
-                            </button>
-                        </td>
-                        <td><span>HervDon</span></td>
-                        <td><button data-contact_pseudo="" class="remove_contact_btn standard-button green-button remove-button-default-att">ajouter</button></td>
-                        <td><button data-contact_pseudo="" class="remove_contact_btn standard-button orange-button remove-button-default-att">bloquer</button></td>
-                        <td><button data-contact_pseudo="" class="remove_contact_btn standard-button blue-button remove-button-default-att">écrire</button></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <button id="search_button" class="img-button remove-button-default-att">
-                                <img src="content/images/user-profile/default-user-picture.png">
-                            </button>
-                        </td>
-                        <td><span>TOMTOM</span></td>
-                        <td><button id="sign_in_button" for="sign_in_button_form" class="standard-button green-button remove-button-default-att">ajouter</button></td>
-                        <td><button id="sign_in_button" for="sign_in_button_form" class="standard-button orange-button remove-button-default-att">bloquer</button></td>
-                        <td><button id="sign_in_button" for="sign_in_button_form" class="standard-button blue-button remove-button-default-att">écrire</button></td>
-                    </tr> -->
+
                 </table>
             </div>
+        </div>
+    </div>
+</div>
+
+<div id="user_profile" class="w3-modal" style="z-index:4">
+    <div class="w3-modal-content">
+        <div class="w3-container w3-padding w3-red">
+            <span id="profile_close_button" class="w3-button w3-red w3-right w3-xxlarge"><i class="fa fa-remove"></i></span>
+            <h2>profile</h2>
+        </div>
+        <div class="w3-panel">
+            
         </div>
     </div>
 </div>
@@ -248,111 +207,5 @@ $discuTitle = ($nbDiscu > 0) ? "Discussions (".$nbDiscu.")" : "Discussion (".$nb
 
 
         <?php endforeach; ?>
-
-        <!-- <div id="Borge" class="msg-window w3-container person">
-            <div class="msg-background"></div>
-            <div class="msg-window-inner">
-                <div class="msg-wrap">
-                    <div class="msg-date">
-                        <span>mercredi 23 juin 2020</span>
-                    </div>
-                </div>
-                <div class="msg-wrap">
-                    <div class="msg-text msg-left">
-                        <span>🤬Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec🥶</span>
-                        <div class="msg-info">
-                            <div class="msg-info-inner">
-                                <span class="msg-time">19:17</span>
-                                <div class="msg-status">
-                                    <div class="v_symbol-wrap">
-                                        <span class="v_symbol-vertical"></span>
-                                        <span class="v_symbol-horizontal"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="msg-wrap">
-                    <div class="msg-wrap-inner">
-                        <div class="msg-text msg-right">
-                            <span>Ut velit mauris, egestas sed, gravida nec, ornare ut, mi.🤬</span>
-                            <div class="msg-info">
-                                <div class="msg-info-inner">
-                                    <span class="msg-time">19:17</span>
-                                    <div class="msg-status">
-                                        <div class="o_symbol-wrap">
-                                            <div class="o_symbol infiny_rotate"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="msg-wrap">
-                    <div class="msg-wrap-inner">
-                        <div class="msg-text msg-right">
-                            <span>🤬Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec🥶</span>
-                            <div class="msg-info">
-                                <div class="msg-info-inner">
-                                    <span class="msg-time">19:17</span>
-                                    <div class="msg-status">
-                                        <div class="v_symbol-wrap">
-                                            <span class="v_symbol-vertical"></span>
-                                            <span class="v_symbol-horizontal"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="msg_sender-container">
-                <div class="msg_sender">
-                    <div class="msg_sender-inner">
-                        <div class="msg_sender-placeholder">Entrer votre message</div>
-                        <div class="msg_sender-input" contenteditable="true"></div>
-                    </div>
-                </div>
-                <div class="msg_sender-button-set">
-                    <div class="msg_sender-button-div">
-                        <button id="send_txt_msg" class="img-button remove-button-default-att">
-                            <img src="content/images/static/icons8-email-send-96.png">
-                        </button>
-                    </div>
-                    <div class="msg_sender-button-div">
-                        <button id="send_img_msg" class="img-button remove-button-default-att">
-                            <img src="content/images/static/icons8-image-100.png">
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="Jane" class="discusion-container w3-container person">
-            <br>
-            <img class="w3-round w3-animate-top" src="content/images/user-profile/default-user-picture.png" style="width:20%;">
-            <h5 class="w3-opacity">Subject: None</h5>
-            <h4><i class="fa fa-clock-o"></i> From Jane Doe, Sep 25, 2015.</h4>
-            <a class="w3-button w3-light-grey">Reply<i class="w3-margin-left fa fa-mail-reply"></i></a>
-            <a class="w3-button w3-light-grey">Forward<i class="w3-margin-left fa fa-arrow-right"></i></a>
-            <hr>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-            <p>Forever yours,<br>Jane</p>
-        </div>
-
-        <div id="John" class="discusion-container w3-container person">
-            <br>
-            <img class="w3-round w3-animate-top" src="content/images/user-profile/default-user-picture.png" style="width:20%;">
-            <h5 class="w3-opacity">Subject: None</h5>
-            <h4><i class="fa fa-clock-o"></i> From John Doe, Sep 23, 2015.</h4>
-            <a class="w3-button w3-light-grey">Reply<i class="w3-margin-left fa fa-mail-reply"></i></a>
-            <a class="w3-button w3-light-grey">Forward<i class="w3-margin-left fa fa-arrow-right"></i></a>
-            <hr>
-            <p>Welcome.</p>
-            <p>That's it!</p>
-        </div> -->
     </div>
 </div>

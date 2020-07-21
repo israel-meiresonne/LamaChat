@@ -123,6 +123,9 @@ class User extends Model
             case 0:
                 $this->__construct0();
                 break;
+            case 1:
+                $this->__construct1($args[0]);
+                break;
             case 2:
                 $this->__construct2($args[0], $args[1]);
                 break;
@@ -139,6 +142,35 @@ class User extends Model
      */
     private function __construct0()
     {
+    }
+
+    /**
+     * @param string $pseudo user's pseudo
+     */
+    private function __construct1($pseudo)
+    {
+        $sql = "SELECT * 
+        FROM `Users`
+        WHERE `pseudo` = '$pseudo'";
+        $userPDO = parent::executeRequest($sql);
+        if ($userPDO->rowCount() == 1) {
+            $user = $userPDO->fetch();
+            $this->pseudo = $user["pseudo"];
+            $this->firstname = $user["firstname"];
+            $this->lastname = $user["lastname"];
+            $this->picture = $user["picture"];
+            $this->status = $user["status"];
+            $this->permission = $user["permission"];
+
+            $sql = "SELECT * FROM `Users_ Informations` WHERE pseudo_ = '$this->pseudo'";
+            $infosPDO = parent::executeRequest($sql);
+            $this->informations = [];
+            if ($infosPDO->rowCount() > 0) {
+                while ($infoLine = $infosPDO->fetch()) {
+                    $this->informations[$infoLine["information_"]] = $infoLine["value"];
+                }
+            }
+        }
     }
 
     /**
@@ -247,6 +279,40 @@ class User extends Model
     public function getRelationship()
     {
         return $this->relationship;
+    }
+
+    /**
+     * Set user's properties
+     */
+    public function setProperties()
+    {
+        if (empty($this->privK) || empty($this->pubK)) {
+            throw new Exception("Private and public key must first be initialized");
+        }
+        $sql = "SELECT * 
+        FROM `UsersKeys` uk
+        JOIN `Users` u on uk.pseudo_ = u.pseudo
+        WHERE privateK = '$this->privK' AND publicK = '$this->pubK'
+        ORDER BY `uk`.`keySetDate` DESC";
+        $userPDO = parent::executeRequest($sql);
+        if ($userPDO->rowCount() == 1) {
+            $user = $userPDO->fetch();
+            $this->pseudo = $user["pseudo"];
+            $this->firstname = $user["firstname"];
+            $this->lastname = $user["lastname"];
+            $this->picture = $user["picture"];
+            $this->status = $user["status"];
+            $this->permission = $user["permission"];
+
+            $sql = "SELECT * FROM `Users_ Informations` WHERE pseudo_ = '$this->pseudo'";
+            $infosPDO = parent::executeRequest($sql);
+            $this->informations = [];
+            if ($infosPDO->rowCount() > 0) {
+                while ($infoLine = $infosPDO->fetch()) {
+                    $this->informations[$infoLine["information_"]] = $infoLine["value"];
+                }
+            }
+        }
     }
 
     /**
@@ -393,40 +459,6 @@ class User extends Model
                 if ($discu->getDiscuID() == $discuID) {
                     $this->discussions[$key] = null;
                     unset($this->discussions[$key]);
-                }
-            }
-        }
-    }
-
-    /**
-     * Set user's properties
-     */
-    public function setProperties()
-    {
-        if (empty($this->privK) || empty($this->pubK)) {
-            throw new Exception("Private and public key must first be initialized");
-        }
-        $sql = "SELECT * 
-        FROM `UsersKeys` uk
-        JOIN `Users` u on uk.pseudo_ = u.pseudo
-        WHERE privateK = '$this->privK' AND publicK = '$this->pubK'
-        ORDER BY `uk`.`keySetDate` DESC";
-        $userPDO = parent::executeRequest($sql);
-        if ($userPDO->rowCount() == 1) {
-            $user = $userPDO->fetch();
-            $this->pseudo = $user["pseudo"];
-            $this->firstname = $user["firstname"];
-            $this->lastname = $user["lastname"];
-            $this->picture = $user["picture"];
-            $this->status = $user["status"];
-            $this->permission = $user["permission"];
-
-            $sql = "SELECT * FROM `Users_ Informations` WHERE pseudo_ = '$this->pseudo'";
-            $infosPDO = parent::executeRequest($sql);
-            $this->informations = [];
-            if ($infosPDO->rowCount() > 0) {
-                while ($infoLine = $infosPDO->fetch()) {
-                    $this->informations[$infoLine["information_"]] = $infoLine["value"];
                 }
             }
         }

@@ -20,6 +20,7 @@ class ControllerHome extends ControllerSecure
     public const ACTION_GET_CONTACT_TABLE = "home/getContactTable";
     public const ACTION_SIGN_OUT = "home/signOut";
     public const ACTION_REMOVE_DISCU = "home/removeDiscussion";
+    public const ACTION_OPEN_PROFILE = "home/getProfile";
 
     /**
      * Access key for actions's responses
@@ -243,6 +244,25 @@ class ControllerHome extends ControllerSecure
             $response->addResult(self::ACTION_GET_CONTACT_TABLE, $ctcTable);
         } else {
             $ctcTable = "Aucun résultat!";
+        }
+        echo json_encode($response->getAttributs());
+    }
+
+    /**
+     * Provide a user's profile window content
+     */
+    public function getProfile()
+    {
+        $this->secureSession();
+        $response = new Response();
+        $this->checkData(self::PSEUDO, self::KEY_PSEUDO, $_POST[self::KEY_PSEUDO], $response, true);
+        if (!$response->containError()) {
+            $pseudo = $_POST[self::KEY_PSEUDO];
+            $user = new User($pseudo);
+            ob_start();
+            require 'view/Home/elements/profileWindowContent.php';
+            $profile = ob_get_clean();
+            $response->addResult(self::ACTION_OPEN_PROFILE, $profile);
         }
         echo json_encode($response->getAttributs());
     }

@@ -231,6 +231,10 @@
     padding: 10px;
 }
 
+.menu-container .profile:hover {
+    cursor: pointer;
+}
+
 .menu-btn {
     display: flex;
     margin-left: auto;

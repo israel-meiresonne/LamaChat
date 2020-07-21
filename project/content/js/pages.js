@@ -70,7 +70,7 @@
             var x = $("#id01");
             fadeOff(x);
         });
-        $(".setting-content .data-key_value-value").click(function(){
+        $("#id01 .setting-content .data-key_value-value").click(function(){
             $(this).attr("contenteditable", true);
             $(this).focus();
         });
@@ -84,6 +84,11 @@
 
         $("#contact_close_button").click(function () {
             var x = $("#contact_window");
+            fadeOff(x);
+        });
+        
+        $("#profile_close_button").click(function () {
+            var x = $("#user_profile");
             fadeOff(x);
         });
         

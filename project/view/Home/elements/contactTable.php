@@ -22,7 +22,7 @@ need:
         <tr>
             <td>
                 <button class="img-button remove-button-default-att">
-                    <img src="content/images/user-profile/<?= $contact->getPicture() ?>">
+                    <img src="content/images/user-profile/<?= $contact->getPicture() ?>" onclick="openProfile('<?= ControllerSecure::KEY_PSEUDO ?>', '<?= $contact->getPseudo() ?>')">
                 </button>
             </td>
             <td><span><?= $contact->getPseudo() ?></span></td>
