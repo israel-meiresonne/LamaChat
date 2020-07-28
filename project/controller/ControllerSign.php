@@ -44,12 +44,12 @@ class ControllerSign extends ControllerSecure
     public function signUp()
     {
         $response = new Response();
-        $this->checkData(self::PSEUDO, self::KEY_PSEUDO, $_POST[self::KEY_PSEUDO], $response, true);
-        $this->checkData(self::NAME, self::KEY_FIRSTNAME, $_POST[self::KEY_FIRSTNAME], $response, true);
-        $this->checkData(self::NAME, self::KEY_LASTNAME, $_POST[self::KEY_LASTNAME], $response, true);
-        $this->checkData(self::PASSWORD, self::KEY_PSW, $_POST[self::KEY_PSW], $response, true);
+        $this->checkData(self::PSEUDO, User::KEY_PSEUDO, $_POST[User::KEY_PSEUDO], $response, true);
+        $this->checkData(self::NAME, User::KEY_FIRSTNAME, $_POST[User::KEY_FIRSTNAME], $response, true);
+        $this->checkData(self::NAME, User::KEY_LASTNAME, $_POST[User::KEY_LASTNAME], $response, true);
+        $this->checkData(self::PASSWORD, User::KEY_PSW, $_POST[User::KEY_PSW], $response, true);
         if (!$response->containError()) {
-            $user = new User($_POST[self::KEY_PSEUDO], $_POST[self::KEY_PSW], $_POST[self::KEY_FIRSTNAME], $_POST[self::KEY_LASTNAME]);
+            $user = new User($_POST[User::KEY_PSEUDO], $_POST[User::KEY_PSW], $_POST[User::KEY_FIRSTNAME], $_POST[User::KEY_LASTNAME]);
             $session = $this->request->getSession();
             if ($user->signUp($response, $session)) {
                 $webRoot = Configuration::get("webRoot", "/");
@@ -65,10 +65,10 @@ class ControllerSign extends ControllerSecure
     public function signIn()
     {
         $response = new Response();
-        $this->checkData(self::PSEUDO, self::KEY_PSEUDO, $_POST[self::KEY_PSEUDO], $response, true);
-        $this->checkData(null, self::KEY_PSW, $_POST[self::KEY_PSW], $response, true);
+        $this->checkData(self::PSEUDO, User::KEY_PSEUDO, $_POST[User::KEY_PSEUDO], $response, true);
+        $this->checkData(null, User::KEY_PSW, $_POST[User::KEY_PSW], $response, true);
         if (!$response->containError()) {
-            $user = new User($_POST[self::KEY_PSEUDO], $_POST[self::KEY_PSW]);
+            $user = new User($_POST[User::KEY_PSEUDO], $_POST[User::KEY_PSW]);
             $session = $this->request->getSession();
             if ($user->signIn($response, $session)) {
                 $webRoot = Configuration::get("webRoot", "/");

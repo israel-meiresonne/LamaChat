@@ -13,6 +13,7 @@ need:
 
 <table class="contact-table">
     <?php
+    require_once 'model/User.php';
     require_once 'model/Discussion.php';
     // $contacts = $user->getContacts();
     foreach ($contacts as $contact) :
@@ -22,7 +23,7 @@ need:
         <tr>
             <td>
                 <button class="img-button remove-button-default-att">
-                    <img src="content/images/user-profile/<?= $contact->getPicture() ?>" onclick="openProfile('<?= ControllerSecure::KEY_PSEUDO ?>', '<?= $contact->getPseudo() ?>')">
+                    <img src="content/images/user-profile/<?= $contact->getPicture() ?>" onclick="openProfile('<?= User::KEY_PSEUDO ?>', '<?= $contact->getPseudo() ?>')">
                 </button>
             </td>
             <td><span><?= $contact->getPseudo() ?></span></td>
@@ -38,7 +39,7 @@ need:
             echo ob_get_clean();
             $btnId = 'relationStatus' . Discussion::generateDateCode(25);
             ?>
-            <td><button id="<?= $btnId ?>" data-windCloseBtn="contact_window" onclick="writeContact('<?= $btnId ?>', '<?= ControllerSecure::KEY_PSEUDO ?>', '<?= $ctcPseu; ?>')" class="standard-button blue-button remove-button-default-att">écrire</button></td>
+            <td><button id="<?= $btnId ?>" data-windCloseBtn="contact_window" onclick="writeContact('<?= $btnId ?>', '<?= User::KEY_PSEUDO ?>', '<?= $ctcPseu; ?>')" class="standard-button blue-button remove-button-default-att">écrire</button></td>
         </tr>
     <?php endforeach; ?>
 </table>

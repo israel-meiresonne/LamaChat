@@ -33,14 +33,14 @@
     </div>
     <div class="more-info-title">
         <h3>plus d'infomations</h3>
-        <div class="setting-add-info" style="display: none;">
+        <!-- <div class="setting-add-info" style="display: none;">
             <button id="setting_save_btn" class="standard-button blue-button remove-button-default-att">
                 <div class="plus_symbol-wrap">
                     <span class="plus_symbol-vertical"></span>
                     <span class="plus_symbol-horizontal"></span>
                 </div>
             </button>
-        </div>
+        </div> -->
     </div>
     <div class="setting-job-set">
         <ul class="remove-ul-default-att">

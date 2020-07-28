@@ -1,5 +1,4 @@
 <?php
-require_once 'controller/ControllerSecure.php';
 require_once 'model/Discussion.php';
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
@@ -8,4 +7,4 @@ require_once 'model/Discussion.php';
  */
 $btnId = 'removeContact' . Discussion::generateDateCode(25);
 ?>
-<td><button id="<?= $btnId ?>" <?= $dataAttribut ?> onclick="removeContact('<?= $btnId ?>', '<?= ControllerSecure::KEY_PSEUDO ?>', '<?= $ctcPseu; ?>')" class="standard-button red-button remove-button-default-att">supprimer</button></td>
+<td><button id="<?= $btnId ?>" <?= $dataAttribut ?> onclick="removeContact('<?= $btnId ?>', '<?= User::KEY_PSEUDO ?>', '<?= $ctcPseu; ?>')" class="standard-button red-button remove-button-default-att">supprimer</button></td>

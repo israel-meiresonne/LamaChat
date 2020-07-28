@@ -1,8 +1,9 @@
 <?php
+require_once 'model/User.php';
 $this->title = "Discussions";
 $discussions = $user->getDiscussions();
 $nbDiscu = count($discussions);
-$discuTitle = ($nbDiscu > 0) ? "Discussions (".$nbDiscu.")" : "Discussion (".$nbDiscu.")";
+$discuTitle = ($nbDiscu > 0) ? "Discussions (" . $nbDiscu . ")" : "Discussion (" . $nbDiscu . ")";
 ?>
 <!-- Side Navigation -->
 <nav class="w3-sidebar w3-bar-block w3-collapse w3-white w3-animate-left w3-card" style="z-index:3;width:320px;" id="mySidebar">
@@ -11,7 +12,7 @@ $discuTitle = ($nbDiscu > 0) ? "Discussions (".$nbDiscu.")" : "Discussion (".$nb
             <div class="img_text_down-wrap">
                 <div class="img_text_down-img-div">
                     <div class="img_text_down-img-inner">
-                        <img src="content/images/user-profile/<?= $user->getPicture() ?>" onclick="openProfile('<?= ControllerSecure::KEY_PSEUDO ?>', '<?= $user->getPseudo() ?>')">
+                        <img id="user_menu_profile" src="content/images/user-profile/<?= $user->getPicture() ?>" onclick="openProfile('<?= User::KEY_PSEUDO ?>', '<?= $user->getPseudo() ?>')">
                     </div>
                 </div>
                 <div class="img_text_down-text-div">
@@ -79,37 +80,48 @@ $discuTitle = ($nbDiscu > 0) ? "Discussions (".$nbDiscu.")" : "Discussion (".$nb
                         </div>
                         <div class="img_text_down-text-div">
                             <button id="edit_img_btn" class="standard-button blue-button remove-button-default-att">modifier</button>
-                            <input id="edit_img_input" type="file" accept=".jpg, .jpeg, .png" name="profil_img">
+                            <!-- <input id="edit_img_input" type="file" accept=".jpg, .jpeg, .png" name="profil_img"> -->
+                            <input id="edit_img_input" type="file" accept="<?= User::picExtensionsToString() ?>" name="<?= User::KEY_PICTURE ?>">
+                            <p class="comment"></p>
                         </div>
                     </div>
                 </div>
                 <h3>profil</h3>
                 <div class="data-key_value-wrap">
                     <span class="data-key_value-key">pseudo:</span>
-                    <span class="data-key_value-value"><?= $user->getPseudo() ?></span>
+                    <span class="data-key_value-value" name="<?= User::KEY_PSEUDO ?>"><?= $user->getPseudo() ?></span>
+                    <p class="comment"></p>
                 </div>
                 <div class="data-key_value-wrap">
                     <span class="data-key_value-key">prénom:</span>
-                    <span class="data-key_value-value"><?= $user->getFirstname() ?></span>
+                    <span class="data-key_value-value" name="<?= User::KEY_FIRSTNAME ?>"><?= $user->getFirstname() ?></span>
+                    <p class="comment"></p>
                 </div>
                 <div class="data-key_value-wrap">
                     <span class="data-key_value-key">nom:</span>
-                    <span class="data-key_value-value"><?= $user->getLastname() ?></span>
+                    <span class="data-key_value-value" name="<?= User::KEY_LASTNAME ?>"><?= $user->getLastname() ?></span>
+                    <p class="comment"></p>
+                </div>
+                <div class="data-key_value-wrap">
+                    <span class="data-key_value-key">date de naissance:</span>
+                    <span class="data-key_value-value" name="<?= User::KEY_BIRTHDATE ?>"><?= $user->getBirthdate() ?></span>
+                    <p class="comment"></p>
                 </div>
                 <div class="data-key_value-wrap">
                     <span class="data-key_value-key">status:</span>
-                    <span class="data-key_value-value"><?= $user->getStatus() ?></span>
+                    <span class="data-key_value-value" name="<?= User::KEY_STATUS ?>"><?= $user->getStatus() ?></span>
+                    <p class="comment"></p>
                 </div>
                 <div class="more-info-title">
                     <h3>plus d'infomations</h3>
-                    <div class="setting-add-info" style="display: none;">
+                    <!-- <div class="setting-add-info" style="display: none;">
                         <button id="setting_save_btn" class="standard-button blue-button remove-button-default-att">
                             <div class="plus_symbol-wrap">
                                 <span class="plus_symbol-vertical"></span>
                                 <span class="plus_symbol-horizontal"></span>
                             </div>
                         </button>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="setting-job-set">
                     <ul class="remove-ul-default-att">
@@ -119,7 +131,8 @@ $discuTitle = ($nbDiscu > 0) ? "Discussions (".$nbDiscu.")" : "Discussion (".$nb
                             <li>
                                 <div class="data-key_value-wrap">
                                     <span class="data-key_value-key"><?= $info ?>:</span>
-                                    <span class="data-key_value-value"><?= $value ?></span>
+                                    <span class="data-key_value-value" name="<?= User::valueToInputName($info) ?>"><?= $value ?></span>
+                                    <p class="comment"></p>
                                 </div>
                             </li>
                         <?php endforeach; ?>
@@ -185,7 +198,7 @@ $discuTitle = ($nbDiscu > 0) ? "Discussions (".$nbDiscu.")" : "Discussion (".$nb
             <h2>profile</h2>
         </div>
         <div class="w3-panel">
-            
+
         </div>
     </div>
 </div>

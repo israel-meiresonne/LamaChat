@@ -1,6 +1,7 @@
 <?php
 
 require_once 'framework/Model.php';
+require_once 'controller/ControllerSecure.php';
 require_once 'Discussion.php';
 
 /**
@@ -25,6 +26,12 @@ class User extends Model
      * @var string
      */
     private $lastname;
+
+    /**
+     * Holds the user's birthdate
+     * @var string
+     */
+    private $birthdate;
 
     /**
      * Holds the user's password
@@ -88,6 +95,51 @@ class User extends Model
      * @var string
      */
     private $pubK;
+
+    /**
+     * Holds db's Informations table
+     * @var string[]
+     */
+    private static $SUPPORTED_INFOS;
+
+    /**
+     * Holds the directory where to store user's profil picture
+     * @var string
+     */
+    private const PICTURE_DIR = "content/images/user-profile/";
+
+    /**
+     * Holds the directory where to store user's profil picture
+     * @var string
+     */
+    private const DEFAULT_PICTURE = "default-user-picture.png";
+
+    /**
+     * datas access keys
+     * + value must match User class's attributes (same case)
+     */
+    public const KEY_PSEUDO = "pseudo";
+    public const KEY_FIRSTNAME = "firstname";
+    public const KEY_LASTNAME = "lastname";
+    public const KEY_PSW = "password";
+    public const KEY_PICTURE = "picture";
+    public const KEY_STATUS = "status";
+    public const KEY_BIRTHDATE = "birthdate";
+
+    /**
+     * Holds list of supported picture extension
+     */
+    public const VALID_EXTENSIONS = ["jpg", "jpeg", "png"];
+
+    /**
+     * Holds staus's max length
+     */
+    public const STATUS_MAX_LENGTH = 250;
+
+    /**
+     * Holds staus's max length
+     */
+    public const INFO_MAX_LENGTH = 25;
 
     /**
      * Access key for session valeus
@@ -193,9 +245,9 @@ class User extends Model
      */
     private function __construct4($pseudo, $password, $firstname, $lastname)
     {
-        $this->pseudo = $pseudo;
-        $this->firstname = $firstname;
-        $this->lastname = $lastname;
+        $this->pseudo = strtolower($pseudo);
+        $this->firstname = strtolower($firstname);
+        $this->lastname = strtolower($lastname);
         $this->password = $this->encrypt($password);
     }
 
@@ -205,6 +257,7 @@ class User extends Model
      */
     public function getPseudo()
     {
+        (!isset($this->pseudo)) ? $this->setProperties() : null;
         return $this->pseudo;
     }
 
@@ -227,12 +280,65 @@ class User extends Model
     }
 
     /**
+     * Getter for user's birthdate
+     * @return string user's birthdate
+     */
+    public function getBirthdate()
+    {
+        (!isset($this->birthdate)) ? $this->setProperties() : null;
+        $time = strtotime($this->birthdate);
+        $date = date("j/m/Y", $time);
+        return $date;
+    }
+
+    /**
      * Getter for user's informations
      * @return string[] user's informations
      */
     public function getInformations()
     {
+        (!isset($this->informations)) ? $this->setProperties() : null;
         return $this->informations;
+    }
+
+    /**
+     * To get user's informations using input name as access key
+     * @return string[] informations's input name
+     */
+    public function getInfosInputName()
+    {
+        // if (!isset(self::$SUPPORTED_INFOS)) {
+        //     self::$SUPPORTED_INFOS = [];
+        //     $sql = "SELECT * FROM `Informations`";
+        //     $pdo = parent::executeRequest($sql);
+        //     if ($pdo->errorInfo()[0] != self::PDO_SUCCEESS) {
+        //         $err = $pdo->errorInfo()[1];
+        //         throw new Exception($err);
+        //     }
+        //     while ($line = $pdo->fetch()) {
+        //         array_push(self::$SUPPORTED_INFOS, $line["information"]);
+        //     }
+        // }
+        // return self::$SUPPORTED_INFOS;
+        $infos = $this->getInformations();
+        $newInfos = [];
+        if (count($infos) > 0) {
+            foreach ($infos as $info => $value) {
+                $inputName = self::valueToInputName($info);
+                $newInfos[$inputName] = $value;
+            }
+        }
+        return $newInfos;
+    }
+
+    /**
+     * Convert a value to a input name
+     * @param string $value to convert
+     * @return string a input name
+     */
+    public static function valueToInputName($value)
+    {
+        return strtolower(str_replace(" ", "_", $value));
     }
 
     /**
@@ -241,7 +347,25 @@ class User extends Model
      */
     public function getPicture()
     {
+        (!isset($this->picture)) ? $this->setProperties() : null;
         return $this->picture;
+    }
+
+    /**
+     * To get picture's valid extension separed with commat
+     * @return string picture's valid extension separed with commat
+     */
+    public static function picExtensionsToString()
+    {
+        $string = "";
+        foreach (self::VALID_EXTENSIONS as $key => $ext) {
+            if ($key == 0) {
+                $string .= "." . $ext;
+            } else {
+                $string .= ", ." . $ext;
+            }
+        }
+        return $string;
     }
 
     /**
@@ -300,6 +424,7 @@ class User extends Model
             $this->pseudo = $user["pseudo"];
             $this->firstname = $user["firstname"];
             $this->lastname = $user["lastname"];
+            $this->birthdate = $user["birthdate"];
             $this->picture = $user["picture"];
             $this->status = $user["status"];
             $this->permission = $user["permission"];
@@ -310,6 +435,117 @@ class User extends Model
             if ($infosPDO->rowCount() > 0) {
                 while ($infoLine = $infosPDO->fetch()) {
                     $this->informations[$infoLine["information_"]] = $infoLine["value"];
+                }
+            }
+        }
+    }
+
+    /**
+     * To update user's properties submited
+     * @param Response $response to push in occured errors
+     * @param Request $request holds submited datas
+     */
+    public function updateProperties(Response $response, Request $request)
+    {
+        $sql = "";
+        if ($request->existingParameter(User::KEY_PSEUDO)) {
+            $pseudo = $request->getParameter(User::KEY_PSEUDO);
+            $pseudo = strtolower($pseudo);
+            $sqlUser = "SELECT * FROM `Users` WHERE `pseudo` = '$pseudo'";
+            $pdo = $this->executeRequest($sqlUser);
+            $tab = $pdo->fetchAll();
+            if (count($tab) > 0) {
+                $errMsg = "Le pseudo '$pseudo' est déjà utilisé";
+                $response->addError($errMsg, self::KEY_PSEUDO);
+            } else {
+                $sql .= "UPDATE `Users` SET `pseudo`='$pseudo'";
+            }
+        }
+        if (!$response->containError()) {
+            if ($request->existingParameter(User::KEY_FIRSTNAME)) {
+                $data = $request->getParameter(User::KEY_FIRSTNAME);
+                $data = strtolower($data);
+                $sql .= (empty($sql)) ? "UPDATE `Users` SET `firstname`='$data'" : ", `firstname`='$data'";
+            }
+
+            if ($request->existingParameter(User::KEY_LASTNAME)) {
+                $data = $request->getParameter(User::KEY_LASTNAME);
+                $data = strtolower($data);
+                $sql .= (empty($sql)) ? "UPDATE `Users` SET `lastname`='$data'" : ", `lastname`='$data'";
+            }
+
+            if ($request->existingParameter(User::KEY_STATUS)) {
+                $data = $request->getParameter(User::KEY_STATUS);
+                $sql .= (empty($sql)) ? "UPDATE `Users` SET `status`='$data'" : ", `status`='$data'";
+            }
+
+            if ($request->existingParameter(User::KEY_BIRTHDATE)) {
+                $data = $request->getParameter(User::KEY_BIRTHDATE);
+                preg_match(ControllerSecure::DATE_REGEX, strtolower($data), $matches);
+                $d = $matches[1];
+                $m = $matches[2];
+                $y = $matches[3];
+                $time = mktime(null, null, null, $m, $d, $y);
+                $date = date("Y-m-d", $time);
+                $sql .= (empty($sql)) ? "UPDATE `Users` SET `birthdate`='$date'" : ", `birthdate`='$date'";
+            }
+
+            if (!empty($_FILES[User::KEY_PICTURE])) {
+                $oldPicture = $this->getPicture();
+                $newpicture = Discussion::generateDateCode(20);
+                $file = $_FILES[User::KEY_PICTURE];
+                $fileName = $file["name"];
+                $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+                $newpicture .= "." . $ext;
+                $sql .= (empty($sql)) ? "UPDATE `Users` SET `picture`='$newpicture'" : ", `picture`='$newpicture'";
+            }
+            $pseudo = $this->getPseudo();
+            $sql .= (!empty($sql))? " WHERE `pseudo`='$pseudo'; " : "";
+
+            $infoKeys = array_keys($this->getInformations());
+            if (count($infoKeys) > 0) {
+                foreach ($infoKeys as $info) {
+                    $input = self::valueToInputName($info);
+                    if ($request->existingParameter($input)) {
+                        $value = strtolower($request->getParameter($input));
+                        $sql .= " UPDATE `Users_ Informations` SET `value` = '$value' WHERE `Users_ Informations`.`pseudo_` = '$pseudo' AND `Users_ Informations`.`information_` = '$info'; ";
+                    }
+                }
+            }
+
+            if (!empty($sql)) {
+                $pdo = $this->executeRequest($sql);
+                if ($pdo->errorInfo()[0] != self::PDO_SUCCEESS) {
+                    $errMsg = $pdo->errorInfo()[1];
+                    $response->addError($errMsg, MyError::FATAL_ERROR);
+                } else {
+                    $this->setProperties();
+                }
+            }
+
+            if ((!$response->containError()) && (!empty($_FILES[User::KEY_PICTURE]))) {
+                if ($oldPicture != self::DEFAULT_PICTURE) {
+                    unlink(self::PICTURE_DIR . $oldPicture);
+                }
+                $location = self::PICTURE_DIR . $newpicture;
+                move_uploaded_file($file["tmp_name"], $location);
+                $response->addResult(User::KEY_PICTURE, $location);
+            }
+
+            if (!$response->containError()) {
+                foreach ($_POST as $attr => $value) {
+                    if (property_exists($this, $attr)) {
+                        $response->addResult($attr, $this->{$attr});
+                    }
+                }
+
+                if (count($infoKeys) > 0) {
+                    foreach ($infoKeys as $key) {
+                        $input = self::valueToInputName($key);
+                        if ($request->existingParameter($input)) {
+                            $response->addResult($input, $this->informations[$key]);
+                        }
+                    }
                 }
             }
         }
@@ -472,12 +708,12 @@ class User extends Model
         if (empty($this->pseudo)) {
             throw new Exception("User's pseudo must first be initialized");
         }
+        $this->contacts = [];
         $sql = "SELECT * 
         FROM `Contacts` c
         JOIN `Users` u ON c.contact = u.pseudo
         WHERE pseudo_ = '$this->pseudo'";
         $pdo = parent::executeRequest($sql);
-        $this->contacts = [];
         if ($pdo->rowCount() > 0) {
             while ($pdoLine = $pdo->fetch()) {
                 $user = $this->createContact($pdoLine);
@@ -523,7 +759,7 @@ class User extends Model
             return $this->saveKeys($response, $session);
         }
         $errMsg = "ce pseudo existe déjà!";
-        $response->addError($errMsg, ControllerSecure::KEY_PSEUDO);
+        $response->addError($errMsg, self::KEY_PSEUDO);
         return false;
     }
 
@@ -540,14 +776,14 @@ class User extends Model
             $passHash = parent::executeRequest($sql)->fetch()["password"];
             if (!($this->passMatchHash($this->password, $passHash))) {
                 $errMsg = "le pseudo ou le mot de passe est incorrect!";
-                $response->addError($errMsg, ControllerSecure::KEY_PSEUDO);
-                $response->addError($errMsg, ControllerSecure::KEY_PSW);
+                $response->addError($errMsg, self::KEY_PSEUDO);
+                $response->addError($errMsg, self::KEY_PSW);
                 return false;
             }
             return $this->saveKeys($response, $session);
         }
         $errMsg = "ce pseudo n'existe pas!";
-        $response->addError($errMsg, ControllerSecure::KEY_PSEUDO);
+        $response->addError($errMsg, self::KEY_PSEUDO);
         return false;
     }
 
@@ -605,7 +841,7 @@ class User extends Model
 
     /**
      * Set user's session key and save the keys in database      
-     * @param Response $response to push in occured errors    
+     * @param Response $response to push in occured errors
      * @param Session $session user's session
      * @return boolean true if user's session keys were setted and saved in database else false
      */

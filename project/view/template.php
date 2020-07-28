@@ -1,5 +1,7 @@
-<?php require_once "controller/ControllerSign.php"; ?>
-<?php //require_once "controller/ControllerHome.php";
+<?php
+require_once "controller/ControllerSign.php";
+require_once 'model/User.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -45,13 +47,15 @@
         const ACTION_SIGN_OUT = "<?= ControllerHome::ACTION_SIGN_OUT ?>";
         const ACTION_REMOVE_DISCU = "<?= ControllerHome::ACTION_REMOVE_DISCU ?>";
         const ACTION_OPEN_PROFILE = "<?= ControllerHome::ACTION_OPEN_PROFILE ?>";
-        // keys
+        const ACTION_UPDATE_PROFILE = "<?= ControllerHome::ACTION_UPDATE_PROFILE ?>";
+        // RSP keys
         const RSP_SEARCH_KEY = "<?= ControllerHome::RSP_SEARCH_KEY ?>";
         const RSP_WRITE_MENU = "<?= ControllerHome::RSP_WRITE_MENU ?>";
         const RSP_WRITE_DISCU_FEED = "<?= ControllerHome::RSP_WRITE_DISCU_FEED ?>";
         // other keys
         const FATAL_ERROR = "<?= MyError::FATAL_ERROR ?>";
         const DISCU_ID = "<?= Discussion::DISCU_ID ?>";
+        const KEY_PICTURE = "<?= User::KEY_PICTURE ?>";
     </script>
     <?= $content ?>
 </body>

@@ -21,6 +21,7 @@ class ControllerHome extends ControllerSecure
     public const ACTION_SIGN_OUT = "home/signOut";
     public const ACTION_REMOVE_DISCU = "home/removeDiscussion";
     public const ACTION_OPEN_PROFILE = "home/getProfile";
+    public const ACTION_UPDATE_PROFILE = "home/updateProfile";
 
     /**
      * Access key for actions's responses
@@ -90,9 +91,9 @@ class ControllerHome extends ControllerSecure
     {
         $this->secureSession();
         $response = new Response();
-        $this->checkData(self::PSEUDO, self::KEY_PSEUDO, $_POST[self::KEY_PSEUDO], $response, true);
+        $this->checkData(self::PSEUDO, User::KEY_PSEUDO, $_POST[User::KEY_PSEUDO], $response, true);
         if (!($response->containError())) {
-            $pseudo = $_POST[self::KEY_PSEUDO];
+            $pseudo = $_POST[User::KEY_PSEUDO];
             $this->user->setProperties();
             $this->user->addContact($pseudo, $response);
             if (!($response->containError())) {
@@ -115,9 +116,9 @@ class ControllerHome extends ControllerSecure
     {
         $this->secureSession();
         $response = new Response();
-        $this->checkData(self::PSEUDO, self::KEY_PSEUDO, $_POST[self::KEY_PSEUDO], $response, true);
+        $this->checkData(self::PSEUDO, User::KEY_PSEUDO, $_POST[User::KEY_PSEUDO], $response, true);
         if (!($response->containError())) {
-            $pseudo = $_POST[self::KEY_PSEUDO];
+            $pseudo = $_POST[User::KEY_PSEUDO];
             $this->user->setProperties();
             $this->user->removeContact($pseudo, $response);
             if (!$response->containError()) {
@@ -138,9 +139,9 @@ class ControllerHome extends ControllerSecure
     {
         $this->secureSession();
         $response = new Response();
-        $this->checkData(self::PSEUDO, self::KEY_PSEUDO, $_POST[self::KEY_PSEUDO], $response, true);
+        $this->checkData(self::PSEUDO, User::KEY_PSEUDO, $_POST[User::KEY_PSEUDO], $response, true);
         if (!($response->containError())) {
-            $pseudo = $_POST[self::KEY_PSEUDO];
+            $pseudo = $_POST[User::KEY_PSEUDO];
             $this->user->setProperties();
             $this->user->blockContact($pseudo, $response);
             if (!($response->containError())) {
@@ -162,9 +163,9 @@ class ControllerHome extends ControllerSecure
     {
         $this->secureSession();
         $response = new Response();
-        $this->checkData(self::PSEUDO, self::KEY_PSEUDO, $_POST[self::KEY_PSEUDO], $response, true);
+        $this->checkData(self::PSEUDO, User::KEY_PSEUDO, $_POST[User::KEY_PSEUDO], $response, true);
         if (!($response->containError())) {
-            $pseudo = $_POST[self::KEY_PSEUDO];
+            $pseudo = $_POST[User::KEY_PSEUDO];
             $this->user->setProperties();
             $this->user->unlockContact($pseudo, $response);
             if (!($response->containError())) {
@@ -186,9 +187,9 @@ class ControllerHome extends ControllerSecure
     {
         $this->secureSession();
         $response = new Response();
-        $this->checkData(self::PSEUDO, self::KEY_PSEUDO, $_POST[self::KEY_PSEUDO], $response, true);
+        $this->checkData(self::PSEUDO, User::KEY_PSEUDO, $_POST[User::KEY_PSEUDO], $response, true);
         if (!($response->containError())) {
-            $pseudo = $_POST[self::KEY_PSEUDO];
+            $pseudo = $_POST[User::KEY_PSEUDO];
             $this->user->setProperties();
             $discu = $this->user->writeContact($pseudo, $response);
             if ((!empty($discu)) && (!$response->containError())) {
@@ -214,7 +215,7 @@ class ControllerHome extends ControllerSecure
     {
         $this->secureSession();
         $response = new Response();
-        $this->checkData(self::PALPHA_NUMERIC_REGEX, Discussion::DISCU_ID, $_POST[Discussion::DISCU_ID], $response, true);
+        $this->checkData(self::APALPHA_NUMERIC_REGEX, Discussion::DISCU_ID, $_POST[Discussion::DISCU_ID], $response, true);
         if (!$response->containError()) {
             $discuID = $_POST[Discussion::DISCU_ID];
             $this->user->setProperties();
@@ -255,14 +256,42 @@ class ControllerHome extends ControllerSecure
     {
         $this->secureSession();
         $response = new Response();
-        $this->checkData(self::PSEUDO, self::KEY_PSEUDO, $_POST[self::KEY_PSEUDO], $response, true);
+        $this->checkData(self::PSEUDO, User::KEY_PSEUDO, $_POST[User::KEY_PSEUDO], $response, true);
         if (!$response->containError()) {
-            $pseudo = $_POST[self::KEY_PSEUDO];
+            $pseudo = $_POST[User::KEY_PSEUDO];
             $user = new User($pseudo);
             ob_start();
             require 'view/Home/elements/profileWindowContent.php';
             $profile = ob_get_clean();
             $response->addResult(self::ACTION_OPEN_PROFILE, $profile);
+        }
+        echo json_encode($response->getAttributs());
+    }
+
+    /**
+     * Update user's profile
+     */
+    public function updateProfile()
+    {
+        $this->secureSession();
+        $response = new Response();
+        ($this->request->existingParameter(User::KEY_PSEUDO)) ? $this->checkData(self::PSEUDO, User::KEY_PSEUDO, $_POST[User::KEY_PSEUDO], $response) : null;
+        ($this->request->existingParameter(User::KEY_FIRSTNAME)) ? $this->checkData(self::NAME, User::KEY_FIRSTNAME, $_POST[User::KEY_FIRSTNAME], $response) : null;
+        ($this->request->existingParameter(User::KEY_LASTNAME)) ? $this->checkData(self::NAME, User::KEY_LASTNAME, $_POST[User::KEY_LASTNAME], $response) : null;
+        ($this->request->existingParameter(User::KEY_STATUS)) ? $this->checkData(self::TEXT, User::KEY_STATUS, $_POST[User::KEY_STATUS], $response, false, User::STATUS_MAX_LENGTH) : null;
+        ($this->request->existingParameter(User::KEY_PICTURE)) ? $this->checkData(self::FILE, User::KEY_PICTURE, $_FILES[User::KEY_PICTURE]['name'], $response) : null;
+        ($this->request->existingParameter(User::KEY_BIRTHDATE)) ? $this->checkData(self::DATE, User::KEY_BIRTHDATE, $_POST[User::KEY_BIRTHDATE], $response) : null;
+
+        $infoInputs = array_keys($this->user->getInfosInputName());
+        if (count($infoInputs) > 0) {
+            foreach ($infoInputs as $input) {
+                if ($this->request->existingParameter($input)) {
+                    $this->checkData(self::TEXT, $input, $this->request->getParameter($input), $response, false, User::INFO_MAX_LENGTH);
+                }
+            }
+        }
+        if (!$response->containError()) {
+            $this->user->updateProperties($response, $this->request);
         }
         echo json_encode($response->getAttributs());
     }

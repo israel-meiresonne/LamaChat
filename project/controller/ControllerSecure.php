@@ -16,14 +16,6 @@ abstract class ControllerSecure extends Controller
     protected $user;
 
     /**
-     * datas access keys
-     */
-    public const KEY_PSEUDO = "pseudo";
-    public const KEY_FIRSTNAME = "firstname";
-    public const KEY_LASTNAME = "lastname";
-    public const KEY_PSW = "password";
-
-    /**
      * Holds the input types
      * @var string
      */
@@ -32,6 +24,9 @@ abstract class ControllerSecure extends Controller
     protected const PASSWORD = "psw";
     protected const KEY_SEARCH = "search";
     protected const ALPHA_NUMERIC = "alpha_numeric";
+    protected const TEXT = "text";
+    protected const DATE = "date";
+    protected const FILE = "file";
 
     /**
      * Holds REGEX for input type
@@ -40,7 +35,8 @@ abstract class ControllerSecure extends Controller
     private const PSEUDO_REGEX = "#^[a-zA-Z]+[a-zA-Z0-9-_]*$#";
     private const NAME_REGEX = "#^[A-zÀ-ú-]+$#";
     private const PASSWORD_REGEX = "#^[a-zA-Z]+[a-zA-Z0-9-_]+$#";
-    const PALPHA_NUMERIC_REGEX = "#^[a-zA-Z0-9]+$#";
+    protected const APALPHA_NUMERIC_REGEX = "#^[a-zA-Z0-9]+$#";
+    public const DATE_REGEX = "#^([1-9]|[1-2][0-9]|3[0-1])[/ ]([1-9]|1[0-2]|janvier|fevrier|mars|avril|mai|juin|juillet|aout|septembre|octobre|novembre|decembre)[/ ]([1-9]|[1-9][0-9]*)$#";
 
     /**
      * Check if user's is allowed to access to one page
@@ -102,12 +98,12 @@ abstract class ControllerSecure extends Controller
     /**
      * Check if data's format is correct
      * @param string $type data's type
-     * @param string $key data's access key
+     * @param string $key data's access key in $reponse if there is error
      * @param string $value value to check
      * @param boolean $isRequired set true if value is required (can NOT be empty) alse false
      * @param Response $response to push in occured errors
      */
-    protected function checkData($type, $key, $value, $response, $isRequired = false)
+    protected function checkData($type, $key, $value, Response $response, $isRequired = false, $length = null)
     {
         // var_dump($value);
         if ($isRequired && (empty($value))) {
@@ -134,12 +130,114 @@ abstract class ControllerSecure extends Controller
                     $response->addError($errorMsg, $key);
                 }
                 break;
-            
+
             case self::ALPHA_NUMERIC:
-                if (preg_match(self::PALPHA_NUMERIC_REGEX, $value) != 1) {
+                if (preg_match(self::APALPHA_NUMERIC_REGEX, $value) != 1) {
                     $errorMsg = "les valeurs autorisées pour ce champ sont les lettres et les chiffres sans espace";
                     $response->addError($errorMsg, $key);
                 }
+                break;
+            case self::DATE:
+                if (preg_match(self::DATE_REGEX, strtolower($value), $matches) != 1) {
+                    $errorMsg = "la date doit être au format dd/mm/yyyy.";
+                    $response->addError($errorMsg, $key);
+                } else {
+                    $d = $matches[1];
+                    $m = $matches[2];
+                    $y = $matches[3];
+                    if (!is_numeric($m)) {
+                        $m = $this->monthToint($m);
+                    }
+                    if (!checkdate($m, $d, $y)) {
+                        $errorMsg = "Cette date n'existe pas.";
+                        $response->addError($errorMsg, $key);
+                    }
+                }
+                break;
+            case self::TEXT:
+                if (!isset($length)) {
+                    throw new Exception('Attribut "$length" must be set to check a text\'s size.');
+                }
+                if (strlen($value) > $length) {
+                    $errorMsg = "la valeur de ce champ est trop longue, la longueur maximal est $length caractères";
+                    $response->addError($errorMsg, $key);
+                }
+                break;
+
+            case self::FILE:
+                $ext = pathinfo($value, PATHINFO_EXTENSION);
+
+                if (!in_array(strtolower($ext), User::VALID_EXTENSIONS)) {
+                    $errorMsg = "ce type de fichier n'est pas supporté";
+                    $response->addError($errorMsg, $key);
+                }
+                break;
+        }
+    }
+
+    /**
+     * To check picture submited
+     * @param string $key data's access key in $reponse if there is error
+     * @param string $value file's name
+     * @param Response $response to push in occured errors
+     */
+    // protected function checkFile($key, $filename, Response $response)
+    // {
+    //     // $filename = $_FILES[$key]['name'];
+    //     // $location = "upload/" . $filename;
+    //     $ext = pathinfo($filename, PATHINFO_EXTENSION);
+
+    //     if (!in_array(strtolower($ext), User::VALID_EXTENSIONS)) {
+    //         $errorMsg = "ce type de fichier n'est pas supporté";
+    //         $response->addError($errorMsg, $key);
+    //     }
+    // }
+
+    /**
+     * Convert frech textual month to its integer value
+     * @param string $m month to convert
+     */
+    private function monthToint($m)
+    {
+        switch (strtolower($m)) {
+            case "janvier":
+                return 1;
+                break;
+            case "fevrier":
+                return 2;
+                break;
+            case "mars":
+                return 3;
+                break;
+            case "avril":
+                return 4;
+                break;
+            case "mai":
+                return 5;
+                break;
+            case "juin":
+                return 6;
+                break;
+            case "juillet":
+                return 7;
+                break;
+            case "aout":
+                return 8;
+                break;
+            case "septembre":
+                return 9;
+                break;
+            case "octobre":
+                return 10;
+                break;
+            case "novembre":
+                return 11;
+                break;
+            case "decembre":
+                return 12;
+                break;
+            default:
+                throw new Exception("Unknow month '$m'");
                 break;
         }
     }

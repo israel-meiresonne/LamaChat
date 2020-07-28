@@ -1,5 +1,4 @@
 <?php
-require_once 'controller/ControllerSecure.php';
 require_once 'model/Discussion.php';
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
@@ -8,4 +7,4 @@ require_once 'model/Discussion.php';
 $btnId = 'addContact' . Discussion::generateDateCode(25);
 ?>
 
-<td><button id="<?= $btnId ?>" onclick="addContact('<?= $btnId ?>', '<?= ControllerSecure::KEY_PSEUDO ?>', '<?= $ctcPseu; ?>')" class="standard-button green-button remove-button-default-att">ajouter</button></td>
+<td><button id="<?= $btnId ?>" onclick="addContact('<?= $btnId ?>', '<?= User::KEY_PSEUDO ?>', '<?= $ctcPseu; ?>')" class="standard-button green-button remove-button-default-att">ajouter</button></td>

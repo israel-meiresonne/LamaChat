@@ -1,4 +1,8 @@
 (function () {
+    const json_encode = function (value) {
+        return JSON.stringify(value)
+    }
+
     var addErr = function (x, err) {
         $(x).text(err);
         $(x).slideDown(TS);
@@ -14,6 +18,16 @@
 
     const mapToParam = function (map) {
         return jQuery.param(map);
+    }
+
+    const mapTagInput = function (xs) {
+        var d = {};
+        for (x of xs) {
+            var n = $(x).attr("name");
+            var v = $(x).text();
+            d[n] = v;
+        }
+        return d;
     }
 
     const removeFade = function (x) {
@@ -45,7 +59,6 @@
         }, false);
     }
 
-
     const jx = function (action, jxd, rspf, lds, x = null, cbkSND = function () { }, cbkRSP = function () { }) {
         $(lds).fadeIn(TS, cbkSND());
         $.ajax({
@@ -53,6 +66,23 @@
             url: webRoot + action,
             data: jxd,
             dataType: 'json',
+            success: function (r) {
+                console.log("response: ", r);
+                $(lds).fadeOut(TS, cbkRSP());
+                rspf(r, x);
+            }
+        });
+    }
+
+    const jx_fd = function (action, jxd, rspf, lds, x = null, cbkSND = function () { }, cbkRSP = function () { }) {
+        $(lds).fadeIn(TS, cbkSND());
+        $.ajax({
+            type: 'POST',
+            url: webRoot + action,
+            data: jxd,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
             success: function (r) {
                 console.log("response: ", r);
                 $(lds).fadeOut(TS, cbkRSP());
@@ -72,6 +102,19 @@
         console.log("action", webRoot + action, "send: ", jxd);
         // console.log();
         jx(action, jxd, rspf, lds, x, cbkSND, cbkRSP);
+    }
+
+    const SND_fd = function (datas) {
+        var action = datas.action;
+        var jxd = datas.jxd;
+        var rspf = datas.rspf;
+        var lds = datas.lds;
+        var x = datas.x;
+        var cbkSND = datas.cbkSND;
+        var cbkRSP = datas.cbkRSP;
+        console.log("action", webRoot + action, "send: ", jxd);
+        // console.log();
+        jx_fd(action, jxd, rspf, lds, x, cbkSND, cbkRSP);
     }
 
     searchContact = function (d) {
@@ -330,12 +373,34 @@
         }
     }
 
-    const openProfileRSP = function (r){
-        if(r.isSuccess){
+    const openProfileRSP = function (r) {
+        if (r.isSuccess) {
             var w = $("#user_profile");
             $(w).find(".w3-panel").html(r.results[ACTION_OPEN_PROFILE]);
             fadeOn(w);
         } else {
+            if (r.errors[FATAL_ERROR] != null) {
+                popAlert(r.errors[FATAL_ERROR].message);
+            }
+        }
+    }
+
+    const updateProfileRSP = function (r) {
+        if (r.isSuccess) {
+            for (var k in r.results) {
+                $("#id01 .data-key_value-value[name='" + k + "']").removeAttr("contenteditable");
+            }
+            if (r.results[KEY_PICTURE] != null) {
+                $("#user_menu_profile").fadeOut(TS / 2, function () {
+                    $(this).attr("src", r.results[KEY_PICTURE]);
+                    $(this).fadeIn(TS);
+                });
+            }
+        } else {
+            for (var k in r.errors) {
+                var x = $("#id01 .data-key_value-value[name='" + k + "']+");
+                addErr(x, r.errors[k].message);
+            }
             if (r.errors[FATAL_ERROR] != null) {
                 popAlert(r.errors[FATAL_ERROR].message);
             }
@@ -404,6 +469,29 @@
                 };
                 SND(datasSND);
             }
+        });
+
+        $("#setting_save_btn").click(function () {
+            var e = $("#id01 .data-key_value-wrap .comment");
+            cleanErr(e);
+            var xs = $("#id01 span[contenteditable='true']");
+            var map = mapTagInput(xs);
+            var fd = new FormData();
+            $("#edit_img_input")[0].files[0];
+            var f = $("#edit_img_input")[0].files[0];
+            (f != null) ? fd.append(KEY_PICTURE, f) : null;
+            for (var n in map) {
+                fd.append(n, map[n]);
+            }
+            var param = fd;
+            var datasSND = {
+                "action": ACTION_UPDATE_PROFILE,
+                "jxd": param,
+                "rspf": updateProfileRSP,
+                "lds": "#isLoading",
+                "x": ""
+            };
+            SND_fd(datasSND);
         });
     });
 }).call(this);

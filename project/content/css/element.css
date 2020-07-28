@@ -167,6 +167,17 @@
     color: var(--color-blue_esi);
 }
 
+.data-key_value-wrap .comment{
+    display: none;
+    margin: 0 0 0 5px;
+    color: var(--color-red);
+    font-size: var(--little-font-size);
+    text-transform: none;
+}
+.data-key_value-wrap .comment::first-letter{
+    text-transform: capitalize;
+}
+
 /*————————————————————— DATA_KEY_VALUE UP ———————————————————————————————————*/
 
 /*————————————————————— INPUT DOWN —————————————————————*/
