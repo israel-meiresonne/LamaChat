@@ -48,6 +48,20 @@
         // })
     }
 
+    const replaceFade = function (x, y, t = TS) {
+        $(y).css("display", "none");
+        $(x).fadeOut(t / 2, function () {
+            $(this).replaceWith(y);
+            $(y).fadeIn(t);
+        });
+    }
+
+    const createNone = function (x) {
+        var y = $.parseHTML(x);
+        $(y).css("display", "none");
+        return y;
+    }
+
     var isTyping;
     endKeyup = function () {
         var a = arguments;
@@ -57,6 +71,12 @@
                 a[0](a[1]);
             }, TS * 1.5);
         }, false);
+    }
+
+    var isCtrEtr = function (e) {
+        return ((e.ctrlKey || e.metaKey) && (e.keyCode == 13 || e.keyCode == 10)); //{
+        //     f(dts);
+        // }
     }
 
     const jx = function (action, jxd, rspf, lds, x = null, cbkSND = function () { }, cbkRSP = function () { }) {
@@ -241,6 +261,94 @@
         SND(datasSND);
     }
 
+    sendMessage = function (id) {
+        var x = $("#" + id);
+        var y = $(x).find(".msg_sender-container .msg_sender-input");
+        var m = $(y).text();
+        // $(y).text("");
+        // var z = $(y).prev();
+        // displayOn(z);
+        if (m.length > 0) {
+            var map = {
+                [DISCU_ID]: id,
+                [KEY_MESSAGE]: m
+            };
+            var param = mapToParam(map);
+            var datasSND = {
+                "action": ACTION_SEND_MSG,
+                "jxd": param,
+                "rspf": sendMessageRSP,
+                "lds": "#isLoading",
+                "x": { "x": x, "y": y }
+            };
+            SND(datasSND);
+        }
+    }
+
+    readMessage = function (id) {
+        var w = $("#" + id)[0];
+        if ($(w).css("display") == "block") {
+            var fd = new FormData();
+            fd.append(DISCU_ID, id);
+            var datasSND = {
+                "action": ACTION_READ_MSG,
+                "jxd": fd,
+                "rspf": readMessageRSP,
+                "lds": "#isLoading",
+                "x": ""
+            };
+            SND_fd(datasSND);
+        }
+    }
+
+    updateFeed = function (id) {
+        var w = $("#" + id);
+        var xs = $(w).find(".msg-wrap[data-msgstatus='" + MSG_STATUS_SEND + "'][data-sender='" + SENDER + "']");
+        var d = {};
+        d[DISCU_ID] = id;
+        var l = $(w).find(".msg-wrap").last();
+        var lm = {}
+        var msgId = $(l).attr("data-msgid");
+        lm[KEY_MSG_ID] = (msgId != null) ? msgId : null;
+        // var lm = {
+        //     [KEY_MSG_ID]: $(l).attr("data-msgid")//,
+        //     // [KEY_STATUS]: $(l).attr("data-msgstatus"),
+        // };
+        d[KEY_LAST_MSG] = lm;
+        d[KEY_MESSAGE] = [];
+        var nb = xs.length;
+        for (var i = 0; i < nb; i++) {
+            var x = xs[i];
+            var msgId = $(x).attr("data-msgid");
+            var status = $(x).attr("data-msgstatus");
+            var m = {
+                [KEY_MSG_ID]: msgId,
+                [KEY_STATUS]: status,
+            };
+            d[KEY_MESSAGE].push(m);
+        }
+        var fd = new FormData();
+        fd.append(ACTION_UPDATE_FEED, json_encode(d));
+        var datasSND = {
+            "action": ACTION_UPDATE_FEED,
+            "jxd": fd,
+            "rspf": updateFeedRSP,
+            "lds": "#isLoading",
+            "x": ""
+        };
+        // console.log("d", d);
+        SND_fd(datasSND);
+    }
+
+    lunchUpdate = function () {
+        var ws = $(".msg-window");
+        var nb = ws.length;
+        for (var i = 0; i < nb; i++) {
+            var id = $(ws[i]).attr("id");
+            updateFeed(id);
+        }
+    }
+
     const signUpRSP = function (r) {
         if (r.isSuccess) {
             window.location.assign(r.results[ACTION_SIGN_UP]);
@@ -407,6 +515,75 @@
         }
     }
 
+    const sendMessageRSP = function (r, x) {
+        if (r.isSuccess) {
+            // var txt = $(x.y).text();
+            $(x.y).text("");
+            var z = $(x.y).prev();
+            displayOn(z);
+
+            var m = createNone(r.results[ACTION_SEND_MSG]);
+            $(x.x).find(".msg-window-feed").append(m);
+            $(m).fadeIn(TS);
+
+            var id = r.results[DISCU_ID];
+            var rx = $(".w3-bar-item[data-menudiscuid='" + id + "'] .w3-container p");
+            var ry = createNone(r.results[KEY_LAST_MSG]);
+            replaceFade(rx, ry);
+
+            scrollBottom(x.x);
+        } else {
+            if (r.errors[FATAL_ERROR] != null) {
+                popAlert(r.errors[FATAL_ERROR].message);
+            }
+        }
+    }
+
+    const readMessageRSP = function (r) {
+        if (!r.isSuccess) {
+            if (r.errors[FATAL_ERROR] != null) {
+                popAlert(r.errors[FATAL_ERROR].message);
+            }
+        }
+    }
+
+    const updateFeedRSP = function (r) {
+        if (r.isSuccess) {
+            var id = r.results[DISCU_ID];
+            var w = $("#" + id);
+            if ((r.results[KEY_MSG_ID] != null) && (r.results[KEY_MSG_ID].length > 0)) {
+                var s = r.results[MSG_STATUS_READ];
+                for (var msgID of r.results[KEY_MSG_ID]) {
+                    var ns = createNone(s);
+                    var os = $(w).find(".msg-wrap[data-msgid='" + msgID + "'] .msg-status .o_symbol-wrap")[0];
+                    replaceFade(os, ns);
+                }
+            }
+            if ((r.results[KEY_MESSAGE] != null) && (r.results[KEY_MESSAGE].length > 0)) {
+                var feed = $(w).find(".msg-window-feed");
+                for (var m of r.results[KEY_MESSAGE]) {
+                    var me = createNone(m);
+                    $(feed).append(me);
+                    $(me).fadeIn(TS);
+                }
+                scrollBottom(w);
+            }
+            if ((r.results[KEY_LAST_MSG] != null) && (r.results[KEY_LAST_MSG].length > 0)) {
+                var rx = $(".w3-bar-item[data-menudiscuid='" + id + "'] .w3-container p");
+                var ry = createNone(r.results[KEY_LAST_MSG]);
+                replaceFade(rx, ry);
+            }
+            // setTimeout(() => {
+            //     updateFeed(id);
+            // }, TIME_UPDATE_FEED * 1000);
+            readMessage(id);
+        } else {
+            if (r.errors[FATAL_ERROR] != null) {
+                popAlert(r.errors[FATAL_ERROR].message);
+            }
+        }
+    }
+
     $(document).ready(function () {
         $("#sign_up_button").click(function () {
             var formId = $(this).attr("for");
@@ -493,5 +670,13 @@
             };
             SND_fd(datasSND);
         });
+
+        $(".msg-window .msg_sender-input").keydown(function (e) {
+            if (isCtrEtr(e)) {
+                var id = $(this).attr("data-btnId");
+                $("#" + id).click();
+            }
+        });
+
     });
 }).call(this);

@@ -2,6 +2,7 @@
 
 require_once 'ControllerSecure.php';
 require_once 'model/Discussion.php';
+require_once 'model/Message.php';
 
 class ControllerHome extends ControllerSecure
 {
@@ -22,6 +23,10 @@ class ControllerHome extends ControllerSecure
     public const ACTION_REMOVE_DISCU = "home/removeDiscussion";
     public const ACTION_OPEN_PROFILE = "home/getProfile";
     public const ACTION_UPDATE_PROFILE = "home/updateProfile";
+    public const ACTION_SEND_MSG = "home/sendMessage";
+    public const ACTION_SEND_FILE = "home/sendFile"; // don't forget
+    public const ACTION_UPDATE_FEED = "home/updateFeed";
+    public const ACTION_READ_MSG = "home/readMessage";
 
     /**
      * Access key for actions's responses
@@ -215,7 +220,7 @@ class ControllerHome extends ControllerSecure
     {
         $this->secureSession();
         $response = new Response();
-        $this->checkData(self::APALPHA_NUMERIC_REGEX, Discussion::DISCU_ID, $_POST[Discussion::DISCU_ID], $response, true);
+        $this->checkData(self::ALPHA_NUMERIC, Discussion::DISCU_ID, $_POST[Discussion::DISCU_ID], $response, true);
         if (!$response->containError()) {
             $discuID = $_POST[Discussion::DISCU_ID];
             $this->user->setProperties();
@@ -294,5 +299,145 @@ class ControllerHome extends ControllerSecure
             $this->user->updateProperties($response, $this->request);
         }
         echo json_encode($response->getAttributs());
+    }
+
+    /**
+     * To send textual a message
+     */
+    public function sendMessage()
+    {
+        $this->secureSession();
+        $response = new Response();
+        if ($this->request->existingParameter(Message::KEY_MESSAGE)) {
+            $text = $this->request->getParameter(Message::KEY_MESSAGE);
+            $this->checkData(self::TEXT, Message::KEY_MESSAGE, $text, $response, true, Message::MSG_MAX_LENGTH);
+            $this->checkData(self::ALPHA_NUMERIC, Discussion::DISCU_ID, $_POST[Discussion::DISCU_ID], $response, true);
+            if (!$response->containError()) {
+                $discuID = $this->request->getParameter(Discussion::DISCU_ID);
+                $message = $this->user->sendMessage($response, $discuID, $text);
+                if (!$response->containError()) {
+                    $user = $this->user;
+                    ob_start();
+                    require 'view/Home/elements/discussionMessage.php';
+                    $msgHtml = ob_get_clean();
+                    $preview = "<p>" . $message->getPreview() . "</p>";
+
+                    $response->addResult(self::ACTION_SEND_MSG, $msgHtml);
+                    $response->addResult(Discussion::DISCU_ID, $discuID);
+                    $response->addResult(Message::KEY_LAST_MSG, $preview);
+                }
+            }
+        }
+        echo json_encode($response->getAttributs());
+    }
+
+    /**
+     * To mark all messages from a discussion as read
+     */
+    public function readMessage()
+    {
+        $this->secureSession();
+        $response = new Response();
+        $this->checkData(self::ALPHA_NUMERIC, Discussion::DISCU_ID, $_POST[Discussion::DISCU_ID], $response, true);
+        if (!$response->containError()) {
+            $discuID = $this->request->getParameter(Discussion::DISCU_ID);
+            $this->user->readMessage($response, $discuID);
+        }
+        echo json_encode($response->getAttributs());
+    }
+
+    /**
+     * To update feed's messages
+     */
+    public function updateFeed()
+    {
+        $this->secureSession();
+        $response = new Response();
+        // setdate, discuID, msgID[message's status]
+        if ($this->request->existingParameter(self::ACTION_UPDATE_FEED)) {
+            $feed = json_decode($this->request->getParameter(self::ACTION_UPDATE_FEED));
+            $this->checkData(self::ALPHA_NUMERIC, Discussion::DISCU_ID, $feed->{Discussion::DISCU_ID}, $response, true);
+            (!empty($feed->{Message::KEY_LAST_MSG}->{Message::KEY_MSG_ID}))
+                ? $this->checkData(self::ALPHA_NUMERIC, Message::KEY_LAST_MSG, $feed->{Message::KEY_LAST_MSG}->{Message::KEY_MSG_ID}, $response)
+                : null;
+            if (count($feed->{Message::KEY_MESSAGE}) > 0) {
+                foreach ($feed->{Message::KEY_MESSAGE} as $key => $msg) {
+                    $this->checkData(self::ALPHA_NUMERIC, $key, $msg->{Message::KEY_MSG_ID}, $response, true);
+                    if ($response->containError()) {
+                        break;
+                    }
+                    if (($msg->{Message::KEY_STATUS} != Message::MSG_STATUS_READ) && ($msg->{Message::KEY_STATUS} != Message::MSG_STATUS_SEND)) {
+                        $response->addError("invalid message status", $key);
+                        break;
+                    }
+                }
+            }
+
+            if (!$response->containError()) {
+                $this->user->updateFeed($response, $feed->{Discussion::DISCU_ID}, $feed->{Message::KEY_LAST_MSG}, $feed->{Message::KEY_MESSAGE});
+                if (!$response->containError()) {
+                    if ($response->existResult(Message::KEY_MSG_ID)) {
+                        ob_start();
+                        require 'view/Home/elements/discussionMessageStatusRead.php';
+                        $read = ob_get_clean();
+                        $response->addResult(Message::MSG_STATUS_READ, $read);
+                    }
+
+                    if ($response->existResult(Message::KEY_MESSAGE)) {
+                        $lastMessages = $response->getResult(Message::KEY_MESSAGE);
+                        $msgHtmlList = [];
+                        $user = $this->user;
+                        foreach ($lastMessages as $message) {
+                            ob_start();
+                            require 'view/Home/elements/discussionMessage.php';
+                            $msgHtml = ob_get_clean();
+                            // $msgHtmlMap[$message->getMessageID()] = $msgHtml;
+                            array_push($msgHtmlList, $msgHtml);
+                        }
+                        $response->addResult(Message::KEY_MESSAGE, $msgHtmlList);
+                    }
+
+                    if ($response->existResult(Message::KEY_LAST_MSG)) {
+                        $message = $response->getResult(Message::KEY_LAST_MSG);
+                        $preview = "<p>" . $message->getPreview() . "</p>";
+                        $response->addResult(Message::KEY_LAST_MSG, $preview);
+                    }
+                }
+            }
+        }
+        echo json_encode($response->getAttributs());
+    }
+
+    public function test()
+    {
+        $config = array(
+            "digest_alg" => "sha512",
+            "private_key_bits" => 4096,
+            "private_key_type" => OPENSSL_KEYTYPE_RSA,
+        );
+
+        // Create the private and public key
+        $res = openssl_pkey_new($config);
+
+        // Extract the private key from $res to $privKey
+        openssl_pkey_export($res, $privKey);
+
+        // Extract the public key from $res to $pubKey
+        $pubKey = openssl_pkey_get_details($res);
+        $pubKey = $pubKey["key"];
+
+        $data = "hello world";
+        var_dump("msg: ");
+        var_dump($data);
+        echo "<hr>";
+
+        // openssl_private_encrypt($data, $encrypted, $privKey);
+        openssl_public_encrypt($data, $encrypted, $pubKey);
+        var_dump("encrypted msg: ", $encrypted);
+        echo "<hr>";
+
+        openssl_private_decrypt($encrypted, $decrypted, $privKey);
+        var_dump("decrypted msg: ", $decrypted);
+        echo "<hr>";
     }
 }

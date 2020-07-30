@@ -2,7 +2,8 @@
 
 require_once 'framework/Model.php';
 require_once 'controller/ControllerSecure.php';
-require_once 'Discussion.php';
+require_once 'model/Discussion.php';
+require_once 'model/Message.php';
 
 /**
  * This class represents an User
@@ -159,7 +160,19 @@ class User extends Model
      * PDOStatement success code
      * @var string
      */
-    private const PDO_SUCCEESS = "00000";
+    public const PDO_SUCCEESS = "00000";
+
+    /**
+     * Holds the time (sec) to try again to update message feed
+     * @var int
+     */
+    public const TIME_UPDATE_FEED = 2;
+
+    /**
+     * Holds the max time to sleep code
+     * @var int
+     */
+    private static $MAX_SLEEP = 2;
 
     /**
      * Constructor for user
@@ -307,19 +320,6 @@ class User extends Model
      */
     public function getInfosInputName()
     {
-        // if (!isset(self::$SUPPORTED_INFOS)) {
-        //     self::$SUPPORTED_INFOS = [];
-        //     $sql = "SELECT * FROM `Informations`";
-        //     $pdo = parent::executeRequest($sql);
-        //     if ($pdo->errorInfo()[0] != self::PDO_SUCCEESS) {
-        //         $err = $pdo->errorInfo()[1];
-        //         throw new Exception($err);
-        //     }
-        //     while ($line = $pdo->fetch()) {
-        //         array_push(self::$SUPPORTED_INFOS, $line["information"]);
-        //     }
-        // }
-        // return self::$SUPPORTED_INFOS;
         $infos = $this->getInformations();
         $newInfos = [];
         if (count($infos) > 0) {
@@ -385,6 +385,23 @@ class User extends Model
     {
         (!isset($this->discussions)) ? $this->setDiscussions() : null;
         return $this->discussions;
+    }
+
+    /**
+     * To one discussion from user's discussions
+     * @param string $discuID discussion's id
+     * @return Discussion user's discussion
+     */
+    public function getDiscussion($discuID)
+    {
+        $discussions = $this->getDiscussions();
+        foreach ($discussions as $unix => $discussion) {
+            if ($discussion->getDiscuID() == $discuID) {
+                return $discussions[$unix];
+                break;
+            }
+        }
+        throw new Exception("Discussion with id '$discuID' don't exist");
     }
 
     /**
@@ -500,7 +517,7 @@ class User extends Model
                 $sql .= (empty($sql)) ? "UPDATE `Users` SET `picture`='$newpicture'" : ", `picture`='$newpicture'";
             }
             $pseudo = $this->getPseudo();
-            $sql .= (!empty($sql))? " WHERE `pseudo`='$pseudo'; " : "";
+            $sql .= (!empty($sql)) ? " WHERE `pseudo`='$pseudo'; " : "";
 
             $infoKeys = array_keys($this->getInformations());
             if (count($infoKeys) > 0) {
@@ -631,13 +648,14 @@ class User extends Model
     public function setDiscussions()
     {
         $this->setProperties();
-        if (empty($this->pseudo)) {
-            throw new Exception("User's pseudo must first be initialized");
-        }
+        $pseudo = $this->getPseudo();
+        // if (empty($this->pseudo)) {
+        //     throw new Exception("User's pseudo must first be initialized");
+        // }
         $sql = "SELECT * 
         FROM `Discussions` d
         JOIN `Participants` p ON d.discuID = p.discuId
-        WHERE pseudo_ = '$this->pseudo'";
+        WHERE pseudo_ = '$pseudo'";
         $pdo = parent::executeRequest($sql);
         $this->discussions = [];
         if ($pdo->rowCount() > 0) {
@@ -671,7 +689,7 @@ class User extends Model
      * @param string $discuID discussion's id
      * @param Response $response to push in occured errors
      */
-    public function removeDiscussion($discuID, $response)
+    public function removeDiscussion($discuID, Response $response)
     {
         $sql = "DELETE FROM `Discussions` WHERE `discuID` = '$discuID'";
         $pdo = parent::executeRequest($sql);
@@ -697,6 +715,42 @@ class User extends Model
                     unset($this->discussions[$key]);
                 }
             }
+        }
+    }
+
+    /**
+     * To send textual a message
+     * @param Response $response to push in occured errors
+     * @param string $discuID discussion's id
+     * @param string $message message to send
+     * @return Meassage message sent
+     */
+    public function sendMessage(Response $response, $discuID, $message)
+    {
+        $from = $this;
+        $type = Message::MSG_TYPE_TEXT;
+        $status = Message::MSG_STATUS_SEND;
+        $pubK = $this->getPublicKey();
+        $encrypted = Message::encrypt($pubK, $message);
+        $privK = $this->getPrivateKey();
+        $msgObj = new Message($privK, $from, $type, $encrypted, $status);
+        $msgObj->sendMessage($response, $discuID);
+        return $msgObj;
+    }
+
+    /**
+     * To mark all messages from a discussion as read
+     * @param Response $response to push in occured errors
+     * @param string $discuID discussion's id
+     */
+    public function readMessage($response, $discuID)
+    {
+        $pseudo = $this->getPseudo();
+        $sql = 'UPDATE `Messages` SET `msgStatus` = "'. Message::MSG_STATUS_READ .'" WHERE `discuId` = "'. $discuID .'" AND `from_pseudo` != "'. $pseudo .'"';
+        $pdo = $this->executeRequest($sql);
+        if ($pdo->errorInfo()[0] != self::PDO_SUCCEESS) {
+            $errMsg = $pdo->errorInfo()[1];
+            $response->addError($errMsg, MyError::FATAL_ERROR);
         }
     }
 
@@ -730,7 +784,7 @@ class User extends Model
     protected function createContact($pdoLine)
     {
         $contact = new User();
-        !empty($pdoLine["contact"]) ? $contact->setPseudo($pdoLine["contact"]) : $contact->setPseudo($pdoLine["pseudo"]);
+        (!empty($pdoLine["contact"])) ? $contact->setPseudo($pdoLine["contact"]) : $contact->setPseudo($pdoLine["pseudo"]);
         $contact->setFirstname($pdoLine["firstname"]);
         $contact->setLastname($pdoLine["lastname"]);
         $contact->setPicture($pdoLine["picture"]);
@@ -1086,5 +1140,154 @@ class User extends Model
             }
         }
         return $contacts;
+    }
+
+    /**
+     * To update feed's messages
+     * @param Response $response to push in occured errors
+     * @param string $discuID discussion's id
+     * @param object $lastMsg feed's last message
+     * + last message's id: $lastMsg->{Message::KEY_MSG_ID}
+     * @param object[] $messages feed's message to update status
+     * + message's id: $msgs[0->x]->{Message::KEY_MSG_ID}
+     * + message's status: $msgs[0->x]->{Message::KEY_STATUS}
+     */
+    public function updateFeed(Response $response, $discuID, $lastMsg, $messages)
+    {
+        $time = 0;
+        if (!empty($lastMsg->{Message::KEY_MSG_ID})) {
+            $discussion = $this->getDiscussion($discuID);
+            $msgSetDate = $discussion->getMessage($lastMsg->{Message::KEY_MSG_ID})->getSetDate();
+        } else {
+            $msgSetDate = date('Y-m-d H:i:s', 0);
+        }
+
+        if (count($messages) > 0) {
+            $this->checkMessageStatus($response, $discuID, $messages);
+        }
+
+        $this->getLastForeignMessages($response, $discuID, $msgSetDate);
+        $this->getLastMessage($response, $discuID, $msgSetDate);
+        
+        if (!$response->containError()) {
+            $response->addResult(Discussion::DISCU_ID, $discuID);
+        }
+    }
+
+    /**
+     * To check if message(s) have been read
+     * @param Response $response to push in occured errors
+     * @param string $discuID discussion's id
+     * @param object[] $messages feed's message to update status
+     * + message's id: $msgs[0->x]->{Message::KEY_MSG_ID}
+     * + message's status: $msgs[0->x]->{Message::KEY_STATUS}
+     */
+    private function checkMessageStatus(Response $response, $discuID, $messages)
+    {
+        $sql = 'SELECT * FROM `Messages` WHERE `discuId`= "' . $discuID . '" AND `msgStatus` = "' . Message::MSG_STATUS_SEND . '"';
+        $pdo = $this->executeRequest($sql);
+        if ($pdo->errorInfo()[0] != self::PDO_SUCCEESS) {
+            $errMsg = $pdo->errorInfo()[1];
+            $response->addError($errMsg, MyError::FATAL_ERROR);
+        } else {
+            $msgIDs = $pdo->fetchAll(PDO::FETCH_COLUMN | PDO::FETCH_GROUP);
+            $toUpdate = [];
+            foreach ($messages as $message) {
+                $msgID = $message->{Message::KEY_MSG_ID};
+                if (!key_exists($msgID, $msgIDs)) {
+                    array_push($toUpdate, $msgID);
+                }
+            }
+            (count($toUpdate) > 0) ? $response->addResult(Message::KEY_MSG_ID, $toUpdate) : null;
+        }
+    }
+
+    /**
+     * To get a discussion's last messages
+     * + messages find are pushed in $response
+     * @param Response $response to push in occured errors
+     * @param string $discuID discussion's id
+     * @param string $msgSetDate date of the last message sent in the discussion 
+     * + format: 'YYYY-MM-DD HH:MM:SS'
+     */
+    private function getLastForeignMessages(Response $response, $discuID, $msgSetDate)
+    {
+        $pseudo = $this->getPseudo();
+        // $msgSetDate = $message->getSetDate();
+        $sql = "SELECT * FROM `Messages` 
+            WHERE (`discuId`= '$discuID') 
+                AND (`from_pseudo` != '$pseudo') 
+                AND (`msgSetDate` > '$msgSetDate')
+            ORDER BY `Messages`.`msgSetDate` DESC";
+        $pdo = $this->executeRequest($sql);
+        if ($pdo->errorInfo()[0] != self::PDO_SUCCEESS) {
+            $errMsg = $pdo->errorInfo()[1];
+            $response->addError($errMsg, MyError::FATAL_ERROR);
+        } else {
+            if ($pdo->rowCount() > 0) {
+                $lastMsgs = [];
+                while ($pdoLine = $pdo->fetch()) {
+                    $newMsg = $this->createMessage($pdoLine);
+                    $key = strtotime($newMsg->getSetDate());
+                    $lastMsgs[$key] = $newMsg;
+                }
+                ksort($lastMsgs);
+                $response->addResult(Message::KEY_MESSAGE, $lastMsgs);
+            }
+        }
+    }
+    
+    /**
+     * To get a discussion's last messages
+     * + messages find are pushed in $response
+     * @param Response $response to push in occured errors
+     * @param string $discuID discussion's id
+     * @param string $msgSetDate date of the last message sent in the discussion 
+     * + format: 'YYYY-MM-DD HH:MM:SS'
+     */
+    private function getLastMessage(Response $response, $discuID, $msgSetDate)
+    {
+        $pseudo = $this->getPseudo();
+        // $msgSetDate = $message->getSetDate();
+        $sql = "SELECT * FROM `Messages` 
+            WHERE (`discuId`= '$discuID') 
+                AND (`msgSetDate` > '$msgSetDate')
+            ORDER BY `Messages`.`msgSetDate` DESC";
+        $pdo = $this->executeRequest($sql);
+        if ($pdo->errorInfo()[0] != self::PDO_SUCCEESS) {
+            $errMsg = $pdo->errorInfo()[1];
+            $response->addError($errMsg, MyError::FATAL_ERROR);
+        } else {
+            if ($pdo->rowCount() > 0) {
+                $pdoLine = $pdo->fetch();
+                $lastMsg = $this->createMessage($pdoLine);
+                // while ($pdoLine = $pdo->fetch()) {
+                //     $newMsg = $this->createMessage($pdoLine);
+                //     $key = strtotime($newMsg->getSetDate());
+                //     $lastMsgs[$key] = $newMsg;
+                // }
+                // ksort($lastMsgs);
+                $response->addResult(Message::KEY_LAST_MSG, $lastMsg);
+            }
+        }
+    }
+
+    /**
+     * Create message object with db line from Messages table
+     * @param string[] $pdoLine db line from Messages table
+     * @return Message message object
+     */
+    private function createMessage($pdoLine)
+    {
+        $msgID = $pdoLine["msgID"];
+        $pseudo = $pdoLine["from_pseudo"];
+        $from = new User($pseudo);
+        $privK = $pdoLine["msgPrivateK"];
+        $type = $pdoLine["msgType"];
+        $msg = $pdoLine["msg"];
+        $status = $pdoLine["msgStatus"];
+        $setDate = $pdoLine["msgSetDate"];
+        $msgObj = new Message($privK, $from, $type, $msg, $status, $msgID, $setDate);
+        return $msgObj;
     }
 }

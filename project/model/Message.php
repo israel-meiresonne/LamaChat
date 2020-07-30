@@ -1,15 +1,25 @@
 <?php
 
+require_once 'framework/Model.php';
+require_once 'model/User.php';
+require_once 'model/MyError.php';
+
 /**
  * This class represents a Discussion
  */
-class Message
+class Message extends Model
 {
     /**
      * Holds the message's identifiant
      * @var string
      */
     private $msgID;
+
+    /**
+     * Holds a private key to decrypt the message
+     * @var string
+     */
+    private $privK;
 
     /**
      * Holds the message's sender
@@ -24,10 +34,10 @@ class Message
     private $type;
 
     /**
-     * Holds the message's content
+     * Holds the encrypted message
      * @var string
      */
-    private $message;
+    private $encrypted;
 
     /**
      * Holds the message's status(send, read)
@@ -42,6 +52,24 @@ class Message
     private $setDate;
 
     /**
+     * Holds message's max length
+     */
+    public const MSG_MAX_LENGTH = 260000; // 262144 UTF-8
+
+    /**
+     * Attributs access key
+     * @var string
+     */
+    public const KEY_MSG_ID = "msgID";
+    public const KEY_MESSAGE = "message";
+    public const KEY_STATUS = "status";
+
+    /**
+     * Holds feed's last message
+     */
+    public const KEY_LAST_MSG = "last_message";
+
+    /**
      * Message type available
      * @var string
      */
@@ -52,24 +80,48 @@ class Message
      * Message type available
      * @var string
      */
-    public const MSG_STATUS_SEND = "send";
+    public const MSG_STATUS_SEND = "sent";
     public const MSG_STATUS_READ = "read";
 
-    public function __construct($msgID, $from, $type, $message, $status, $setDate)
+    /**
+     * Constructor
+     * @param string $privK private key to decrypte the encryted message
+     * @param User $from sender of the message's sender
+     * @param string $type message's type(text, picture, file, audio,...)
+     * @param string $encryted message encryted
+     * @param string $status message's status(send, read)
+     * @param string $msgID message's identifiant
+     * @param string $setDate message's sent date
+     */
+    public function __construct($privK, $from, $type, $encryted, $status, $msgID = null, $setDate = null)
     {
-        $this->msgID = $msgID;
+        if (($status != self::MSG_STATUS_SEND) && ($status != self::MSG_STATUS_READ)) {
+            throw new Exception("Message's status '$status' is not supported");
+        }
+        $this->msgID = (!empty($msgID)) ? $msgID : Discussion::generateDateCode(20);
+        $this->privK = $privK;
         $this->from = $from;
         $this->type = $type;
-        $this->message = $message;
+        $this->encrypted = $encryted;
         $this->status = $status;
-        $this->setDate = $setDate;
+        $this->setDate = (!empty($setDate)) ? $setDate : date('Y-m-d H:i:s');
+    }
+
+    /**
+     * Getter for message's id
+     * @return string message's id
+     */
+    public function getMessageID()
+    {
+        return $this->msgID;
     }
 
     /**
      * Getter for message's sender
      * @return User message's sender
      */
-    public function getSender(){
+    public function getSender()
+    {
         return $this->from;
     }
 
@@ -77,34 +129,47 @@ class Message
      * Getter for message's type
      * @return string message's type
      */
-    public function getType(){
+    public function getType()
+    {
         return $this->type;
     }
 
     /**
-     * Getter for message's content
-     * @return string message's content
+     * Getter message decrypted
+     * @return string message decrypted
      */
-    public function getMessage(){
-        return $this->message;
+    public function getMessage()
+    {
+        openssl_private_decrypt($this->encrypted, $decrypted, $this->privK);
+        return $decrypted;
     }
 
     /**
      * Getter for message's status
      * @return string message's status
      */
-    public function getStatus(){
-        return $this->status;   
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Getter for message's set date
+     * @return string message's set date
+     */
+    public function getSetDate()
+    {
+        return $this->setDate;
     }
 
     /**
      * To get a preview of the message
      * @return string a preview of thee message
      */
-    public function getMsgPreview()
+    public function getPreview()
     {
         if ($this->type == self::MSG_TYPE_TEXT) {
-            return substr($this->message, 0, 55);
+            return substr($this->getMessage(), 0, 55);
         }
         return self::MSG_TYPE_FILE;
     }
@@ -113,7 +178,8 @@ class Message
      * Getter for message's send hour
      * @return string message's send hour
      */
-    public function getHour(){
+    public function getHour()
+    {
         $unix = strtotime($this->setDate);
         return date("H:i", $unix);
     }
@@ -214,4 +280,53 @@ class Message
         }
         return $monthFr;
     }
+
+    /**
+     * To send a message
+     * @param Response $response to push in occured errors
+     * @param string $discuID discussion's id
+     */
+    public function sendMessage(Response $response, $discuID)
+    {
+        $sql = "INSERT INTO `Messages`(`msgID`, `discuId`, `from_pseudo`, `msgPrivateK`, `msgType`, `msg`, `msgStatus`, `msgSetDate`) VALUES (?,?,?,?,?,?,?,?)";
+        $params = [
+            $this->msgID,
+            $discuID,
+            $this->from->getPseudo(),
+            $this->privK,
+            $this->type,
+            $this->encrypted,
+            $this->status,
+            $this->setDate
+        ];
+        $pdo = $this->executeRequest($sql, $params);
+        if ($pdo->errorInfo()[0] != User::PDO_SUCCEESS) {
+            $errMsg = $pdo->errorInfo()[1];
+            $response->addError($errMsg, MyError::FATAL_ERROR);
+        }
+    }
+
+    /**
+     * To encrypte a message with a public key
+     * @param string $pubK public key to encrypt a message
+     * @param string $message message to encrypt
+     * @return string the message encrypted
+     */
+    public static function encrypt($pubK, $message)
+    {
+        openssl_public_encrypt($message, $encrypted, $pubK);
+        return $encrypted;
+    }
+   
+    /**
+     * To decrypte a message
+     * @param string $pubK public key to encrypt a message
+     * @param string $encrypted message to decrypt
+     * @return string the message encrypted
+     */
+    // private function decrypt($pubK, $encrypted)
+    // {
+    //     openssl_public_encrypt($message, $encrypted, $pubK);
+    //     return $encrypted;
+    // }
 }

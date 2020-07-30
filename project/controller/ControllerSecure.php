@@ -35,7 +35,7 @@ abstract class ControllerSecure extends Controller
     private const PSEUDO_REGEX = "#^[a-zA-Z]+[a-zA-Z0-9-_]*$#";
     private const NAME_REGEX = "#^[A-zÀ-ú-]+$#";
     private const PASSWORD_REGEX = "#^[a-zA-Z]+[a-zA-Z0-9-_]+$#";
-    protected const APALPHA_NUMERIC_REGEX = "#^[a-zA-Z0-9]+$#";
+    protected const ALPHA_NUMERIC_REGEX = "#^[a-zA-Z0-9]+$#";
     public const DATE_REGEX = "#^([1-9]|[1-2][0-9]|3[0-1])[/ ]([1-9]|1[0-2]|janvier|fevrier|mars|avril|mai|juin|juillet|aout|septembre|octobre|novembre|decembre)[/ ]([1-9]|[1-9][0-9]*)$#";
 
     /**
@@ -132,7 +132,7 @@ abstract class ControllerSecure extends Controller
                 break;
 
             case self::ALPHA_NUMERIC:
-                if (preg_match(self::APALPHA_NUMERIC_REGEX, $value) != 1) {
+                if (preg_match(self::ALPHA_NUMERIC_REGEX, $value) != 1) {
                     $errorMsg = "les valeurs autorisées pour ce champ sont les lettres et les chiffres sans espace";
                     $response->addError($errorMsg, $key);
                 }

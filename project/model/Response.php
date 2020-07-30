@@ -30,17 +30,27 @@ class Response
         $this->errors = [];
     }
 
+    // /**
+    //  * Setter for response's success status
+    //  * @param boolean $isSuccess success status
+    //  */
+    // public function setIsSuccess($isSuccess){
+    //     $this->isSuccess = $isSuccess;
+    // }
+
     /**
-     * Setter for response's success status
-     * @param boolean $isSuccess success status
+     * Check if the Response is successful
+     * @return boolean true if Response is successful else false
      */
-    public function setIsSuccess($isSuccess){
-        $this->isSuccess = $isSuccess;
+    public function isSuccess()
+    {
+        return ((count($this->results) > 0) || $this->isSuccess);
     }
 
     /**
      * To get a result stored at the key given in param
-     * @return string result stored at the key given in param
+     * @param string $key
+     * @return string|array|object result stored at the key given in param
      */
     public function getResult($key)
     {
@@ -48,7 +58,18 @@ class Response
     }
 
     /**
+     * Check if a result exist on the given key
+     * @param string $key
+     * @return boolean true if the result exist else false
+     */
+    public function existResult($key)
+    {
+        return key_exists($key, $this->results);
+    }
+
+    /**
      * To get a error stored at the key given in param
+     * @param string $key
      * @return string error stored at the key given in param
      */
     public function getError($key)
@@ -101,15 +122,6 @@ class Response
     public function getAttributs()
     {
         return get_object_vars($this);
-    }
-
-    /**
-     * Check if the Response is successful
-     * @return boolean true if Response is successful else false
-     */
-    public function isSuccess()
-    {
-        return ((count($this->results) > 0) || $this->isSuccess);
     }
 
     /**

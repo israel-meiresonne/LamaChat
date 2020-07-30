@@ -90,11 +90,12 @@ class Discussion extends Model
             $msgID = $pdoLine["msgID"];
             $pseudo = $pdoLine["from_pseudo"];
             $from = (key_exists($pseudo, $this->participants)) ? $this->participants[$pseudo] : $this->createUser($pdoLine);
+            $privK = $pdoLine["msgPrivateK"];
             $type = $pdoLine["msgType"];
             $msg = $pdoLine["msg"];
             $status = $pdoLine["msgStatus"];
             $setDate = $pdoLine["msgSetDate"];
-            $msgObj = new Message($msgID, $from, $type, $msg, $status, $setDate);
+            $msgObj = new Message($privK, $from, $type, $msg, $status, $msgID, $setDate);
             $this->messages[strtotime($setDate)] = $msgObj;
         }
         ksort($this->messages);
@@ -137,6 +138,24 @@ class Discussion extends Model
     }
 
     /**
+     * To get one message from discussion
+     * @param string $msgID message's identifiant
+     * @return Message a message from discussion
+     */
+    public function getMessage($msgID)
+    {
+        $messages = $this->getMessages();
+        foreach ($messages as $unix => $message) {
+            if ($message->getMessageID() == $msgID) {
+                return $messages[$unix];
+                break;
+            }
+        }
+        $discuID = $this->getDiscuID();
+        throw new Exception("Message with id '$msgID' don't exist in discussion '$discuID'");
+    }
+
+    /**
      * To get correspondant that discuss with the current user
      * + NOTE: only work if there is two participants (the current user and his correspondant)
      * @param string $pseudo current user's pseudo
@@ -169,7 +188,7 @@ class Discussion extends Model
          * @var Message
          */
         $msg = end($this->messages);
-        return $msg ? $msg->getMsgPreview() : "[vide]";
+        return $msg ? $msg->getPreview() : "[vide]";
     }
 
     /**

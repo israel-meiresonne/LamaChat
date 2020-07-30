@@ -73,13 +73,20 @@
 }
 
 .msg-window-inner {
-    padding: 10px 30px;
+    height: 90%;
+    padding: 10px 30px 0;
+    /* overflow: auto; */
+}
+
+.msg-window-feed {
+    height: 100%;
+    overflow: auto;
 }
 
 .msg-wrap {
     /* display: flex; */
     position: relative;
-    margin-bottom: 15px;
+    padding-bottom: 15px;
     font-family: var(--main-font-family);
 }
 
@@ -177,6 +184,11 @@
 
 .msg-status .v_symbol-wrap, .msg-status .o_symbol-wrap {
     margin: auto;
+}
+
+.msg-window .msg_sender-container{
+    position: relative !important;
+    height: 10%;
 }
 
 .msg_sender-container {

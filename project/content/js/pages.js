@@ -1,4 +1,8 @@
 (function () {
+    myScroll = function (x, v = 0, t = (TS)) {
+        $(x).animate({ "scrollTop": v*BNR }, t);
+    }
+
     displayOn = function (x) {
         if (!($(x).css("display") == "block")) {
             $(x).removeClass("display_none");
@@ -25,11 +29,22 @@
             });
         }
     }
-    updateImg = function(img, inp){
+    updateImg = function (img, inp) {
         var f = inp.files[0];
         img.src = window.URL.createObjectURL(f);
     }
+
+    scrollBottom = function (w) {
+        var x = $(w).find(".msg-window-feed");
+        var h = $(x).height();
+        // console.log("w", $(w));
+        // console.log("x", x);
+        // console.log("h", h);
+        myScroll(x, h);
+    }
+
     $(document).ready(function () {
+        lunchUpdate();
         /*————————————————————— SIGN PAGE DOWN ——————————————————————————————*/
         $("#sign_up_switcher, #sign_in_switcher").click(function () {
             var windId = this.getAttribute("data-window_id");
@@ -61,7 +76,6 @@
                 displayOff(p);
             }
         });
-
         $("#setting_button").click(function () {
             var x = $("#id01");
             fadeOn(x);
@@ -70,15 +84,15 @@
             var x = $("#id01");
             fadeOff(x);
         });
-        $("#id01 .setting-content .data-key_value-value").click(function(){
+        $("#id01 .setting-content .data-key_value-value").click(function () {
             $(this).attr("contenteditable", true);
             $(this).focus();
         });
-        $("#edit_img_btn").click(function(){
+        $("#edit_img_btn").click(function () {
             $("input[type='file']").click();
         });
         $("#edit_img_input").change(function () {
-            var img =  $("#edit_img")[0];
+            var img = $("#edit_img")[0];
             updateImg(img, this);
         });
 
@@ -86,12 +100,12 @@
             var x = $("#contact_window");
             fadeOff(x);
         });
-        
+
         $("#profile_close_button").click(function () {
             var x = $("#user_profile");
             fadeOff(x);
         });
-        
+
         $("#search_button").click(function () {
             var x = $("#search_window");
             fadeOn(x);

@@ -21,7 +21,7 @@
         }
     }
 
-    openMail = function (personName) {
+    openMail = function (id) {
         var i;
         var x = document.getElementsByClassName("person");
         for (i = 0; i < x.length; i++) {
@@ -31,8 +31,9 @@
         for (i = 0; i < x.length; i++) {
             x[i].className = x[i].className.replace(" w3-light-grey", "");
         }
-        document.getElementById(personName).style.display = "block";
+        document.getElementById(id).style.display = "block";
         event.currentTarget.className += " w3-light-grey";
+        scrollBottom("#"+id);
     }
 
 

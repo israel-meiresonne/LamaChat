@@ -5,6 +5,9 @@ $discussions = $user->getDiscussions();
 $nbDiscu = count($discussions);
 $discuTitle = ($nbDiscu > 0) ? "Discussions (" . $nbDiscu . ")" : "Discussion (" . $nbDiscu . ")";
 ?>
+<script>
+    const SENDER = "<?= $user->getPseudo() ?>";
+</script>
 <!-- Side Navigation -->
 <nav class="w3-sidebar w3-bar-block w3-collapse w3-white w3-animate-left w3-card" style="z-index:3;width:320px;" id="mySidebar">
     <div class="menu-container">
