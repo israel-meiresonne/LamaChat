@@ -183,7 +183,8 @@ class Discussion extends Model
      * To get a preview of the last message
      * @return string a preview of thee last message
      */
-    public function getMsgPreview(){
+    public function getMsgPreview()
+    {
         /**
          * @var Message
          */
@@ -208,7 +209,7 @@ class Discussion extends Model
         return $user;
     }
 
-        /**
+    /**
      * Generate a alpha numerique sequence in specified length
      * @param int $length
      * @return string alpha numerique sequence in specified length
@@ -257,5 +258,42 @@ class Discussion extends Model
         $sequence = self::generateCode($nbCharLeft) . $sequence . self::generateCode($nbCharRight);
         $sequence = strtolower($sequence);
         return str_shuffle($sequence);
+    }
+
+    /*———————————————————————————— STATS ————————————————————————————————————*/
+    /**
+     * To get number of discussion open by users
+     * @return int number of discussion open by users
+     */
+    public static function getNbDiscussion()
+    {
+        $sql = "SELECT COUNT(*) as 'nbDiscussion' FROM `Discussions`";
+        $pdo = parent::executeRequest($sql);
+        return ((int) $pdo->fetchAll(PDO::FETCH_COLUMN)[0]);
+    }
+
+    /**
+     * To get number Discussions open per time
+     * @param string $id id of the chart's container
+     * + also used to name the chart function builder in Js code
+     * @param string the sql function to get time
+     * @return Chart 
+     */
+    public static function discussionPerTime($id, $func)
+    {
+        $sql = "SELECT $func(`discuSetDate`) as 'time', COUNT(`discuSetDate`) as 'number' FROM `Discussions` GROUP BY $func(`discuSetDate`) ORDER BY 'time'  ASC";
+        $pdo = parent::executeRequest($sql);
+        $tab = $pdo->fetchAll();
+        $rows = [];
+        foreach ($tab as $tabLine) {
+            $line = [$tabLine['time'], ((int)$tabLine['number'])];
+            array_push($rows, $line);
+        }
+        $colNames = ["time", "chats"];
+        $chart = new Chart($id, $colNames, $rows);
+        $chart->setTitle("Nombre the chat ouvert par jour");
+        $chart->setXTitle("Dates");
+        $chart->setYTitle("Nombre de chat ouvert");
+        return $chart;
     }
 }

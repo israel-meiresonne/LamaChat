@@ -1306,4 +1306,13 @@ class User extends Model
         $msgObj = new Message($privK, $from, $type, $msg, $status, $msgID, $setDate);
         return $msgObj;
     }
+
+    /*———————————————————————————— STATS ————————————————————————————————————*/
+    public static function getNbUsers()
+    {
+        $sql = "SELECT COUNT(*) as 'nbUser' FROM `Users`";
+        $pdo = parent::executeRequest($sql);
+        $nbUser = (int) $pdo->fetchAll(PDO::FETCH_COLUMN)[0];
+        return $nbUser;
+    }
 }

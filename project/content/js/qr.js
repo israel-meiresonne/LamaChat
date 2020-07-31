@@ -1,6 +1,10 @@
 (function () {
-    const json_encode = function (value) {
+    json_encode = function (value) {
         return JSON.stringify(value)
+    }
+
+    json_decode = function (value) {
+        return JSON.parse(value)
     }
 
     var addErr = function (x, err) {

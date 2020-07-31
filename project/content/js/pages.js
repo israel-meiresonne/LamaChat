@@ -52,11 +52,12 @@
         var sc = $(b).attr("data-soundclass");
         var ss = $("."+sc);
         var nb = ss.length;
-        // console.log(ss);
         for(var i = 0; i < nb; i++){
-            fadeOff(ss[i]);
+            // fadeOff(ss[i]);
+            $(ss[i]).css("display", "none");
         }
-        fadeOn($("#"+s)[0]);
+        var x = $("#"+s)[0];
+        fadeOn(x);
     }
 
     $(document).ready(function () {

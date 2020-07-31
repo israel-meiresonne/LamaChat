@@ -2,6 +2,7 @@
 
 require_once 'framework/Model.php';
 require_once 'model/User.php';
+require_once 'model/Chart.php';
 require_once 'model/MyError.php';
 
 /**
@@ -317,16 +318,41 @@ class Message extends Model
         openssl_public_encrypt($message, $encrypted, $pubK);
         return $encrypted;
     }
-   
+
+    /*———————————————————————————— STATS ————————————————————————————————————*/
     /**
-     * To decrypte a message
-     * @param string $pubK public key to encrypt a message
-     * @param string $encrypted message to decrypt
-     * @return string the message encrypted
+     * To get number of messages sent by users
+     * @return int number of messages sent by users
      */
-    // private function decrypt($pubK, $encrypted)
-    // {
-    //     openssl_public_encrypt($message, $encrypted, $pubK);
-    //     return $encrypted;
-    // }
+    public static function getNbMessage()
+    {
+        $sql = "SELECT COUNT(*) as 'nbMessage' FROM `Messages`";
+        $pdo = parent::executeRequest($sql);
+        return ((int) $pdo->fetchAll(PDO::FETCH_COLUMN)[0]);
+    }
+
+    /**
+     * To get number message sent per time
+     * @param string $id id of the chart's container
+     * + also used to name the chart function builder in Js code
+     * @param string the sql function to get time
+     * @return Chart 
+     */
+    public static function messagePerTime($id, $func)
+    {
+        $sql = "SELECT $func(`msgSetDate`) as 'time', COUNT(`msgSetDate`) as 'number' FROM `Messages` GROUP BY $func(`msgSetDate`) ORDER BY 'time'  ASC";
+        $pdo = parent::executeRequest($sql);
+        $tab = $pdo->fetchAll();
+        $rows = [];
+        foreach ($tab as $tabLine) {
+            $line = [$tabLine['time'], ((int)$tabLine['number'])];
+            array_push($rows, $line);
+        }
+        $colNames = ["time", "messages"];
+        $chart = new Chart($id, $colNames, $rows);
+        $chart->setTitle("Nombre the message échangé par jour");
+        $chart->setXTitle("Dates");
+        $chart->setYTitle("Nombre de message échangé");
+        return $chart;
+    }
 }

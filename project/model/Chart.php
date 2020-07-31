@@ -8,6 +8,12 @@ class Chart extends Model
      * @var string chart's title
      */
     private $title;
+   
+    /**
+     * @var string id of the chart's container
+     * + also used to name the chart function builder in Js code
+     */
+    private $id;
 
     /**
      * @var string the chart

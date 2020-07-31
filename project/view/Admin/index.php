@@ -1,6 +1,89 @@
 <?php
+require_once 'model/Chart.php';
+
 $this->title = "Dashboard";
+echo $msgChart->getChart();
+echo $chatChart->getChart();
+// $colNames = ['Month', 'Bolivia'];
+// $tab = [
+//     $colNames,
+//     ['2004/05', 165],
+//     ['2005/06', 135],
+//     ['2006/07', 157],
+//     ['2007/08', 139],
+//     ['2008/09', 136]
+// ];
+// $rows = [
+//     ['2004/05', 165],
+//     ['2005/06', 135],
+//     ['2006/07', 157],
+//     ['2007/08', 139],
+//     ['2008/09', 136]
+// ];
+// $id = "chat_board";
+// $chart = new Chart($id, $colNames, $rows);
+// echo $chart->getChart();
 ?>
+<!-- <script type="text/javascript">
+    google.charts.load('current', {
+        'packages': ['corechart']
+    });
+    google.charts.setOnLoadCallback(drawVisualization);
+
+    function drawVisualization() {
+        // Some raw data (not necessarily accurate)
+        var data = google.visualization.arrayToDataTable([
+            ['Month', 'Bolivia'],
+            ['2004/05', 165],
+            ['2005/06', 135],
+            ['2006/07', 157],
+            ['2007/08', 139],
+            ['2008/09', 136]
+        ]);
+
+        // var options = {
+        //     title: 'Monthly Coffee Production by Country',
+        //     vAxis: {
+        //         title: 'Cups'
+        //     },
+        //     hAxis: {
+        //         title: 'Month'
+        //     },
+        //     seriesType: 'bars',
+        //     series: {
+        //         5: {
+        //             type: 'line'
+        //         }
+        //     },
+        //     width: $("#chat_board").parent().width(),
+        //     // height: 500
+        // };
+
+        var options = {};
+        options.title = 'Monthly Coffee Production by Country';
+
+        options.vAxis = {};
+        options.vAxis.title = 'Cups';
+
+        options.hAxis = {};
+        options.hAxis.title = 'Month';
+
+        options.seriesType = 'bars';
+
+        options.series = {};
+        options.series[5] = {};
+        options.series[5].type = 'line';
+
+        options.width = $("#chat_board").parent().width();
+        options.height = 500;
+
+        var chart = new google.visualization.ComboChart(document.getElementById('chat_board'));
+        chart.draw(data, options);
+    }
+    $(window).resize(() => {
+        drawVisualization();
+    });
+</script> -->
 
 <body class="w3-light-grey">
 
@@ -60,27 +143,27 @@ $this->title = "Dashboard";
                 <div class="w3-container w3-orange w3-text-white w3-padding-16">
                     <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div>
                     <div class="w3-right">
-                        <h3>50</h3>
+                        <h3><?= $nbUser ?></h3>
                     </div>
                     <div class="w3-clear"></div>
                     <h4>Users</h4>
                 </div>
             </div>
             <div class="dashboard-menu-btn piano_btn w3-third" data-sound="chat_board" data-soundclass="panel-board">
-                <div class="w3-container w3-blue w3-padding-16">
-                    <div class="w3-left"><i class="fa fa-eye w3-xxxlarge"></i></div>
+                <div class="w3-container w3-red w3-padding-16">
+                    <div class="w3-left"><i class="fa fa-comment w3-xxxlarge"></i></div>
                     <div class="w3-right">
-                        <h3>99</h3>
+                        <h3><?= $nbDiscussion ?></h3>
                     </div>
                     <div class="w3-clear"></div>
                     <h4>Chats</h4>
                 </div>
             </div>
             <div class="dashboard-menu-btn piano_btn w3-third" data-sound="message_board" data-soundclass="panel-board">
-                <div class="w3-container w3-red w3-padding-16">
-                    <div class="w3-left"><i class="fa fa-comment w3-xxxlarge"></i></div>
+                <div class="w3-container w3-blue w3-padding-16">
+                    <div class="w3-left"><i class="fa fa-eye w3-xxxlarge"></i></div>
                     <div class="w3-right">
-                        <h3>52</h3>
+                        <h3><?= $nbMessage ?></h3>
                     </div>
                     <div class="w3-clear"></div>
                     <h4>Messages</h4>
@@ -88,8 +171,8 @@ $this->title = "Dashboard";
             </div>
         </div>
 
-        <div class="w3-panel">
-            <div id="user_board"  class="panel-board">
+        <div class="panel-container w3-panel">
+            <div id="user_board" class="panel-board">
                 <table class="user-table">
                     <tr>
                         <th class="image"><span>photo</span></th>
