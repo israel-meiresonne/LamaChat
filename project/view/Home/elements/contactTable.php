@@ -1,20 +1,14 @@
-<!-- 
-need: 
-    $contacts =>  list of user with his anitialized attributs:
-                - Pseudo
-                - Firstname
-                - Lastname
-                - Picture
-                - Status
-                - Relationship
-    $dataAttribut: attributs "data-..." to put on button
-
--->
-
+<?php
+require_once 'model/User.php';
+require_once 'model/Discussion.php';
+/**
+ * ——————————————————————————————— NEED —————————————————————————————————————
+ * @param User[] $contacts =>  list of user's contacts
+ * @param string $dataAttribut: attributs "data-..." to put on button
+ */
+?>
 <table class="contact-table">
     <?php
-    require_once 'model/User.php';
-    require_once 'model/Discussion.php';
     // $contacts = $user->getContacts();
     foreach ($contacts as $contact) :
         $ctcPseu = $contact->getPseudo();

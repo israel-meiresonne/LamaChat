@@ -1,6 +1,7 @@
 <?php
 
 require_once 'framework/Controller.php';
+require_once 'model/User.php';
 require_once 'model/MyError.php';
 require_once 'ControllerHome.php';
 require_once 'ControllerSign.php';
@@ -43,24 +44,57 @@ abstract class ControllerSecure extends Controller
      */
     protected function secureSession()
     {
-        $ctr = strtolower(str_replace("Controller", "", get_class($this)));
+        // $ctr = strtolower(str_replace("Controller", "", get_class($this)));
+        $ctr = get_class($this);
+        // var_dump($ctr);
+        // var_dump(ControllerHome::class);
+        // var_dump($this->extractControllerName(ControllerHome::class));
         switch ($ctr) {
-            case ControllerSign::CTR_NAME:
+                // case ControllerSign::CTR_NAME:
+            case ControllerSign::class:
                 if ($this->keysExist()) {
                     $this->setUser();
-                    ($this->user->userExist()) ? $this->redirect(ControllerHome::CTR_NAME) : null;
+                    // ($this->user->userExist()) ? $this->redirect(ControllerHome::CTR_NAME) : null;
+                    $class = $this->extractControllerName(ControllerHome::class);
+                    ($this->user->userExist()) ? $this->redirect($class) : null;
                 }
                 break;
 
-            case ControllerHome::CTR_NAME:
+                // case ControllerHome::CTR_NAME:
+            case ControllerHome::class:
                 if ($this->keysExist()) {
                     $this->setUser();
-                    !($this->user->userExist()) ? $this->redirect(ControllerSign::CTR_NAME) : null;
+                    // !($this->user->userExist()) ? $this->redirect(ControllerSign::CTR_NAME) : null;
+                    $class = $this->extractControllerName(ControllerSign::class);
+                    (!$this->user->userExist()) ? $this->redirect($class) : null;
                 } else {
-                    $this->redirect(ControllerSign::CTR_NAME);
+                    $class = $this->extractControllerName(ControllerSign::class);
+                    // $this->redirect(ControllerSign::CTR_NAME);
+                    $this->redirect($class);
+                }
+                break;
+
+            case ControllerAdmin::class:
+                if ($this->keysExist()) {
+                    $this->setUser();
+                    if ($this->user->getPermission() == User::PERMIT_ADMIN) {
+                        $class = $this->extractControllerName(ControllerSign::class);
+                        (!$this->user->userExist()) ? $this->redirect($class) : null;
+                    } else {
+                        $class = $this->extractControllerName(ControllerSign::class);
+                        $this->redirect($class);
+                    }
+                } else {
+                    $class = $this->extractControllerName(ControllerSign::class);
+                    $this->redirect($class);
                 }
                 break;
         }
+    }
+
+    protected function extractControllerName($class)
+    {
+        return strtolower(str_replace("Controller", "", $class));
     }
 
     /**

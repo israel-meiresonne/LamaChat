@@ -1,6 +1,6 @@
 (function () {
-    myScroll = function (x, v = 0, t = (TS)) {
-        $(x).animate({ "scrollTop": v*BNR }, t);
+    myScroll = function (x, h = 0, t = (TS)) {
+        $(x).animate({ "scrollTop": h }, t);
     }
 
     displayOn = function (x) {
@@ -36,11 +36,27 @@
 
     scrollBottom = function (w) {
         var x = $(w).find(".msg-window-feed");
-        var h = $(x).height();
-        // console.log("w", $(w));
-        // console.log("x", x);
-        // console.log("h", h);
+        var ms = $(x).find(".msg-wrap");
+        var nb = ms.length;
+        var max = 0;
+        for (var i = 0; i < nb; i++) {
+            var mh = $(ms[i]).height();
+            max = (mh > max) ? mh : max;
+        }
+        var h = max * nb;
         myScroll(x, h);
+    }
+
+    piano = function (b) {
+        var s = $(b).attr("data-sound");
+        var sc = $(b).attr("data-soundclass");
+        var ss = $("."+sc);
+        var nb = ss.length;
+        // console.log(ss);
+        for(var i = 0; i < nb; i++){
+            fadeOff(ss[i]);
+        }
+        fadeOn($("#"+s)[0]);
     }
 
     $(document).ready(function () {
@@ -117,5 +133,12 @@
             fadeOff(x);
         });
         /*————————————————————— DISCUSSION PAGE UP ——————————————————————————*/
+        /*————————————————————— ADMIN PAGE DOWN —————————————————————————————*/
+        $(".piano_btn").click((x) => {
+        // $(".piano_btn").click(function () {
+            var b = $(x.currentTarget)[0];
+            piano(b);
+        })
+        /*————————————————————— ADMIN PAGE UP ———————————————————————————————*/
     });
 }).call(this);

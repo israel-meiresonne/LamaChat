@@ -1,0 +1,38 @@
+.page-content {
+    position: relative;
+    top: 43px;
+}
+
+.dashboard-menu .dashboard-menu-btn .w3-container{
+    cursor: pointer;
+}
+
+/*—————————————————————— USER MANAGER DOWN ——————————————————————————————————*/
+
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--color-orange-05);
+}
+
+.user-table tr:nth-child(even) {
+    background-color: var(--color-orange-05);
+}
+
+.user-table th {
+    text-align: left;
+}
+
+.user-table th::first-letter {
+    text-transform: capitalize;
+}
+
+.user-table td {
+    padding: 0 5px;
+}
+
+.user-table .img-button {
+    height: 50px;
+}
+
+/*—————————————————————— USER MANAGER UP ————————————————————————————————————*/

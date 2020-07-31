@@ -128,6 +128,11 @@ class User extends Model
     public const KEY_BIRTHDATE = "birthdate";
 
     /**
+     * @var string holds admin permission
+     */
+    public const PERMIT_ADMIN = "admin";
+
+    /**
      * Holds list of supported picture extension
      */
     public const VALID_EXTENSIONS = ["jpg", "jpeg", "png"];
@@ -374,7 +379,18 @@ class User extends Model
      */
     public function getStatus()
     {
+        (!isset($this->status)) ? $this->setProperties() : null;
         return $this->status;
+    }
+
+    /**
+     * Getter for user's permission
+     * @return string user's permission
+     */
+    public function getPermission()
+    {
+        (!isset($this->permission)) ? $this->setProperties() : null;
+        return $this->permission;
     }
 
     /**

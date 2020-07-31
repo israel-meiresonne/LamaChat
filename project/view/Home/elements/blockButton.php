@@ -1,11 +1,12 @@
-<!-- 
-need: 
-    $ctcPseu => pseudo of a user's contact
-    $relationship => relationship of a contact with the current user
--->
 <?php
-    require_once 'model/User.php';
-    require_once 'model/Discussion.php';
+require_once 'model/User.php';
+require_once 'model/Discussion.php';
+/**
+ * ——————————————————————————————— NEED —————————————————————————————————————
+ * @param string $ctcPseu pseudo of a user's contact
+ * @param string $relationship relationship of a contact with the current user
+ *-->
+ */
 $btnId = 'relationStatus' . Discussion::generateDateCode(25);
 switch ($relationship):
     case User::KNOW:
