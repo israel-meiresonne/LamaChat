@@ -1364,11 +1364,24 @@ class User extends Model
         ) {
             throw new Exception("The permission '$permi' is not supported");
         }
-        $sql = "UPDATE `Users` SET `permission` = '$permi' WHERE `Users`.`pseudo` = '$pseudo';";
-        $pdo = $this->executeRequest($sql);
-        if ($pdo->errorInfo()[0] != self::PDO_SUCCEESS) {
-            $errMsg = $pdo->errorInfo()[1];
+        $user = $this->getUser($pseudo);
+        $userPermi = $user->getPermission();
+        if(($userPermi == self::PERMIT_DELETED) && ($permi == self::PERMIT_BANISHED)){
+            $errMsg = "Vous ne pouvez pas banir un utilisateur supprimé";
             $response->addError($errMsg, MyError::FATAL_ERROR);
+        }
+        
+        if(($userPermi == self::PERMIT_BANISHED) && ($permi == self::PERMIT_DELETED)){
+            $errMsg = "Vous ne pouvez pas supprimer un utilisateur bani";
+            $response->addError($errMsg, MyError::FATAL_ERROR);
+        }
+        if(!$response->containError()){
+            $sql = "UPDATE `Users` SET `permission` = '$permi' WHERE `Users`.`pseudo` = '$pseudo';";
+            $pdo = $this->executeRequest($sql);
+            if ($pdo->errorInfo()[0] != self::PDO_SUCCEESS) {
+                $errMsg = $pdo->errorInfo()[1];
+                $response->addError($errMsg, MyError::FATAL_ERROR);
+            }
         }
     }
 

@@ -12,6 +12,9 @@ class ControllerHome extends ControllerSecure
      * ControllerHome's actions
      * @var string
      */
+    public const ACTION_MESSAGE = "message";
+    public const ACTION_BANISHED = "banished";
+    public const ACTION_DELETED = "deleted";
     public const ACTION_SEARCH_CONTACT = "home/searchContact";
     public const ACTION_ADD_CONTACT = "home/addContact";
     public const ACTION_REMOVE_CONTACT = "home/removeContact";
@@ -36,10 +39,6 @@ class ControllerHome extends ControllerSecure
     public const RSP_WRITE_DISCU_FEED = "discuFeed";
     public const RSP_SEARCH_KEY = "searchWord";
 
-    public function __construct()
-    {
-    }
-
     public function index()
     {
         $this->secureSession();
@@ -47,6 +46,24 @@ class ControllerHome extends ControllerSecure
         $this->user->setDiscussions();
         $this->user->setContacts();
         $this->generateView(array("user" => $this->user));
+    }
+    
+    public function banished()
+    {
+        $this->secureSession();
+        $datas = [
+            "message" => "ce compte a été bani"
+        ];
+        $this->generateView($datas, self::ACTION_MESSAGE);
+    }
+   
+    public function deleted()
+    {
+        $this->secureSession();
+        $datas = [
+            "message" => "ce compte n'existe plus"
+        ];
+        $this->generateView($datas, self::ACTION_MESSAGE);
     }
 
     /**

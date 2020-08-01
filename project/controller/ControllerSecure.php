@@ -44,32 +44,52 @@ abstract class ControllerSecure extends Controller
      */
     protected function secureSession()
     {
-        // $ctr = strtolower(str_replace("Controller", "", get_class($this)));
         $ctr = get_class($this);
-        // var_dump($ctr);
-        // var_dump(ControllerHome::class);
-        // var_dump($this->extractControllerName(ControllerHome::class));
         switch ($ctr) {
-                // case ControllerSign::CTR_NAME:
             case ControllerSign::class:
                 if ($this->keysExist()) {
                     $this->setUser();
-                    // ($this->user->userExist()) ? $this->redirect(ControllerHome::CTR_NAME) : null;
                     $class = $this->extractControllerName(ControllerHome::class);
                     ($this->user->userExist()) ? $this->redirect($class) : null;
                 }
                 break;
 
-                // case ControllerHome::CTR_NAME:
             case ControllerHome::class:
                 if ($this->keysExist()) {
                     $this->setUser();
-                    // !($this->user->userExist()) ? $this->redirect(ControllerSign::CTR_NAME) : null;
                     $class = $this->extractControllerName(ControllerSign::class);
                     (!$this->user->userExist()) ? $this->redirect($class) : null;
+                    $permi = $this->user->getPermission();
+                    $action = ($this->request->existingParameter("action")) ? $this->request->getParameter("action") : null;
+                    switch ($action) {
+                        case ControllerHome::ACTION_BANISHED:
+                            if ($permi != User::PERMIT_BANISHED) {
+                                $class = $this->extractControllerName(ControllerHome::class);
+                                $this->redirect($class);
+                            }
+                            break;
+                        case ControllerHome::ACTION_DELETED:
+                            if ($permi != User::PERMIT_DELETED) {
+                                $class = $this->extractControllerName(ControllerHome::class);
+                                $this->redirect($class);
+                            }
+                            break;
+                        default:
+                            switch ($permi) {
+                                case User::PERMIT_BANISHED:
+                                    $hclass = $this->extractControllerName(ControllerHome::class);
+                                    $this->redirect($hclass, ControllerHome::ACTION_BANISHED);
+                                    break;
+
+                                case User::PERMIT_DELETED:
+                                    $hclass = $this->extractControllerName(ControllerHome::class);
+                                    $this->redirect($hclass, ControllerHome::ACTION_DELETED);
+                                    break;
+                            }
+                            break;
+                    }
                 } else {
                     $class = $this->extractControllerName(ControllerSign::class);
-                    // $this->redirect(ControllerSign::CTR_NAME);
                     $this->redirect($class);
                 }
                 break;
