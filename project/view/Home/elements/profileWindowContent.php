@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
  * @param User $user a user to display's informations
@@ -26,6 +27,11 @@
     <div class="data-key_value-wrap">
         <span class="data-key_value-key">nom:</span>
         <span class="data-key_value-value"><?= $user->getLastname() ?></span>
+    </div>
+    <div class="data-key_value-wrap">
+        <span class="data-key_value-key">date de naissance:</span>
+        <span class="data-key_value-value"><?= $user->getBirthdate() ?></span>
+        <p class="comment"></p>
     </div>
     <div class="data-key_value-wrap">
         <span class="data-key_value-key">status:</span>

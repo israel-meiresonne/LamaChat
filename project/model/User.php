@@ -107,7 +107,7 @@ class User extends Model
      * Holds the directory where to store user's profil picture
      * @var string
      */
-    private const PICTURE_DIR = "content/images/user-profile/";
+    public const PICTURE_DIR = "content/images/user-profile/";
 
     /**
      * Holds the directory where to store user's profil picture
@@ -122,15 +122,28 @@ class User extends Model
     public const KEY_PSEUDO = "pseudo";
     public const KEY_FIRSTNAME = "firstname";
     public const KEY_LASTNAME = "lastname";
+    public const KEY_BIRTHDATE = "birthdate";
     public const KEY_PSW = "password";
     public const KEY_PICTURE = "picture";
     public const KEY_STATUS = "status";
-    public const KEY_BIRTHDATE = "birthdate";
+    public const KEY_PERMISSION = "permission";
 
     /**
      * @var string holds admin permission
      */
     public const PERMIT_ADMIN = "admin";
+    /**
+     * @var string holds user permission
+     */
+    public const PERMIT_USER = "user";
+    /**
+     * @var string holds banished permission
+     */
+    public const PERMIT_BANISHED = "banished";
+    /**
+     * @var string holds banished permission
+     */
+    public const PERMIT_DELETED = "deleted";
 
     /**
      * Holds list of supported picture extension
@@ -304,8 +317,12 @@ class User extends Model
     public function getBirthdate()
     {
         (!isset($this->birthdate)) ? $this->setProperties() : null;
-        $time = strtotime($this->birthdate);
-        $date = date("j/m/Y", $time);
+        if (empty($this->birthdate)) {
+            $date = "aucune";
+        } else {
+            $time = strtotime($this->birthdate);
+            $date = date("j/m/Y", $time);
+        }
         return $date;
     }
 
@@ -443,14 +460,18 @@ class User extends Model
      */
     public function setProperties()
     {
-        if (empty($this->privK) || empty($this->pubK)) {
-            throw new Exception("Private and public key must first be initialized");
+        if ((empty($this->privK) || empty($this->pubK)) && empty($this->pseudo)) {
+            throw new Exception("Private and public key or pseudo must first be initialized");
         }
-        $sql = "SELECT * 
-        FROM `UsersKeys` uk
-        JOIN `Users` u on uk.pseudo_ = u.pseudo
-        WHERE privateK = '$this->privK' AND publicK = '$this->pubK'
-        ORDER BY `uk`.`keySetDate` DESC";
+        if (isset($this->privK) && isset($this->pubK)) {
+            $sql = "SELECT * 
+            FROM `UsersKeys` uk
+            JOIN `Users` u on uk.pseudo_ = u.pseudo
+            WHERE privateK = '$this->privK' AND publicK = '$this->pubK'
+            ORDER BY `uk`.`keySetDate` DESC";
+        } else {
+            $sql = "SELECT * FROM `Users` WHERE pseudo = '$this->pseudo'";
+        }
         $userPDO = parent::executeRequest($sql);
         if ($userPDO->rowCount() == 1) {
             $user = $userPDO->fetch();
@@ -663,7 +684,8 @@ class User extends Model
      */
     public function setDiscussions()
     {
-        $this->setProperties();
+        // $this->setProperties();
+        (!isset($this->pseudo)) ? $this->setProperties() : null;
         $pseudo = $this->getPseudo();
         // if (empty($this->pseudo)) {
         //     throw new Exception("User's pseudo must first be initialized");
@@ -762,7 +784,7 @@ class User extends Model
     public function readMessage($response, $discuID)
     {
         $pseudo = $this->getPseudo();
-        $sql = 'UPDATE `Messages` SET `msgStatus` = "'. Message::MSG_STATUS_READ .'" WHERE `discuId` = "'. $discuID .'" AND `from_pseudo` != "'. $pseudo .'"';
+        $sql = 'UPDATE `Messages` SET `msgStatus` = "' . Message::MSG_STATUS_READ . '" WHERE `discuId` = "' . $discuID . '" AND `from_pseudo` != "' . $pseudo . '"';
         $pdo = $this->executeRequest($sql);
         if ($pdo->errorInfo()[0] != self::PDO_SUCCEESS) {
             $errMsg = $pdo->errorInfo()[1];
@@ -808,6 +830,25 @@ class User extends Model
         $contact->setPermission($pdoLine["permission"]);
         $contact->setRelationship($pdoLine["contactStatus"]);
         return $contact;
+    }
+
+    /**
+     * Create a new User
+     * @param string[] $pdoLine line from database witch contain user's properties
+     * @return User a User instance
+     */
+    public static function createUser($pdoLine)
+    {
+        $user = new User();
+        $user->pseudo = $pdoLine["pseudo"];
+        $user->firstname = $pdoLine["firstname"];
+        $user->lastname = $pdoLine["lastname"];
+        $user->birthdate = $pdoLine["birthdate"];
+        $user->picture = $pdoLine["picture"];
+        $user->status = $pdoLine["status"];
+        $user->permission = $pdoLine["permission"];
+        // $user->relationship = $pdoLine["contactStatus"];
+        return $user;
     }
 
     /**
@@ -1184,7 +1225,7 @@ class User extends Model
 
         $this->getLastForeignMessages($response, $discuID, $msgSetDate);
         $this->getLastMessage($response, $discuID, $msgSetDate);
-        
+
         if (!$response->containError()) {
             $response->addResult(Discussion::DISCU_ID, $discuID);
         }
@@ -1252,7 +1293,7 @@ class User extends Model
             }
         }
     }
-    
+
     /**
      * To get a discussion's last messages
      * + messages find are pushed in $response
@@ -1307,12 +1348,70 @@ class User extends Model
         return $msgObj;
     }
 
-    /*———————————————————————————— STATS ————————————————————————————————————*/
+    /*———————————————————————————— ADMIN FUNCTION DOWN ——————————————————————*/
+    /**
+     * To update a user's permission attribut
+     * @param Response $response to push in occured errors
+     * @param string $pseudo pseudo of the user to update his permission
+     * @param string $permi permission to give to the user
+     */
+    public function updatePermission(Response $response, $pseudo, $permi)
+    {
+        if (($permi != self::PERMIT_ADMIN)
+            && ($permi != self::PERMIT_USER)
+            && ($permi != self::PERMIT_BANISHED)
+            && ($permi != self::PERMIT_DELETED)
+        ) {
+            throw new Exception("The permission '$permi' is not supported");
+        }
+        $sql = "UPDATE `Users` SET `permission` = '$permi' WHERE `Users`.`pseudo` = '$pseudo';";
+        $pdo = $this->executeRequest($sql);
+        if ($pdo->errorInfo()[0] != self::PDO_SUCCEESS) {
+            $errMsg = $pdo->errorInfo()[1];
+            $response->addError($errMsg, MyError::FATAL_ERROR);
+        }
+    }
+
+    /**
+     * To get a user with his pseudo
+     * @return User a user
+     */
+    public function getUser($pseudo)
+    {
+        $sql = "SELECT * FROM `Users` WHERE `pseudo` = '$pseudo'";
+        $pdo = self::executeRequest($sql);
+        $pdoLine = $pdo->fetch();
+        $user = self::createUser($pdoLine);
+        return $user;
+    }
+    /*———————————————————————————— STATS DOWN ———————————————————————————————*/
+    /*———————————————————————————— STATS DOWN ———————————————————————————————*/
+    /**
+     * To get number of user registered
+     * @return int number of user registered
+     */
     public static function getNbUsers()
     {
         $sql = "SELECT COUNT(*) as 'nbUser' FROM `Users`";
         $pdo = parent::executeRequest($sql);
         $nbUser = (int) $pdo->fetchAll(PDO::FETCH_COLUMN)[0];
         return $nbUser;
+    }
+
+    /**
+     * To get all users
+     * @return User[] all users
+     */
+    public static function getUsers()
+    {
+        $sql = "SELECT * FROM `Users` ORDER BY `Users`.`pseudo` ASC";
+        $pdo = self::executeRequest($sql);
+        $users = [];
+        while ($pdoLine = $pdo->fetch()) {
+            $user = self::createUser($pdoLine);
+            $users[$user->pseudo] = $user;
+            // array_push($users, $user);
+        }
+        return $users;
     }
 }

@@ -17,7 +17,7 @@ require_once 'model/Discussion.php';
         <tr>
             <td>
                 <button class="img-button remove-button-default-att">
-                    <img src="content/images/user-profile/<?= $contact->getPicture() ?>" onclick="openProfile('<?= User::KEY_PSEUDO ?>', '<?= $contact->getPseudo() ?>')">
+                    <img src="<?= User::PICTURE_DIR . $contact->getPicture() ?>" onclick="openProfile('<?= User::KEY_PSEUDO ?>', '<?= $contact->getPseudo() ?>')">
                 </button>
             </td>
             <td><span><?= $contact->getPseudo() ?></span></td>

@@ -1,6 +1,7 @@
 <?php
 
 require_once 'framework/Model.php';
+require_once 'model/User.php';
 require_once 'Message.php';
 
 /**
@@ -66,7 +67,8 @@ class Discussion extends Model
         $pdo = parent::executeRequest($sql);
         $this->participants = [];
         while ($pdoLine = $pdo->fetch()) {
-            $user = $this->createUser($pdoLine);
+            // $user = $this->createUser($pdoLine);
+            $user = User::createUser($pdoLine);
             $this->participants[$user->getPseudo()] = $user;
         }
     }
@@ -89,7 +91,8 @@ class Discussion extends Model
         while ($pdoLine = $pdo->fetch()) {
             $msgID = $pdoLine["msgID"];
             $pseudo = $pdoLine["from_pseudo"];
-            $from = (key_exists($pseudo, $this->participants)) ? $this->participants[$pseudo] : $this->createUser($pdoLine);
+            // $from = (key_exists($pseudo, $this->participants)) ? $this->participants[$pseudo] : $this->createUser($pdoLine);
+            $from = (key_exists($pseudo, $this->participants)) ? $this->participants[$pseudo] : User::createUser($pdoLine);
             $privK = $pdoLine["msgPrivateK"];
             $type = $pdoLine["msgType"];
             $msg = $pdoLine["msg"];
@@ -197,17 +200,17 @@ class Discussion extends Model
      * @param string[] $pdoLine line from database witch contain user's properties
      * @return User a User instance
      */
-    private function createUser($pdoLine)
-    {
-        $user = new User();
-        $user->setPseudo($pdoLine["pseudo"]);
-        $user->setFirstname($pdoLine["firstname"]);
-        $user->setLastname($pdoLine["lastname"]);
-        $user->setPicture($pdoLine["picture"]);
-        $user->setStatus($pdoLine["status"]);
-        $user->setPermission($pdoLine["permission"]);
-        return $user;
-    }
+    // private function createUser($pdoLine)
+    // {
+    //     $user = new User();
+    //     $user->setPseudo($pdoLine["pseudo"]);
+    //     $user->setFirstname($pdoLine["firstname"]);
+    //     $user->setLastname($pdoLine["lastname"]);
+    //     $user->setPicture($pdoLine["picture"]);
+    //     $user->setStatus($pdoLine["status"]);
+    //     $user->setPermission($pdoLine["permission"]);
+    //     return $user;
+    // }
 
     /**
      * Generate a alpha numerique sequence in specified length

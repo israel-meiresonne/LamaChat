@@ -83,6 +83,9 @@
         // }
     }
 
+
+
+
     const jx = function (action, jxd, rspf, lds, x = null, cbkSND = function () { }, cbkRSP = function () { }) {
         $(lds).fadeIn(TS, cbkSND());
         $.ajax({
@@ -353,6 +356,75 @@
         }
     }
 
+    pardonUser = function (id, d) {
+        var remove = window.confirm("Voulez-vous vraiment gracier cette utilisateur?");
+        if (remove) {
+            var x = $("#" + id)[0];
+            var fd = new FormData();
+            fd.append(KEY_PSEUDO, d);
+            var datasSND = {
+                "action": ACTION_PARDON_USER,
+                "jxd": fd,
+                "rspf": updateAdminBtn,
+                "lds": "#isLoading",
+                "x": x
+            };
+            SND_fd(datasSND);
+        }
+    }
+
+    banishUser = function (id, d) {
+        var remove = window.confirm("Voulez-vous vraiment banir cette utilisateur?");
+        if (remove) {
+            var x = $("#" + id)[0];
+            var fd = new FormData();
+            fd.append(KEY_PSEUDO, d);
+            var datasSND = {
+                "action": ACTION_BANISH_USER,
+                "jxd": fd,
+                "rspf": updateAdminBtn,
+                "lds": "#isLoading",
+                "x": x
+            };
+            SND_fd(datasSND);
+        }
+    }
+
+    deleteUser = function (id, d) {
+        var remove = window.confirm("Voulez-vous vraiment supprimer cette utilisateur?");
+        if (remove) {
+            var x = $("#" + id)[0];
+            var fd = new FormData();
+            fd.append(KEY_PSEUDO, d);
+            var datasSND = {
+                "action": ACTION_DELETE_USER,
+                "jxd": fd,
+                "rspf": updateAdminBtn,
+                "lds": "#isLoading",
+                "x": x
+            };
+            SND_fd(datasSND);
+        }
+    }
+    
+    restoreUser = function (id, d) {
+        var remove = window.confirm("Voulez-vous vraiment rétablir le compte de cette utilisateur?");
+        if (remove) {
+            var x = $("#" + id)[0];
+            var fd = new FormData();
+            fd.append(KEY_PSEUDO, d);
+            var datasSND = {
+                "action": ACTION_RESTORE_USER,
+                "jxd": fd,
+                "rspf": updateAdminBtn,
+                "lds": "#isLoading",
+                "x": x
+            };
+            SND_fd(datasSND);
+        }
+    }
+
+
     const signUpRSP = function (r) {
         if (r.isSuccess) {
             window.location.assign(r.results[ACTION_SIGN_UP]);
@@ -585,6 +657,15 @@
             if (r.errors[FATAL_ERROR] != null) {
                 popAlert(r.errors[FATAL_ERROR].message);
             }
+        }
+    }
+
+    const updateAdminBtn = function (r, x) {
+        if (r.isSuccess) {
+            var y = r.results[PERMIT_ADMIN];
+            replaceBtn(x, y);
+        } else {
+            popAlert(r.errors[FATAL_ERROR].message);
         }
     }
 

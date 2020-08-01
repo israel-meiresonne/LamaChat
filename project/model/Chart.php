@@ -83,7 +83,7 @@ class Chart extends Model
         $xTitle = $this->xTitle;
         $yTitle = $this->yTitle;
         ob_start();
-        require 'view/Admin/chart.php';
+        require 'view/Admin/files/chart.php';
         $this->chart = ob_get_clean();
     }
 

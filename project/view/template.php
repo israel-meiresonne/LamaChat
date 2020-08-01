@@ -1,5 +1,7 @@
 <?php
-require_once "controller/ControllerSign.php";
+require_once 'controller/ControllerSign.php';
+require_once 'controller/ControllerHome.php';
+require_once 'controller/ControllerAdmin.php';
 require_once 'model/User.php';
 require_once 'model/Message.php';
 
@@ -54,13 +56,20 @@ require_once 'model/Message.php';
         const ACTION_SEND_FILE = "<?= ControllerHome::ACTION_SEND_FILE ?>";
         const ACTION_UPDATE_FEED = "<?= ControllerHome::ACTION_UPDATE_FEED ?>";
         const ACTION_READ_MSG = "<?= ControllerHome::ACTION_READ_MSG ?>";
+        // controller Admin
+        const ACTION_PARDON_USER = "<?= ControllerAdmin::ACTION_PARDON_USER ?>";
+        const ACTION_BANISH_USER = "<?= ControllerAdmin::ACTION_BANISH_USER ?>";
+        const ACTION_DELETE_USER = "<?= ControllerAdmin::ACTION_DELETE_USER ?>";
+        const ACTION_RESTORE_USER = "<?= ControllerAdmin::ACTION_RESTORE_USER ?>";
         // RSP keys
         const RSP_SEARCH_KEY = "<?= ControllerHome::RSP_SEARCH_KEY ?>";
         const RSP_WRITE_MENU = "<?= ControllerHome::RSP_WRITE_MENU ?>";
         const RSP_WRITE_DISCU_FEED = "<?= ControllerHome::RSP_WRITE_DISCU_FEED ?>";
         // other keys
         const FATAL_ERROR = "<?= MyError::FATAL_ERROR ?>";
+        const KEY_PSEUDO = "<?= User::KEY_PSEUDO ?>";
         const KEY_PICTURE = "<?= User::KEY_PICTURE ?>";
+        const PERMIT_ADMIN = "<?= User::PERMIT_ADMIN ?>";
         const DISCU_ID = "<?= Discussion::DISCU_ID ?>";
         const KEY_MSG_ID = "<?= Message::KEY_MSG_ID ?>";
         const KEY_MESSAGE = "<?= Message::KEY_MESSAGE ?>";
