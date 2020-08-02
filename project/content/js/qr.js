@@ -40,7 +40,7 @@
         });
     }
     const removeUp = function (x) {
-        $(x).slideUp(); (TS, function () {
+        $(x).slideUp(TS, function () {
             $(this).remove();
         });
     }
@@ -292,82 +292,123 @@
         }
     }
 
-    readMessage = function (id) {
-        var w = $("#" + id)[0];
-        if ($(w).css("display") == "block") {
-            var fd = new FormData();
-            fd.append(DISCU_ID, id);
-            var datasSND = {
-                "action": ACTION_READ_MSG,
-                "jxd": fd,
-                "rspf": readMessageRSP,
-                "lds": "#isLoading",
-                "x": ""
-            };
-            SND_fd(datasSND);
+    readMessage = function () {
+        var ws = $(".msg-window");
+        var nb = ws.length;
+        for (var i = 0; i < nb; i++) {
+            var id = $(ws[i]).attr("id");
+            var w = $("#" + id)[0];
+            // updateFeed(id);
+            if ($(w).css("display") == "block") {
+                $(".w3-bar-item[data-menudiscuid='" + id + "'] .w3-container .msg-preview .notif").remove();
+                var fd = new FormData();
+                fd.append(DISCU_ID, id);
+                var datasSND = {
+                    "action": ACTION_READ_MSG,
+                    "jxd": fd,
+                    "rspf": readMessageRSP,
+                    "lds": "#isLoading",
+                    "x": ""
+                };
+                SND_fd(datasSND);
+            }
         }
     }
 
-    updateFeed = function (id) {
-        var w = $("#" + id);
-        var d = {};
-        d[DISCU_ID] = id;
-        var l = $(w).find(".msg-wrap").last();
-        var lm = {}
-        var msgId = $(l).attr("data-msgid");
-        lm[KEY_MSG_ID] = (msgId != null) ? msgId : null;
-        d[KEY_LAST_MSG] = lm;
-        d[KEY_MESSAGE] = [];
-        
-        var xs = $(w).find(".msg-wrap[data-msgstatus='" + MSG_STATUS_SEND + "'][data-sender='" + SENDER + "']");
-        var nb = xs.length;
-        for (var i = 0; i < nb; i++) {
-            var x = xs[i];
-            var msgId = $(x).attr("data-msgid");
-            var status = $(x).attr("data-msgstatus");
-            var m = {
-                [KEY_MSG_ID]: msgId,
-                [KEY_STATUS]: status,
-            };
-            d[KEY_MESSAGE].push(m);
-        }
+    // updateFeed = function (id) {
+    //     var w = $("#" + id);
+    //     var d = {};
+    //     d[DISCU_ID] = id;
+    //     var l = $(w).find(".msg-wrap").last();
+    //     var lm = {}
+    //     var msgId = $(l).attr("data-msgid");
+    //     lm[KEY_MSG_ID] = (msgId != null) ? msgId : null;
+    //     d[KEY_LAST_MSG] = lm;
+    //     d[KEY_MESSAGE] = [];
+
+    //     var xs = $(w).find(".msg-wrap[data-msgstatus='" + MSG_STATUS_SEND + "'][data-sender='" + SENDER + "']");
+    //     var nb = xs.length;
+    //     for (var i = 0; i < nb; i++) {
+    //         var x = xs[i];
+    //         var msgId = $(x).attr("data-msgid");
+    //         var status = $(x).attr("data-msgstatus");
+    //         var m = {
+    //             [KEY_MSG_ID]: msgId,
+    //             [KEY_STATUS]: status,
+    //         };
+    //         d[KEY_MESSAGE].push(m);
+    //     }
+    //     var fd = new FormData();
+    //     fd.append(ACTION_UPDATE_FEED, json_encode(d));
+    //     var datasSND = {
+    //         "action": ACTION_UPDATE_FEED,
+    //         "jxd": fd,
+    //         "rspf": updateFeedRSP,
+    //         "lds": "#isLoading",
+    //         "x": ""
+    //     };
+    //     SND_fd(datasSND);
+    // }
+
+    updateHome = function () {
         var fd = new FormData();
-        fd.append(ACTION_UPDATE_FEED, json_encode(d));
+        var ts = $(".menu-discu");
+        var nbt = ts.length;
+        var discuIds = [];
+        for (var i = 0; i < nbt; i++) {
+            var id = $(ts[i]).attr("data-menudiscuid");
+            discuIds.push(id);
+        }
+        fd.append(KEY_NEW_DISCU, json_encode(discuIds));
+
+        var status = {};
+        var lasts = {};
+        for (var discuID of discuIds) {
+            //status
+            var w = $("#" + discuID);
+            var ms = $(w).find(".msg-wrap[data-msgstatus='" + MSG_STATUS_SEND + "'][data-sender='" + SENDER + "']");
+            var nbm = ms.length;
+            // (nbm > 0)? status[discuID] = [] : null;
+            status[discuID] = [];
+            for (var i = 0; i < nbm; i++) {
+                var m = $(ms[i])[0];
+                var msgId = $(m).attr("data-msgid");
+                // var mobj = { [discuID]: msgId };
+                // status[discuID].push(mobj);
+                status[discuID].push(msgId);
+            }
+            // last msg
+            var lm = $(w).find(".msg-wrap").last();
+            // if(lm.length > 0){
+            lasts[discuID] = [];
+            var lmId = $(lm).attr("data-msgid");
+            lasts[discuID] = (lmId != null) ? lmId : null;
+            // }
+        }
+        console.log("discuIds", discuIds);
+        console.log("status", status);
+        console.log("lasts", lasts);
+        fd.append(KEY_STATUS, json_encode(status));
+        fd.append(KEY_LAST_MSG, json_encode(lasts));
+
         var datasSND = {
-            "action": ACTION_UPDATE_FEED,
+            "action": ACTION_UPDATE_HOME,
             "jxd": fd,
-            "rspf": updateFeedRSP,
+            "rspf": updateHomeRSP,
             "lds": "#isLoading",
             "x": ""
         };
         SND_fd(datasSND);
     }
 
-    // updateChats = function () {
-    //     var ts = $(".menu-discu");
-    //     var nbt = ts.length;
-    //     var cs = {};
-    //     for(var i = 0; i < nbt; i++){
-    //         var t = ts[i];
-    //         var did = $(t).attr("data-menudiscuid");
-    //         var w = $("#"+did);
-    //         var ms = $(w).find(".msg-wrap[data-msgstatus='" + MSG_STATUS_SEND + "'][data-sender='" + SENDER + "']");
-    //         var c = {};
-    //         c[did] = {
-    //             [KEY_MSG_ID]: msgId,
-    //             [KEY_STATUS]: status
-    //         };
+    // lunchUpdate = function () {
+    //     var ws = $(".msg-window");
+    //     var nb = ws.length;
+    //     for (var i = 0; i < nb; i++) {
+    //         var id = $(ws[i]).attr("id");
+    //         updateFeed(id);
     //     }
     // }
-
-    lunchUpdate = function () {
-        var ws = $(".msg-window");
-        var nb = ws.length;
-        for (var i = 0; i < nb; i++) {
-            var id = $(ws[i]).attr("id");
-            updateFeed(id);
-        }
-    }
 
     pardonUser = function (id, d) {
         var remove = window.confirm("Voulez-vous vraiment gracier cette utilisateur?");
@@ -419,7 +460,7 @@
             SND_fd(datasSND);
         }
     }
-    
+
     restoreUser = function (id, d) {
         var remove = window.confirm("Voulez-vous vraiment rétablir le compte de cette utilisateur?");
         if (remove) {
@@ -616,7 +657,7 @@
             $(m).fadeIn(TS);
 
             var id = r.results[DISCU_ID];
-            var rx = $(".w3-bar-item[data-menudiscuid='" + id + "'] .w3-container p");
+            var rx = $(".w3-bar-item[data-menudiscuid='" + id + "'] .w3-container .msg-preview");
             var ry = createNone(r.results[KEY_LAST_MSG]);
             replaceFade(rx, ry);
 
@@ -636,36 +677,113 @@
         }
     }
 
-    const updateFeedRSP = function (r) {
+    // const updateFeedRSP = function (r) {
+    //     if (r.isSuccess) {
+    //         var id = r.results[DISCU_ID];
+    //         var w = $("#" + id);
+    //         if ((r.results[KEY_MSG_ID] != null) && (r.results[KEY_MSG_ID].length > 0)) {
+    //             var s = r.results[MSG_STATUS_READ];
+    //             for (var msgID of r.results[KEY_MSG_ID]) {
+    //                 var ns = createNone(s);
+    //                 var os = $(w).find(".msg-wrap[data-msgid='" + msgID + "'] .msg-status .o_symbol-wrap")[0];
+    //                 replaceFade(os, ns);
+    //             }
+    //         }
+    //         if ((r.results[KEY_MESSAGE] != null) && (r.results[KEY_MESSAGE].length > 0)) {
+    //             var feed = $(w).find(".msg-window-feed");
+    //             for (var m of r.results[KEY_MESSAGE]) {
+    //                 var me = createNone(m);
+    //                 $(feed).append(me);
+    //                 $(me).fadeIn(TS);
+    //             }
+    //             scrollBottom(w);
+    //         }
+    //         if ((r.results[KEY_LAST_MSG] != null) && (r.results[KEY_LAST_MSG].length > 0)) {
+    //             var rx = $(".w3-bar-item[data-menudiscuid='" + id + "'] .w3-container .msg-preview");
+    //             var ry = createNone(r.results[KEY_LAST_MSG]);
+    //             replaceFade(rx, ry);
+    //         }
+
+    //         if ((r.results[KEY_NEW_DISCU] != null) && (r.results[KEY_NEW_DISCU].length > 0)) {
+    //             for (var discu of r.results[KEY_NEW_DISCU]) {
+    //                 console.log(discu);
+    //                 var m = discu[KEY_DISCU_MENU];
+    //                 var me = createNone(m);
+    //                 var feed = discu[KEY_DISCU_FEED];
+    //                 var feede = createNone(m);
+    //                 $("#Demo1").prepend(me);
+    //                 $(me).slideDown(TS);
+    //                 $("#discussion_feed .content").append(feede);
+    //                 // var m = $("nav a[data-menuDiscuId='" + r.results[DISCU_ID] + "']")[0];
+    //                 // $(me).click();
+    //             }
+    //         }
+
+    //         setTimeout(() => {
+    //             updateFeed(id);
+    //         }, TIME_UPDATE_FEED * 1000);
+    //         readMessage(id);
+    //     } else {
+    //         if (r.errors[FATAL_ERROR] != null) {
+    //             popAlert(r.errors[FATAL_ERROR].message);
+    //         }
+    //     }
+    // }
+    // test = null;
+    const updateHomeRSP = function (r) {
+        // test = r;
         if (r.isSuccess) {
-            var id = r.results[DISCU_ID];
-            var w = $("#" + id);
-            if ((r.results[KEY_MSG_ID] != null) && (r.results[KEY_MSG_ID].length > 0)) {
+            if ((r.results[KEY_MSG_ID] != null)) {
                 var s = r.results[MSG_STATUS_READ];
-                for (var msgID of r.results[KEY_MSG_ID]) {
-                    var ns = createNone(s);
-                    var os = $(w).find(".msg-wrap[data-msgid='" + msgID + "'] .msg-status .o_symbol-wrap")[0];
-                    replaceFade(os, ns);
+                for (var discuID in r.results[KEY_MSG_ID]) {
+                    for (var msgID of r.results[KEY_MSG_ID][discuID]) {
+                        var ns = createNone(s);
+                        var w = $("#" + discuID);
+                        var os = $(w).find(".msg-wrap[data-msgid='" + msgID + "'] .msg-status .o_symbol-wrap")[0];
+                        replaceFade(os, ns);
+                    }
                 }
             }
-            if ((r.results[KEY_MESSAGE] != null) && (r.results[KEY_MESSAGE].length > 0)) {
-                var feed = $(w).find(".msg-window-feed");
-                for (var m of r.results[KEY_MESSAGE]) {
+
+            if ((r.results[KEY_MESSAGE] != null)) {
+                for (var discuID in r.results[KEY_MESSAGE]) {
+                    var w = $("#" + discuID);
+                    var feed = $(w).find(".msg-window-feed");
+                    for (var m of r.results[KEY_MESSAGE][discuID]) {
+                        var me = createNone(m);
+                        $(feed).append(me);
+                        $(me).fadeIn(TS);
+                    }
+                    scrollBottom(w);
+                }
+            }
+
+            if ((r.results[KEY_LAST_MSG] != null)) {
+                for (var id in r.results[KEY_LAST_MSG]) {
+                    var rx = $(".w3-bar-item[data-menudiscuid='" + id + "'] .w3-container .msg-preview");
+                    var ry = createNone(r.results[KEY_LAST_MSG][id]);
+                    replaceFade(rx, ry);
+                }
+            }
+
+            if (r.results[KEY_NEW_DISCU] != null) {
+                for (var unix in r.results[KEY_NEW_DISCU]) {
+                    var discu = r.results[KEY_NEW_DISCU][unix];
+                    console.log(discu);
+                    var m = discu[KEY_DISCU_MENU];
                     var me = createNone(m);
-                    $(feed).append(me);
-                    $(me).fadeIn(TS);
+                    var feed = discu[KEY_DISCU_FEED];
+                    var feede = createNone(feed);
+                    $("#Demo1").prepend(me);
+                    $(me).slideDown(TS);
+                    $("#discussion_feed .content").append(feede);
                 }
-                scrollBottom(w);
             }
-            if ((r.results[KEY_LAST_MSG] != null) && (r.results[KEY_LAST_MSG].length > 0)) {
-                var rx = $(".w3-bar-item[data-menudiscuid='" + id + "'] .w3-container p");
-                var ry = createNone(r.results[KEY_LAST_MSG]);
-                replaceFade(rx, ry);
-            }
-            // setTimeout(() => {
-            //     updateFeed(id);
-            // }, TIME_UPDATE_FEED * 1000);
-            readMessage(id);
+
+            setTimeout(() => {
+                updateHome();
+            }, TIME_UPDATE_FEED * 1000);
+            readMessage();
         } else {
             if (r.errors[FATAL_ERROR] != null) {
                 popAlert(r.errors[FATAL_ERROR].message);

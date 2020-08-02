@@ -46,6 +46,21 @@ class Discussion extends Model
      */
     public const DISCU_ID = "discuID";
 
+    /**
+     * Access key for new discussion request
+     */
+    public const KEY_NEW_DISCU = "new_chat";
+
+    /**
+     * Access key for new discussion's html code for navbar
+     */
+    public const KEY_DISCU_MENU = "menu_discu";
+
+    /**
+     * Access key for new discussion's feed
+     */
+    public const KEY_DISCU_FEED = "feed_discu";
+
 
 
     public function __construct($discuID, $setDate, $discuName = null)
@@ -193,6 +208,25 @@ class Discussion extends Model
          */
         $msg = end($this->messages);
         return $msg ? $msg->getPreview() : "[vide]";
+    }
+
+    /**
+     * Check if the discussion contain unread message by the current user
+     * @param string $pseudo currrent user's pseudo
+     * @return boolean true its contain unread message else false
+     */
+    public function containUnread($pseudo)
+    {
+        $messages = $this->getMessages();
+        if(!empty($messages)){
+            foreach($messages as $message){
+                $senderPseudo = $message->getSender()->getPseudo();
+                if(($senderPseudo != $pseudo) && ($message->getStatus() != Message::MSG_STATUS_READ)){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**

@@ -53,8 +53,8 @@ require_once 'model/Message.php';
         const ACTION_OPEN_PROFILE = "<?= ControllerHome::ACTION_OPEN_PROFILE ?>";
         const ACTION_UPDATE_PROFILE = "<?= ControllerHome::ACTION_UPDATE_PROFILE ?>";
         const ACTION_SEND_MSG = "<?= ControllerHome::ACTION_SEND_MSG ?>";
-        const RSP_GET_NOTIF = "<?= ControllerHome::RSP_GET_NOTIF ?>";
         const ACTION_UPDATE_FEED = "<?= ControllerHome::ACTION_UPDATE_FEED ?>";
+        const ACTION_UPDATE_HOME = "<?= ControllerHome::ACTION_UPDATE_HOME ?>";
         const ACTION_READ_MSG = "<?= ControllerHome::ACTION_READ_MSG ?>";
         // controller Admin
         const ACTION_PARDON_USER = "<?= ControllerAdmin::ACTION_PARDON_USER ?>";
@@ -67,10 +67,16 @@ require_once 'model/Message.php';
         const RSP_WRITE_DISCU_FEED = "<?= ControllerHome::RSP_WRITE_DISCU_FEED ?>";
         // other keys
         const FATAL_ERROR = "<?= MyError::FATAL_ERROR ?>";
+
         const KEY_PSEUDO = "<?= User::KEY_PSEUDO ?>";
         const KEY_PICTURE = "<?= User::KEY_PICTURE ?>";
         const PERMIT_ADMIN = "<?= User::PERMIT_ADMIN ?>";
+
         const DISCU_ID = "<?= Discussion::DISCU_ID ?>";
+        const KEY_NEW_DISCU = "<?= Discussion::KEY_NEW_DISCU ?>";
+        const KEY_DISCU_MENU = "<?= Discussion::KEY_DISCU_MENU ?>";
+        const KEY_DISCU_FEED = "<?= Discussion::KEY_DISCU_FEED ?>";
+
         const KEY_MSG_ID = "<?= Message::KEY_MSG_ID ?>";
         const KEY_MESSAGE = "<?= Message::KEY_MESSAGE ?>";
         const KEY_STATUS = "<?= Message::KEY_STATUS ?>";

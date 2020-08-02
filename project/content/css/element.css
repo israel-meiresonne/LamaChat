@@ -28,6 +28,7 @@
     /*———————————————————————————————— TRANSITION DOWN ——————————————————————*/
     --transition-time: .450s;
     --transition-time-picture: .5s;
+    --time-notif: 1.5s;
     /*———————————————————————————————— TRANSITION UP ————————————————————————*/
 }
 
@@ -89,9 +90,11 @@
 }
 
 /*————————————————————— ZOOM UP —————————————————————————————————————————————*/
+
 /*————————————————————— INFINY ROTATE DOWN ——————————————————————————————————*/
-/*————————————————————— INFINY ROTATE UP ————————————————————————————————————*/
+
 /* try animation: http://jsfiddle.net/no2r4y83/14/ */
+
 @keyframes infiny_rotate {
     0% {
         transform: rotate(0deg);
@@ -100,9 +103,71 @@
         transform: rotate(360deg);
     }
 }
+
 .infiny_rotate {
     animation: infiny_rotate var(--transition-time-picture) infinite;
 }
+
+/*————————————————————— INFINY ROTATE UP ————————————————————————————————————*/
+
+/*————————————————————— INFINY FADE DOWN ————————————————————————————————————*/
+
+@keyframes infinity_fade {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1.0;
+    }
+    0% {
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes infinity_fade {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+    0% {
+        opacity: 0;
+    }
+}
+
+@-moz-keyframes infinity_fade {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+    0% {
+        opacity: 0;
+    }
+}
+
+@-o-keyframes infinity_fade {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+    0% {
+        opacity: 0;
+    }
+}
+
+.infinity_fade {
+    -webkit-animation: infinity_fade var(--time-notif) infinite;
+    -moz-animation:    infinity_fade var(--time-notif) infinite;
+    -o-animation:      infinity_fade var(--time-notif) infinite;
+    animation:         infinity_fade var(--time-notif) infinite;
+}
+
+/*————————————————————— INFINY FADE UP ——————————————————————————————————————*/
 
 /*————————————————————— BUTTON TO DEFAULT DOWN ——————————————————————————————*/
 
@@ -168,14 +233,15 @@
     color: var(--color-blue_esi);
 }
 
-.data-key_value-wrap .comment{
+.data-key_value-wrap .comment {
     display: none;
     margin: 0 0 0 5px;
     color: var(--color-red);
     font-size: var(--little-font-size);
     text-transform: none;
 }
-.data-key_value-wrap .comment::first-letter{
+
+.data-key_value-wrap .comment::first-letter {
     text-transform: capitalize;
 }
 

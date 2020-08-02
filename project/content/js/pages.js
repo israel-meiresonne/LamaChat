@@ -61,7 +61,7 @@
     }
 
     $(document).ready(function () {
-        lunchUpdate();
+        updateHome();
         /*————————————————————— SIGN PAGE DOWN ——————————————————————————————*/
         $("#sign_up_switcher, #sign_in_switcher").click(function () {
             var windId = this.getAttribute("data-window_id");

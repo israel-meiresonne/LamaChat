@@ -2,7 +2,8 @@
 
 /**
  * ——————————————————————————————— NEED —————————————————————————————————————
- * @param string $corresp User with who the current user is chatting
+ * @param User $user the current user
+ * @param User $corresp User with who the current user is chatting
  * @param string $discu current user's discussion with participants and messages setted
  */
 $btnId = "rmvBtn" . Discussion::generateDateCode(25);
@@ -17,7 +18,10 @@ $correspPseudo = $corresp->getPseudo();
         $discuName = $discu->getDiscuName();
         if (!empty($discuName)) : ?>
             <h6>sujet: <?= $discuName ?></h6>
-        <?php endif ?>
-        <p><?= $discu->getMsgPreview() ?></p>
+        <?php endif;
+        $text = $discu->getMsgPreview();
+        $isNew = $discu->containUnread($user->getPseudo());
+        require 'view/Home/elements/discussionMenuPreview.php';
+        ?>
     </div>
 </a>

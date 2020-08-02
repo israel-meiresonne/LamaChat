@@ -1199,64 +1199,133 @@ class User extends Model
         return $contacts;
     }
 
+    // /**
+    //  * To update feed's messages
+    //  * @param Response $response to push in occured errors
+    //  * @param string $discuID discussion's id
+    //  * @param object $lastMsg feed's last message
+    //  * + last message's id: $lastMsg->{Message::KEY_MSG_ID}
+    //  * @param object[] $messages feed's message to update status
+    //  * + message's id: $msgs[0->x]->{Message::KEY_MSG_ID}
+    //  * + message's status: $msgs[0->x]->{Message::KEY_STATUS}
+    //  */
+    // public function updateFeed(Response $response, $discuID, $lastMsg, $messages)
+    // {
+    //     if (!empty($lastMsg->{Message::KEY_MSG_ID})) {
+    //         $discussion = $this->getDiscussion($discuID);
+    //         $msgSetDate = $discussion->getMessage($lastMsg->{Message::KEY_MSG_ID})->getSetDate();
+    //     } else {
+    //         $msgSetDate = date('Y-m-d H:i:s', 0);
+    //     }
+
+    //     if (count($messages) > 0) {
+    //         $this->checkMessageStatus($response, $discuID, $messages);
+    //     }
+
+    //     $this->getLastForeignMessages($response, $discuID, $msgSetDate);
+    //     $this->getLastMessage($response, $discuID, $msgSetDate);
+
+    //     if (!$response->containError()) {
+    //         $response->addResult(Discussion::DISCU_ID, $discuID);
+    //     }
+    // }
+
+    // /**
+    //  * To check if message(s) have been read
+    //  * @param Response $response to push in occured errors
+    //  * @param string $discuID discussion's id
+    //  * @param object[] $messages feed's message to update status
+    //  * + message's id: $msgs[0->x]->{Message::KEY_MSG_ID}
+    //  * + message's status: $msgs[0->x]->{Message::KEY_STATUS}
+    //  */
+    // private function checkMessageStatus(Response $response, $discuID, $messages)
+    // {
+    //     $sql = 'SELECT * FROM `Messages` WHERE `discuId`= "' . $discuID . '" AND `msgStatus` = "' . Message::MSG_STATUS_SEND . '"';
+    //     $pdo = $this->executeRequest($sql);
+    //     if ($pdo->errorInfo()[0] != self::PDO_SUCCEESS) {
+    //         $errMsg = $pdo->errorInfo()[1];
+    //         $response->addError($errMsg, MyError::FATAL_ERROR);
+    //     } else {
+    //         $msgIDs = $pdo->fetchAll(PDO::FETCH_COLUMN | PDO::FETCH_GROUP);
+    //         $toUpdate = [];
+    //         foreach ($messages as $message) {
+    //             $msgID = $message->{Message::KEY_MSG_ID};
+    //             if (!key_exists($msgID, $msgIDs)) {
+    //                 array_push($toUpdate, $msgID);
+    //             }
+    //         }
+    //         (count($toUpdate) > 0) ? $response->addResult(Message::KEY_MSG_ID, $toUpdate) : null;
+    //     }
+    // }
+
+    // /**
+    //  * To get a discussion's last messages
+    //  * + messages find are pushed in $response
+    //  * @param Response $response to push in occured errors
+    //  * @param string $discuID discussion's id
+    //  * @param string $msgSetDate date of the last message sent in the discussion 
+    //  * + format: 'YYYY-MM-DD HH:MM:SS'
+    //  */
+    // private function getLastForeignMessages(Response $response, $discuID, $msgSetDate)
+    // {
+    //     $pseudo = $this->getPseudo();
+    //     // $msgSetDate = $message->getSetDate();
+    //     $sql = "SELECT * FROM `Messages` 
+    //         WHERE (`discuId`= '$discuID') 
+    //             AND (`from_pseudo` != '$pseudo') 
+    //             AND (`msgSetDate` > '$msgSetDate')
+    //         ORDER BY `Messages`.`msgSetDate` DESC";
+    //     $pdo = $this->executeRequest($sql);
+    //     if ($pdo->errorInfo()[0] != self::PDO_SUCCEESS) {
+    //         $errMsg = $pdo->errorInfo()[1];
+    //         $response->addError($errMsg, MyError::FATAL_ERROR);
+    //     } else {
+    //         if ($pdo->rowCount() > 0) {
+    //             $lastMsgs = [];
+    //             while ($pdoLine = $pdo->fetch()) {
+    //                 $newMsg = $this->createMessage($pdoLine);
+    //                 $key = strtotime($newMsg->getSetDate());
+    //                 $lastMsgs[$key] = $newMsg;
+    //             }
+    //             ksort($lastMsgs);
+    //             $response->addResult(Message::KEY_MESSAGE, $lastMsgs);
+    //         }
+    //     }
+    // }
+
+    /**—————————————————————————————————————————————————————————————————————————————————————————————————— */
+    /**————————————————————————————————————————— V2.0 DOWN ——————————————————————————————————————————————— */
+    /**—————————————————————————————————————————————————————————————————————————————————————————————————— */
+
     /**
-     * To update feed's messages
+     * To check if message(s) have the given status
      * @param Response $response to push in occured errors
      * @param string $discuID discussion's id
-     * @param object $lastMsg feed's last message
-     * + last message's id: $lastMsg->{Message::KEY_MSG_ID}
-     * @param object[] $messages feed's message to update status
-     * + message's id: $msgs[0->x]->{Message::KEY_MSG_ID}
-     * + message's status: $msgs[0->x]->{Message::KEY_STATUS}
+     * @param string[] $msgIDs id of messages to check status
+     * @return string[] id of $msgIDs that match the given status
      */
-    public function updateFeed(Response $response, $discuID, $lastMsg, $messages)
+    public function checkMessageStatus(Response $response, $status, $discuID, $msgIDs)
     {
-        $time = 0;
-        if (!empty($lastMsg->{Message::KEY_MSG_ID})) {
-            $discussion = $this->getDiscussion($discuID);
-            $msgSetDate = $discussion->getMessage($lastMsg->{Message::KEY_MSG_ID})->getSetDate();
-        } else {
-            $msgSetDate = date('Y-m-d H:i:s', 0);
-        }
-
-        if (count($messages) > 0) {
-            $this->checkMessageStatus($response, $discuID, $messages);
-        }
-
-        $this->getLastForeignMessages($response, $discuID, $msgSetDate);
-        $this->getLastMessage($response, $discuID, $msgSetDate);
-
-        if (!$response->containError()) {
-            $response->addResult(Discussion::DISCU_ID, $discuID);
-        }
-    }
-
-    /**
-     * To check if message(s) have been read
-     * @param Response $response to push in occured errors
-     * @param string $discuID discussion's id
-     * @param object[] $messages feed's message to update status
-     * + message's id: $msgs[0->x]->{Message::KEY_MSG_ID}
-     * + message's status: $msgs[0->x]->{Message::KEY_STATUS}
-     */
-    private function checkMessageStatus(Response $response, $discuID, $messages)
-    {
-        $sql = 'SELECT * FROM `Messages` WHERE `discuId`= "' . $discuID . '" AND `msgStatus` = "' . Message::MSG_STATUS_SEND . '"';
+        $toUpdate = [];
+        // $sql = 'SELECT * FROM `Messages` WHERE `discuId`= "' . $discuID . '" AND `msgStatus` = "' . Message::MSG_STATUS_SEND . '"';
+        $sql = "SELECT * FROM `Messages` WHERE `discuId`= '" . $discuID . "' AND `msgStatus` = '" . $status . "'; "; // read
         $pdo = $this->executeRequest($sql);
         if ($pdo->errorInfo()[0] != self::PDO_SUCCEESS) {
             $errMsg = $pdo->errorInfo()[1];
             $response->addError($errMsg, MyError::FATAL_ERROR);
         } else {
-            $msgIDs = $pdo->fetchAll(PDO::FETCH_COLUMN | PDO::FETCH_GROUP);
-            $toUpdate = [];
-            foreach ($messages as $message) {
-                $msgID = $message->{Message::KEY_MSG_ID};
-                if (!key_exists($msgID, $msgIDs)) {
+            $dbMsgIDs = $pdo->fetchAll(PDO::FETCH_COLUMN | PDO::FETCH_GROUP);
+            // $toUpdate = [];
+            foreach ($msgIDs as $msgID) {
+                // $msgID = $message->{Message::KEY_MSG_ID};
+                // var_dump($msgID);
+                if (key_exists($msgID, $dbMsgIDs)) {
                     array_push($toUpdate, $msgID);
                 }
             }
-            (count($toUpdate) > 0) ? $response->addResult(Message::KEY_MSG_ID, $toUpdate) : null;
+            // (count($toUpdate) > 0) ? $response->addResult(Message::KEY_STATUS, $toUpdate) : null;
         }
+        return $toUpdate;
     }
 
     /**
@@ -1266,9 +1335,11 @@ class User extends Model
      * @param string $discuID discussion's id
      * @param string $msgSetDate date of the last message sent in the discussion 
      * + format: 'YYYY-MM-DD HH:MM:SS'
+     * @return Message[] discussion's last messages
      */
-    private function getLastForeignMessages(Response $response, $discuID, $msgSetDate)
+    public function getLastForeignMessages(Response $response, $discuID, $msgSetDate)
     {
+        $lastMsgs = [];
         $pseudo = $this->getPseudo();
         // $msgSetDate = $message->getSetDate();
         $sql = "SELECT * FROM `Messages` 
@@ -1282,28 +1353,31 @@ class User extends Model
             $response->addError($errMsg, MyError::FATAL_ERROR);
         } else {
             if ($pdo->rowCount() > 0) {
-                $lastMsgs = [];
+                // $lastMsgs = [];
                 while ($pdoLine = $pdo->fetch()) {
                     $newMsg = $this->createMessage($pdoLine);
                     $key = strtotime($newMsg->getSetDate());
                     $lastMsgs[$key] = $newMsg;
                 }
                 ksort($lastMsgs);
-                $response->addResult(Message::KEY_MESSAGE, $lastMsgs);
+                // $response->addResult(Message::KEY_MESSAGE, $lastMsgs);
             }
         }
+        return $lastMsgs;
     }
 
     /**
-     * To get a discussion's last messages
+     * To get a discussion's last message
      * + messages find are pushed in $response
      * @param Response $response to push in occured errors
      * @param string $discuID discussion's id
      * @param string $msgSetDate date of the last message sent in the discussion 
      * + format: 'YYYY-MM-DD HH:MM:SS'
+     * @return Message discussion's last message
      */
-    private function getLastMessage(Response $response, $discuID, $msgSetDate)
+    public function getLastMessage(Response $response, $discuID, $msgSetDate)
     {
+        $lastMsg = null;
         $pseudo = $this->getPseudo();
         // $msgSetDate = $message->getSetDate();
         $sql = "SELECT * FROM `Messages` 
@@ -1324,9 +1398,36 @@ class User extends Model
                 //     $lastMsgs[$key] = $newMsg;
                 // }
                 // ksort($lastMsgs);
-                $response->addResult(Message::KEY_LAST_MSG, $lastMsg);
+                // $response->addResult(Message::KEY_LAST_MSG, $lastMsg);
             }
         }
+        return $lastMsg;
+    }
+
+    /**
+     * Get user's new discussions
+     * + its check if id of discussion are all in user's discussion attribut
+     * + new discussion are discussion that no appear in user's page
+     * @param Response $response to push in occured errors
+     * @param string[] $discuID discussion's id
+     * @return Discussion[] user's new discussions
+     */
+    public function getNewDiscussions($discuIDs)
+    {
+        $newDiscus = [];
+        $discussions = $this->getDiscussions();
+        if (empty($discuIDs)) {
+            return $discussions;
+        } else {
+            foreach ($discussions as $unix => $discussion) {
+                $discuID = $discussion->getDiscuID();
+                if (!in_array($discuID, $discuIDs)) {
+                    $newDiscus[$unix] = $discussions[$unix];
+                }
+            }
+        }
+        krsort($newDiscus);
+        return $newDiscus;
     }
 
     /**
@@ -1366,16 +1467,16 @@ class User extends Model
         }
         $user = $this->getUser($pseudo);
         $userPermi = $user->getPermission();
-        if(($userPermi == self::PERMIT_DELETED) && ($permi == self::PERMIT_BANISHED)){
+        if (($userPermi == self::PERMIT_DELETED) && ($permi == self::PERMIT_BANISHED)) {
             $errMsg = "Vous ne pouvez pas banir un utilisateur supprimé";
             $response->addError($errMsg, MyError::FATAL_ERROR);
         }
-        
-        if(($userPermi == self::PERMIT_BANISHED) && ($permi == self::PERMIT_DELETED)){
+
+        if (($userPermi == self::PERMIT_BANISHED) && ($permi == self::PERMIT_DELETED)) {
             $errMsg = "Vous ne pouvez pas supprimer un utilisateur bani";
             $response->addError($errMsg, MyError::FATAL_ERROR);
         }
-        if(!$response->containError()){
+        if (!$response->containError()) {
             $sql = "UPDATE `Users` SET `permission` = '$permi' WHERE `Users`.`pseudo` = '$pseudo';";
             $pdo = $this->executeRequest($sql);
             if ($pdo->errorInfo()[0] != self::PDO_SUCCEESS) {

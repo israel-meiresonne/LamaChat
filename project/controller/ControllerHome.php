@@ -28,13 +28,14 @@ class ControllerHome extends ControllerSecure
     public const ACTION_UPDATE_PROFILE = "home/updateProfile";
     public const ACTION_SEND_MSG = "home/sendMessage";
     public const ACTION_UPDATE_FEED = "home/updateFeed";
+    public const ACTION_UPDATE_HOME = "home/updateHome";
     public const ACTION_READ_MSG = "home/readMessage";
-    
+
     /**
      * Access key for actions's responses
      * @var string
      */
-    public const RSP_GET_NOTIF = "getnitif"; // don't forget
+    // public const RSP_GET_NOTIF = "getnitif"; // don't forget
     public const RSP_WRITE_MENU = "menu";
     public const RSP_WRITE_DISCU_FEED = "discuFeed";
     public const RSP_SEARCH_KEY = "searchWord";
@@ -47,7 +48,7 @@ class ControllerHome extends ControllerSecure
         $this->user->setContacts();
         $this->generateView(array("user" => $this->user));
     }
-    
+
     public function banished()
     {
         $this->secureSession();
@@ -56,7 +57,7 @@ class ControllerHome extends ControllerSecure
         ];
         $this->generateView($datas, self::ACTION_MESSAGE);
     }
-   
+
     public function deleted()
     {
         $this->secureSession();
@@ -337,7 +338,13 @@ class ControllerHome extends ControllerSecure
                     ob_start();
                     require 'view/Home/elements/discussionMessage.php';
                     $msgHtml = ob_get_clean();
-                    $preview = "<p>" . $message->getPreview() . "</p>";
+
+                    $text = $message->getPreview();
+                    // $isNew = true;
+                    ob_start();
+                    require 'view/Home/elements/discussionMenuPreview.php';
+                    $preview = ob_get_clean();
+                    // $preview = "</p>" . $message->getPreview() . "</p>";
 
                     $response->addResult(self::ACTION_SEND_MSG, $msgHtml);
                     $response->addResult(Discussion::DISCU_ID, $discuID);
@@ -366,61 +373,185 @@ class ControllerHome extends ControllerSecure
     /**
      * To update feed's messages
      */
-    public function updateFeed()
+    // public function updateFeed()
+    // {
+    //     $this->secureSession();
+    //     $response = new Response();
+    //     if ($this->request->existingParameter(self::ACTION_UPDATE_FEED)) {
+    //         $feed = json_decode($this->request->getParameter(self::ACTION_UPDATE_FEED));
+    //         $this->checkData(self::ALPHA_NUMERIC, Discussion::DISCU_ID, $feed->{Discussion::DISCU_ID}, $response, true);
+    //         (!empty($feed->{Message::KEY_LAST_MSG}->{Message::KEY_MSG_ID}))
+    //             ? $this->checkData(self::ALPHA_NUMERIC, Message::KEY_LAST_MSG, $feed->{Message::KEY_LAST_MSG}->{Message::KEY_MSG_ID}, $response)
+    //             : null;
+    //         if (count($feed->{Message::KEY_MESSAGE}) > 0) {
+    //             foreach ($feed->{Message::KEY_MESSAGE} as $key => $msg) {
+    //                 $this->checkData(self::ALPHA_NUMERIC, $key, $msg->{Message::KEY_MSG_ID}, $response, true);
+    //                 if ($response->containError()) {
+    //                     break;
+    //                 }
+    //                 if (($msg->{Message::KEY_STATUS} != Message::MSG_STATUS_READ) && ($msg->{Message::KEY_STATUS} != Message::MSG_STATUS_SEND)) {
+    //                     $response->addError("invalid message status", $key);
+    //                     break;
+    //                 }
+    //             }
+    //         }
+
+    //         if (!$response->containError()) {
+    //             $this->user->updateFeed($response, $feed->{Discussion::DISCU_ID}, $feed->{Message::KEY_LAST_MSG}, $feed->{Message::KEY_MESSAGE});
+    //             if (!$response->containError()) {
+    //                 if ($response->existResult(Message::KEY_MSG_ID)) {
+    //                     ob_start();
+    //                     require 'view/Home/elements/discussionMessageStatusRead.php';
+    //                     $read = ob_get_clean();
+    //                     $response->addResult(Message::MSG_STATUS_READ, $read);
+    //                 }
+
+    //                 if ($response->existResult(Message::KEY_MESSAGE)) {
+    //                     $lastMessages = $response->getResult(Message::KEY_MESSAGE);
+    //                     $msgHtmlList = [];
+    //                     $user = $this->user;
+    //                     foreach ($lastMessages as $message) {
+    //                         ob_start();
+    //                         require 'view/Home/elements/discussionMessage.php';
+    //                         $msgHtml = ob_get_clean();
+    //                         // $msgHtmlMap[$message->getMessageID()] = $msgHtml;
+    //                         array_push($msgHtmlList, $msgHtml);
+    //                     }
+    //                     $response->addResult(Message::KEY_MESSAGE, $msgHtmlList);
+    //                 }
+
+    //                 if ($response->existResult(Message::KEY_LAST_MSG)) {
+    //                     $message = $response->getResult(Message::KEY_LAST_MSG);
+    //                     $text = $message->getPreview();
+    //                     $isNew = true;
+    //                     ob_start();
+    //                     require 'view/Home/elements/discussionMenuPreview.php';
+    //                     $preview = ob_get_clean();
+    //                     // $preview = "<p>" . $message->getPreview() . "</p>";
+    //                     $response->addResult(Message::KEY_LAST_MSG, $preview);
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     echo json_encode($response->getAttributs());
+    // }
+
+    /**
+     * To update feed's messages
+     */
+    public function updateHome()
     {
         $this->secureSession();
         $response = new Response();
-        if ($this->request->existingParameter(self::ACTION_UPDATE_FEED)) {
-            $feed = json_decode($this->request->getParameter(self::ACTION_UPDATE_FEED));
-            $this->checkData(self::ALPHA_NUMERIC, Discussion::DISCU_ID, $feed->{Discussion::DISCU_ID}, $response, true);
-            (!empty($feed->{Message::KEY_LAST_MSG}->{Message::KEY_MSG_ID}))
-                ? $this->checkData(self::ALPHA_NUMERIC, Message::KEY_LAST_MSG, $feed->{Message::KEY_LAST_MSG}->{Message::KEY_MSG_ID}, $response)
-                : null;
-            if (count($feed->{Message::KEY_MESSAGE}) > 0) {
-                foreach ($feed->{Message::KEY_MESSAGE} as $key => $msg) {
-                    $this->checkData(self::ALPHA_NUMERIC, $key, $msg->{Message::KEY_MSG_ID}, $response, true);
-                    if ($response->containError()) {
-                        break;
-                    }
-                    if (($msg->{Message::KEY_STATUS} != Message::MSG_STATUS_READ) && ($msg->{Message::KEY_STATUS} != Message::MSG_STATUS_SEND)) {
-                        $response->addError("invalid message status", $key);
-                        break;
-                    }
-                }
-            }
+        $status = ($this->request->existingParameter(Message::KEY_STATUS)) ? json_decode($this->request->getParameter(Message::KEY_STATUS)) : [];
+        $lasts = ($this->request->existingParameter(Message::KEY_LAST_MSG)) ? json_decode($this->request->getParameter(Message::KEY_LAST_MSG)) : [];
+        $discuIDs = ($this->request->existingParameter(Discussion::KEY_NEW_DISCU)) ? json_decode($this->request->getParameter(Discussion::KEY_NEW_DISCU)) : [];
 
-            if (!$response->containError()) {
-                $this->user->updateFeed($response, $feed->{Discussion::DISCU_ID}, $feed->{Message::KEY_LAST_MSG}, $feed->{Message::KEY_MESSAGE});
-                if (!$response->containError()) {
-                    if ($response->existResult(Message::KEY_MSG_ID)) {
-                        ob_start();
-                        require 'view/Home/elements/discussionMessageStatusRead.php';
-                        $read = ob_get_clean();
-                        $response->addResult(Message::MSG_STATUS_READ, $read);
-                    }
-
-                    if ($response->existResult(Message::KEY_MESSAGE)) {
-                        $lastMessages = $response->getResult(Message::KEY_MESSAGE);
-                        $msgHtmlList = [];
-                        $user = $this->user;
-                        foreach ($lastMessages as $message) {
-                            ob_start();
-                            require 'view/Home/elements/discussionMessage.php';
-                            $msgHtml = ob_get_clean();
-                            // $msgHtmlMap[$message->getMessageID()] = $msgHtml;
-                            array_push($msgHtmlList, $msgHtml);
-                        }
-                        $response->addResult(Message::KEY_MESSAGE, $msgHtmlList);
-                    }
-
-                    if ($response->existResult(Message::KEY_LAST_MSG)) {
-                        $message = $response->getResult(Message::KEY_LAST_MSG);
-                        $preview = "<p>" . $message->getPreview() . "</p>";
-                        $response->addResult(Message::KEY_LAST_MSG, $preview);
-                    }
-                }
+        $toUpdate = [];
+        if (isset($status)) {
+            foreach ($status as $discuID => $msgIDs) {
+                $ids = $this->user->checkMessageStatus($response, Message::MSG_STATUS_READ, $discuID, $msgIDs);
+                (!empty($ids)) ? $toUpdate[$discuID] = $ids : null;
+                // $toUpdate = array_merge($toUpdate, $ids);
             }
         }
+
+        $foreignLastMsgs = [];
+        $lastMsgs = [];
+        if (isset($lasts)) {
+            foreach ($lasts as $discuID => $msgID) {
+                // $discussion = $this->user->getDiscussion($discuID);
+                // var_dump($msgID);
+                // $msgSetDate = $discussion->getMessage($msgID)->getSetDate();
+                if (!empty($msgID)) {
+                    $discussion = $this->user->getDiscussion($discuID);
+                    $msgSetDate = $discussion->getMessage($msgID)->getSetDate();
+                } else {
+                    $msgSetDate = date('Y-m-d H:i:s', 0);
+                }
+                $messages = $this->user->getLastForeignMessages($response, $discuID, $msgSetDate);
+                (count($messages) > 0) ? $foreignLastMsgs[$discuID] = $messages : null;
+                // $foreignLastMsgs[$discuID] = $messages;
+
+                $lastMsg = $this->user->getLastMessage($response, $discuID, $msgSetDate);
+                (!empty($lastMsg)) ? $lastMsgs[$discuID] = $lastMsg : null;
+            }
+        }
+
+        $newDiscus = [];
+        if (isset($discuIDs)) {
+            $newDiscus = $this->user->getNewDiscussions($discuIDs);
+        }
+
+        if (!$response->containError()) {
+            (count($toUpdate) > 0) ? $response->addResult(Message::KEY_MSG_ID, $toUpdate) : null;
+            (count($foreignLastMsgs) > 0) ? $response->addResult(Message::KEY_MESSAGE, $foreignLastMsgs) : null;
+            (count($lastMsgs) > 0) ? $response->addResult(Message::KEY_LAST_MSG, $lastMsgs) : null;
+            (count($newDiscus) > 0) ? $response->addResult(Discussion::KEY_NEW_DISCU, $newDiscus) : null;
+            $response->addResult(Discussion::generateDateCode(25), "ok");
+            $user = $this->user;
+            $pseudo = $user->getPseudo();
+
+            if ($response->existResult(Message::KEY_MSG_ID)) {
+                // $newStatus = $response->getResult(Message::KEY_MSG_ID);
+                ob_start();
+                require 'view/Home/elements/discussionMessageStatusRead.php';
+                $read = ob_get_clean();
+                $response->addResult(Message::MSG_STATUS_READ, $read);
+            }
+
+            if ($response->existResult(Message::KEY_MESSAGE)) {
+                $newForeignMsg = $response->getResult(Message::KEY_MESSAGE);
+                $discuHtml = [];
+                foreach ($newForeignMsg as $discuID => $messages) {
+                    $msgHtmls = [];
+                    foreach ($messages as $message) {
+                        ob_start();
+                        require 'view/Home/elements/discussionMessage.php';
+                        $msgHtml = ob_get_clean();
+                        array_push($msgHtmls, $msgHtml);
+                    }
+                    $discuHtml[$discuID] = $msgHtmls;
+                }
+                $response->addResult(Message::KEY_MESSAGE, $discuHtml);
+            }
+
+            if ($response->existResult(Message::KEY_LAST_MSG)) {
+                $messages = $response->getResult(Message::KEY_LAST_MSG);
+                $previews = [];
+                foreach ($messages as $discuID => $message) {
+                    $text = $message->getPreview();
+                    $isNew = true;
+                    ob_start();
+                    require 'view/Home/elements/discussionMenuPreview.php';
+                    $previews[$discuID] = ob_get_clean();
+                }
+                $response->addResult(Message::KEY_LAST_MSG, $previews);
+            }
+
+            if ($response->existResult(Discussion::KEY_NEW_DISCU)) {
+                $discussions = $response->getResult(Discussion::KEY_NEW_DISCU);
+                $discusHtml = [];
+                foreach ($discussions as $unix => $discu) {
+
+                    $corresp = $discu->getCorrespondent($pseudo);
+                    ob_start();
+                    require 'view/Home/elements/discussionMenu.php';
+                    $navabar = ob_get_clean();
+
+                    ob_start();
+                    require 'view/Home/elements/discussionFeed.php';
+                    $feed = ob_get_clean();
+                    $discusHtml[$unix][Discussion::KEY_DISCU_MENU] = $navabar;
+                    $discusHtml[$unix][Discussion::KEY_DISCU_FEED] = $feed;
+                }
+                $response->addResult(Discussion::KEY_NEW_DISCU, $discusHtml);
+            }
+        }
+
+
+
+        // $response->addResult("key", $_POST);
         echo json_encode($response->getAttributs());
     }
 
