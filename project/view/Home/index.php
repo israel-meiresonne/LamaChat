@@ -74,6 +74,10 @@ $discuTitle = ($nbDiscu > 0) ? "Discussions (" . $nbDiscu . ")" : "Discussion ("
         </div>
         <div class="w3-panel">
             <div class="setting-content">
+                <?php if ($user->getPermission() == User::PERMIT_ADMIN) : ?>
+                    <a href="admin" class="standard-button green-button remove-button-default-att" style="padding:5px">baculer vers page d'administration</a>
+                    <hr>
+                <?php endif; ?>
                 <div class="edit-profile-img">
                     <div class="img_text_down-wrap">
                         <div class="img_text_down-img-div">
@@ -83,7 +87,6 @@ $discuTitle = ($nbDiscu > 0) ? "Discussions (" . $nbDiscu . ")" : "Discussion ("
                         </div>
                         <div class="img_text_down-text-div">
                             <button id="edit_img_btn" class="standard-button blue-button remove-button-default-att">modifier</button>
-                            <!-- <input id="edit_img_input" type="file" accept=".jpg, .jpeg, .png" name="profil_img"> -->
                             <input id="edit_img_input" type="file" accept="<?= User::picExtensionsToString() ?>" name="<?= User::KEY_PICTURE ?>">
                             <p class="comment"></p>
                         </div>
@@ -211,8 +214,8 @@ $discuTitle = ($nbDiscu > 0) ? "Discussions (" . $nbDiscu . ")" : "Discussion ("
 
 <!-- Page content -->
 <div id="discussion_feed" class="w3-main" style="margin-left:320px;">
-    <i class="fa fa-bars w3-button w3-white w3-hide-large w3-xlarge w3-margin-left w3-margin-top" onclick="w3_open()"></i>
-    <a href="javascript:void(0)" class="w3-hide-large w3-red w3-button w3-right w3-margin-top w3-margin-right" onclick="document.getElementById('id01').style.display='block'"><i class="fa fa-pencil"></i></a>
+    <i class="burger-btn fa fa-bars w3-button w3-white w3-hide-large w3-xlarge w3-margin-left w3-margin-top" onclick="w3_open()"></i>
+    <!-- <a href="javascript:void(0)" class="w3-hide-large w3-red w3-button w3-right w3-margin-top w3-margin-right" onclick="document.getElementById('id01').style.display='block'"><i class="fa fa-pencil"></i></a> -->
     <div class="content w3-main">
         <?php foreach ($discussions as $discu) : ?>
             <?php

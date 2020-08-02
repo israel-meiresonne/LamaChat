@@ -16,9 +16,10 @@ echo $chatChart->getChart();
 
     <!-- !PAGE CONTENT! -->
     <div class="page-content">
-
         <!-- Header -->
         <header class="w3-container" style="padding-top:22px">
+            <a href="home" class="standard-button green-button remove-button-default-att" style="padding:5px">baculer vers Lamachat</a>
+            <hr>
             <h5><b><i class="fa fa-dashboard"></i> Dashboard</b></h5>
         </header>
 

@@ -53,7 +53,7 @@ require_once 'model/Message.php';
         const ACTION_OPEN_PROFILE = "<?= ControllerHome::ACTION_OPEN_PROFILE ?>";
         const ACTION_UPDATE_PROFILE = "<?= ControllerHome::ACTION_UPDATE_PROFILE ?>";
         const ACTION_SEND_MSG = "<?= ControllerHome::ACTION_SEND_MSG ?>";
-        const ACTION_SEND_FILE = "<?= ControllerHome::ACTION_SEND_FILE ?>";
+        const RSP_GET_NOTIF = "<?= ControllerHome::RSP_GET_NOTIF ?>";
         const ACTION_UPDATE_FEED = "<?= ControllerHome::ACTION_UPDATE_FEED ?>";
         const ACTION_READ_MSG = "<?= ControllerHome::ACTION_READ_MSG ?>";
         // controller Admin

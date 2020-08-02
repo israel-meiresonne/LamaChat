@@ -52,6 +52,11 @@
     right: 0;
 }
 
+.burger-btn {
+    position: fixed;
+    z-index: 2;
+}
+
 .w3-main {
     height: 100%;
 }
@@ -65,7 +70,7 @@
 
 .msg-background {
     position: absolute;
-    background-image: url('../images/static/conv-default-background.jpg');
+    /* background-image: url('../images/static/lama-game.gif'); */
     height: 100%;
     width: 100%;
     background-position: center;
@@ -86,7 +91,8 @@
 .msg-wrap {
     /* display: flex; */
     position: relative;
-    padding-bottom: 15px;
+    /* padding-bottom: 15px; */
+    padding: 0 5px 15px;
     font-family: var(--main-font-family);
 }
 
@@ -112,6 +118,7 @@
 }
 
 .msg-text {
+    position: relative;
     padding: 5px;
     color: var(--color-white);
     border-radius: var(--border-float-radius);
@@ -186,7 +193,7 @@
     margin: auto;
 }
 
-.msg-window .msg_sender-container{
+.msg-window .msg_sender-container {
     position: relative !important;
     height: 10%;
 }
@@ -234,7 +241,8 @@
 }
 
 .msg_sender-button-div {
-    width: 50%;
+    /* width: 50%; */
+    width: 100%;
     padding: 0 5px;
 }
 
@@ -379,4 +387,12 @@
 #search_window .msg_sender-container .msg_sender-placeholder {
     top: 0;
     left: 14px;
+}
+
+#discussion_feed .content {
+    /* background: url('../images/static/lama-eat.gif'); */
+    min-height: 100%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: repeat;
 }

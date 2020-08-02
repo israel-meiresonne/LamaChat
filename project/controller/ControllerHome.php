@@ -27,14 +27,14 @@ class ControllerHome extends ControllerSecure
     public const ACTION_OPEN_PROFILE = "home/getProfile";
     public const ACTION_UPDATE_PROFILE = "home/updateProfile";
     public const ACTION_SEND_MSG = "home/sendMessage";
-    public const ACTION_SEND_FILE = "home/sendFile"; // don't forget
     public const ACTION_UPDATE_FEED = "home/updateFeed";
     public const ACTION_READ_MSG = "home/readMessage";
-
+    
     /**
      * Access key for actions's responses
      * @var string
      */
+    public const RSP_GET_NOTIF = "getnitif"; // don't forget
     public const RSP_WRITE_MENU = "menu";
     public const RSP_WRITE_DISCU_FEED = "discuFeed";
     public const RSP_SEARCH_KEY = "searchWord";
@@ -370,7 +370,6 @@ class ControllerHome extends ControllerSecure
     {
         $this->secureSession();
         $response = new Response();
-        // setdate, discuID, msgID[message's status]
         if ($this->request->existingParameter(self::ACTION_UPDATE_FEED)) {
             $feed = json_decode($this->request->getParameter(self::ACTION_UPDATE_FEED));
             $this->checkData(self::ALPHA_NUMERIC, Discussion::DISCU_ID, $feed->{Discussion::DISCU_ID}, $response, true);
@@ -425,36 +424,36 @@ class ControllerHome extends ControllerSecure
         echo json_encode($response->getAttributs());
     }
 
-    public function test()
-    {
-        $config = array(
-            "digest_alg" => "sha512",
-            "private_key_bits" => 4096,
-            "private_key_type" => OPENSSL_KEYTYPE_RSA,
-        );
+    // public function test()
+    // {
+    //     $config = array(
+    //         "digest_alg" => "sha512",
+    //         "private_key_bits" => 4096,
+    //         "private_key_type" => OPENSSL_KEYTYPE_RSA,
+    //     );
 
-        // Create the private and public key
-        $res = openssl_pkey_new($config);
+    //     // Create the private and public key
+    //     $res = openssl_pkey_new($config);
 
-        // Extract the private key from $res to $privKey
-        openssl_pkey_export($res, $privKey);
+    //     // Extract the private key from $res to $privKey
+    //     openssl_pkey_export($res, $privKey);
 
-        // Extract the public key from $res to $pubKey
-        $pubKey = openssl_pkey_get_details($res);
-        $pubKey = $pubKey["key"];
+    //     // Extract the public key from $res to $pubKey
+    //     $pubKey = openssl_pkey_get_details($res);
+    //     $pubKey = $pubKey["key"];
 
-        $data = "hello world";
-        var_dump("msg: ");
-        var_dump($data);
-        echo "<hr>";
+    //     $data = "hello world";
+    //     var_dump("msg: ");
+    //     var_dump($data);
+    //     echo "<hr>";
 
-        // openssl_private_encrypt($data, $encrypted, $privKey);
-        openssl_public_encrypt($data, $encrypted, $pubKey);
-        var_dump("encrypted msg: ", $encrypted);
-        echo "<hr>";
+    //     // openssl_private_encrypt($data, $encrypted, $privKey);
+    //     openssl_public_encrypt($data, $encrypted, $pubKey);
+    //     var_dump("encrypted msg: ", $encrypted);
+    //     echo "<hr>";
 
-        openssl_private_decrypt($encrypted, $decrypted, $privKey);
-        var_dump("decrypted msg: ", $decrypted);
-        echo "<hr>";
-    }
+    //     openssl_private_decrypt($encrypted, $decrypted, $privKey);
+    //     var_dump("decrypted msg: ", $decrypted);
+    //     echo "<hr>";
+    // }
 }

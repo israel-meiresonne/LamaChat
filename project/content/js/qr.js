@@ -310,19 +310,16 @@
 
     updateFeed = function (id) {
         var w = $("#" + id);
-        var xs = $(w).find(".msg-wrap[data-msgstatus='" + MSG_STATUS_SEND + "'][data-sender='" + SENDER + "']");
         var d = {};
         d[DISCU_ID] = id;
         var l = $(w).find(".msg-wrap").last();
         var lm = {}
         var msgId = $(l).attr("data-msgid");
         lm[KEY_MSG_ID] = (msgId != null) ? msgId : null;
-        // var lm = {
-        //     [KEY_MSG_ID]: $(l).attr("data-msgid")//,
-        //     // [KEY_STATUS]: $(l).attr("data-msgstatus"),
-        // };
         d[KEY_LAST_MSG] = lm;
         d[KEY_MESSAGE] = [];
+        
+        var xs = $(w).find(".msg-wrap[data-msgstatus='" + MSG_STATUS_SEND + "'][data-sender='" + SENDER + "']");
         var nb = xs.length;
         for (var i = 0; i < nb; i++) {
             var x = xs[i];
@@ -343,9 +340,25 @@
             "lds": "#isLoading",
             "x": ""
         };
-        // console.log("d", d);
         SND_fd(datasSND);
     }
+
+    // updateChats = function () {
+    //     var ts = $(".menu-discu");
+    //     var nbt = ts.length;
+    //     var cs = {};
+    //     for(var i = 0; i < nbt; i++){
+    //         var t = ts[i];
+    //         var did = $(t).attr("data-menudiscuid");
+    //         var w = $("#"+did);
+    //         var ms = $(w).find(".msg-wrap[data-msgstatus='" + MSG_STATUS_SEND + "'][data-sender='" + SENDER + "']");
+    //         var c = {};
+    //         c[did] = {
+    //             [KEY_MSG_ID]: msgId,
+    //             [KEY_STATUS]: status
+    //         };
+    //     }
+    // }
 
     lunchUpdate = function () {
         var ws = $(".msg-window");

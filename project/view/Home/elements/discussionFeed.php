@@ -44,7 +44,7 @@ $discuID = $discu->getDiscuID();
             <?php
             $btnTxtId = Discussion::generateDateCode(25);
             // $discuID_json = json_encode([Discussion::DISCU_ID => $discuID]);
-            $btnImgtId = Discussion::generateDateCode(25);
+            // $btnImgtId = Discussion::generateDateCode(25);
             ?>
             <div class="msg_sender-inner">
                 <div class="msg_sender-placeholder">Entrer votre message</div>
@@ -58,11 +58,11 @@ $discuID = $discu->getDiscuID();
                     <img src="content/images/static/icons8-email-send-96.png">
                 </button>
             </div>
-            <div class="msg_sender-button-div">
-                <button id="<?= $btnImgtId ?>" class="img-button remove-button-default-att">
+            <!-- <div class="msg_sender-button-div">
+                <button id="" class="img-button remove-button-default-att">
                     <img src="content/images/static/icons8-image-100.png">
                 </button>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
