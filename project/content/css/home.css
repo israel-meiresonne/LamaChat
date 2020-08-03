@@ -409,3 +409,11 @@
     border: 3px var(--color-red) solid;
     border-radius: 50%;
 }
+
+#myBtn, .background-purple{
+    background: var(--color-purple) !important;
+}
+
+#Demo1 .fa-remove{
+    color: var(--color-red);
+}

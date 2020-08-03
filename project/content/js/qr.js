@@ -78,7 +78,8 @@
     }
 
     var isCtrEtr = function (e) {
-        return ((e.ctrlKey || e.metaKey) && (e.keyCode == 13 || e.keyCode == 10)); //{
+        // return ((e.ctrlKey || e.metaKey) && (e.keyCode == 13 || e.keyCode == 10)); //{
+        return (/*(e.ctrlKey || e.metaKey) && */(e.keyCode == 13 || e.keyCode == 10)); //{
         //     f(dts);
         // }
     }
@@ -272,9 +273,9 @@
         var x = $("#" + id);
         var y = $(x).find(".msg_sender-container .msg_sender-input");
         var m = $(y).text();
-        // $(y).text("");
-        // var z = $(y).prev();
-        // displayOn(z);
+        $(y).text("");
+        var z = $(y).prev();
+        displayOn(z);
         if (m.length > 0) {
             var map = {
                 [DISCU_ID]: id,
@@ -648,9 +649,10 @@
     const sendMessageRSP = function (r, x) {
         if (r.isSuccess) {
             // var txt = $(x.y).text();
-            $(x.y).text("");
-            var z = $(x.y).prev();
-            displayOn(z);
+
+            // $(x.y).text("");
+            // var z = $(x.y).prev();
+            // displayOn(z);
 
             var m = createNone(r.results[ACTION_SEND_MSG]);
             $(x.x).find(".msg-window-feed").append(m);
@@ -780,15 +782,16 @@
                 }
             }
 
-            setTimeout(() => {
-                updateHome();
-            }, TIME_UPDATE_FEED * 1000);
-            readMessage();
+            
         } else {
             if (r.errors[FATAL_ERROR] != null) {
                 popAlert(r.errors[FATAL_ERROR].message);
             }
         }
+        setTimeout(() => {
+            updateHome();
+        }, TIME_UPDATE_FEED * 1000);
+        readMessage();
     }
 
     const updateAdminBtn = function (r, x) {

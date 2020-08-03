@@ -42,7 +42,7 @@ $discuTitle = ($nbDiscu > 0) ? "Discussions (" . $nbDiscu . ")" : "Discussion ("
     <a href="javascript:void(0)" onclick="w3_close()" title="Close Sidemenu" class="w3-bar-item w3-button w3-hide-large w3-large">Close <i class="fa fa-remove"></i></a>
     <!-- <a href="javascript:void(0)" class="w3-bar-item w3-button w3-dark-grey w3-button w3-hover-black w3-left-align" onclick="">New Message <i class="w3-padding fa fa-pencil"></i></a> -->
     <button id="log_out_btn" class="w3-bar-item w3-button"><i class="fa fa-sign-out" aria-hidden="true"></i>Se déconnecter</button>
-    <a id="myBtn" onclick="myFunc('Demo1')" href="javascript:void(0)" class="w3-bar-item w3-button"><i class="fa fa-inbox w3-margin-right"></i><?= $discuTitle ?><i class="fa fa-caret-down w3-margin-left"></i></a>
+    <div id="myBtn" onclick="myFunc('Demo1')" href="javascript:void(0)" class="w3-bar-item w3-button"><i class="fa fa-inbox w3-margin-right"></i><?= $discuTitle ?><i class="fa fa-caret-down w3-margin-left"></i></div>
 
     <div id="Demo1" class="w3-hide w3-animate-left">
         <?php
@@ -68,8 +68,8 @@ $discuTitle = ($nbDiscu > 0) ? "Discussions (" . $nbDiscu . ")" : "Discussion ("
 
 <div id="id01" class="w3-modal" style="z-index:4">
     <div class="w3-modal-content">
-        <div class="w3-container w3-padding w3-red">
-            <span id="setting_close_button" class="w3-button w3-red w3-right w3-xxlarge"><i class="fa fa-remove"></i></span>
+        <div class="background-purple w3-container w3-padding w3-red">
+            <span id="setting_close_button" class="background-purple w3-button w3-red w3-right w3-xxlarge"><i class="fa fa-remove"></i></span>
             <h2>Réglages</h2>
         </div>
         <div class="w3-panel">
@@ -154,8 +154,8 @@ $discuTitle = ($nbDiscu > 0) ? "Discussions (" . $nbDiscu . ")" : "Discussion ("
 
 <div id="contact_window" class="w3-modal" style="z-index:4">
     <div class="w3-modal-content">
-        <div class="w3-container w3-padding w3-red">
-            <span id="contact_close_button" class="w3-button w3-red w3-right w3-xxlarge"><i class="fa fa-remove"></i></span>
+        <div class="background-purple w3-container w3-padding w3-red">
+            <span id="contact_close_button" class="background-purple w3-button w3-red w3-right w3-xxlarge"><i class="fa fa-remove"></i></span>
             <h2>contacts</h2>
         </div>
         <div class="w3-panel">
@@ -175,8 +175,8 @@ $discuTitle = ($nbDiscu > 0) ? "Discussions (" . $nbDiscu . ")" : "Discussion ("
 
 <div id="search_window" class="w3-modal" style="z-index:4">
     <div class="w3-modal-content">
-        <div class="w3-container w3-padding w3-red">
-            <span id="search_close_button" class="w3-button w3-red w3-right w3-xxlarge"><i class="fa fa-remove"></i></span>
+        <div class="background-purple w3-container w3-padding w3-red">
+            <span id="search_close_button" class="background-purple w3-button w3-red w3-right w3-xxlarge"><i class="fa fa-remove"></i></span>
             <h2>recherche</h2>
         </div>
         <div class="w3-panel">
@@ -199,8 +199,8 @@ $discuTitle = ($nbDiscu > 0) ? "Discussions (" . $nbDiscu . ")" : "Discussion ("
 
 <div id="user_profile" class="w3-modal" style="z-index:4">
     <div class="w3-modal-content">
-        <div class="w3-container w3-padding w3-red">
-            <span id="profile_close_button" class="w3-button w3-red w3-right w3-xxlarge"><i class="fa fa-remove"></i></span>
+        <div class="background-purple w3-container w3-padding w3-red">
+            <span id="profile_close_button" class="background-purple w3-button w3-red w3-right w3-xxlarge"><i class="fa fa-remove"></i></span>
             <h2>profile</h2>
         </div>
         <div class="w3-panel">
