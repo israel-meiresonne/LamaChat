@@ -679,59 +679,6 @@
         }
     }
 
-    // const updateFeedRSP = function (r) {
-    //     if (r.isSuccess) {
-    //         var id = r.results[DISCU_ID];
-    //         var w = $("#" + id);
-    //         if ((r.results[KEY_MSG_ID] != null) && (r.results[KEY_MSG_ID].length > 0)) {
-    //             var s = r.results[MSG_STATUS_READ];
-    //             for (var msgID of r.results[KEY_MSG_ID]) {
-    //                 var ns = createNone(s);
-    //                 var os = $(w).find(".msg-wrap[data-msgid='" + msgID + "'] .msg-status .o_symbol-wrap")[0];
-    //                 replaceFade(os, ns);
-    //             }
-    //         }
-    //         if ((r.results[KEY_MESSAGE] != null) && (r.results[KEY_MESSAGE].length > 0)) {
-    //             var feed = $(w).find(".msg-window-feed");
-    //             for (var m of r.results[KEY_MESSAGE]) {
-    //                 var me = createNone(m);
-    //                 $(feed).append(me);
-    //                 $(me).fadeIn(TS);
-    //             }
-    //             scrollBottom(w);
-    //         }
-    //         if ((r.results[KEY_LAST_MSG] != null) && (r.results[KEY_LAST_MSG].length > 0)) {
-    //             var rx = $(".w3-bar-item[data-menudiscuid='" + id + "'] .w3-container .msg-preview");
-    //             var ry = createNone(r.results[KEY_LAST_MSG]);
-    //             replaceFade(rx, ry);
-    //         }
-
-    //         if ((r.results[KEY_NEW_DISCU] != null) && (r.results[KEY_NEW_DISCU].length > 0)) {
-    //             for (var discu of r.results[KEY_NEW_DISCU]) {
-    //                 console.log(discu);
-    //                 var m = discu[KEY_DISCU_MENU];
-    //                 var me = createNone(m);
-    //                 var feed = discu[KEY_DISCU_FEED];
-    //                 var feede = createNone(m);
-    //                 $("#Demo1").prepend(me);
-    //                 $(me).slideDown(TS);
-    //                 $("#discussion_feed .content").append(feede);
-    //                 // var m = $("nav a[data-menuDiscuId='" + r.results[DISCU_ID] + "']")[0];
-    //                 // $(me).click();
-    //             }
-    //         }
-
-    //         setTimeout(() => {
-    //             updateFeed(id);
-    //         }, TIME_UPDATE_FEED * 1000);
-    //         readMessage(id);
-    //     } else {
-    //         if (r.errors[FATAL_ERROR] != null) {
-    //             popAlert(r.errors[FATAL_ERROR].message);
-    //         }
-    //     }
-    // }
-    // test = null;
     const updateHomeRSP = function (r) {
         // test = r;
         if (r.isSuccess) {
@@ -788,9 +735,9 @@
                 popAlert(r.errors[FATAL_ERROR].message);
             }
         }
-        setTimeout(() => {
-            updateHome();
-        }, TIME_UPDATE_FEED * 1000);
+        // setTimeout(() => {
+        //     updateHome();
+        // }, TIME_UPDATE_FEED * 1000);
         readMessage();
     }
 

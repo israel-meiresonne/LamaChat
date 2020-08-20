@@ -797,14 +797,12 @@ class User extends Model
      */
     public function setContacts()
     {
-        if (empty($this->pseudo)) {
-            throw new Exception("User's pseudo must first be initialized");
-        }
+        $pseudo = $this->getPseudo();
         $this->contacts = [];
         $sql = "SELECT * 
         FROM `Contacts` c
         JOIN `Users` u ON c.contact = u.pseudo
-        WHERE pseudo_ = '$this->pseudo'";
+        WHERE pseudo_ = '$pseudo'";
         $pdo = parent::executeRequest($sql);
         if ($pdo->rowCount() > 0) {
             while ($pdoLine = $pdo->fetch()) {
@@ -821,14 +819,18 @@ class User extends Model
      */
     protected function createContact($pdoLine)
     {
+        $pseudo = $this->getPseudo();
         $contact = new User();
-        (!empty($pdoLine["contact"])) ? $contact->setPseudo($pdoLine["contact"]) : $contact->setPseudo($pdoLine["pseudo"]);
+        $contactPseu = (!empty($pdoLine["contact"])) ? $pdoLine["contact"] : $pdoLine["pseudo"];
+        $contact->setPseudo($contactPseu);
         $contact->setFirstname($pdoLine["firstname"]);
         $contact->setLastname($pdoLine["lastname"]);
         $contact->setPicture($pdoLine["picture"]);
         $contact->setStatus($pdoLine["status"]);
         $contact->setPermission($pdoLine["permission"]);
-        $contact->setRelationship($pdoLine["contactStatus"]);
+        $sql = "SELECT * FROM `Contacts` WHERE `pseudo_` = '$pseudo' AND `contact` = '$contactPseu'";
+        $pdo = parent::executeRequest($sql);
+        ($pdo->rowCount() > 0) ? $contact->setRelationship($pdo->fetch()["contactStatus"]) : null;
         return $contact;
     }
 
@@ -1168,15 +1170,12 @@ class User extends Model
      */
     public function searchContact($search, Response $response)
     {
-        if (empty($this->pseudo)) {
-            throw new Exception("User's pseu must be initialized");
-        }
+        $pseudo = $this->getPseudo();
         $contacts = [];
         if (!empty($search)) {
             $sql = "SELECT * 
             FROM `Users` u
-            LEFT JOIN `Contacts` c ON u.pseudo = c.pseudo_ OR u.pseudo = c.contact
-            WHERE u.pseudo != '$this->pseudo' AND ("; //(u.pseudo LIKE '%pseud%' OR u.firstname LIKE '%%' OR u.lastname LIKE '%%')";
+            WHERE u.pseudo != '$pseudo' AND ("; //(u.pseudo LIKE '%pseud%' OR u.firstname LIKE '%%' OR u.lastname LIKE '%%')";
             $words = explode(" ", $search);
             $nbW = count($words);
             for ($i = 0; $i < $nbW; $i++) {
@@ -1184,12 +1183,30 @@ class User extends Model
                 $clause = " u.pseudo LIKE '%$words[$i]%' OR u.firstname LIKE '%$words[$i]%' OR u.lastname LIKE '%$words[$i]%'";
                 $sql .= $clause;
             }
-            $sql .= ") ORDER BY `c`.`pseudo_`  DESC, `u`.`pseudo` ASC";
+            $sql .= ") ORDER BY `u`.`pseudo` ASC";
+
             $pdo = parent::executeRequest($sql);
+
             if ($pdo->errorInfo()[0] == self::PDO_SUCCEESS) {
-                while ($pdoLine = $pdo->fetch()) {
-                    $contact = $this->createContact($pdoLine);
-                    array_push($contacts, $contact);
+                $pseudos = $pdo->fetchAll(PDO::FETCH_COLUMN);
+                $pseudos = $this->filterSearch($response, $pseudos);
+                $nbPseu = count($pseudos);
+                if ($nbPseu > 0) {
+                    $sql = "SELECT * 
+                    FROM `Users` u
+                    WHERE (";
+                    for ($i = 0; $i < $nbPseu; $i++) {
+                        $sql .= (0 < $i && $i < $nbPseu) ? " OR" : "";
+                        $clause = " `pseudo` = '$pseudos[$i]'";
+                        $sql .= $clause;
+                    }
+                    $sql .= ") ORDER BY `u`.`pseudo` ASC";
+                    // var_dump($sql);
+                    $pdo = parent::executeRequest($sql);
+                    while ($pdoLine = $pdo->fetch()) {
+                        $contact = $this->createContact($pdoLine);
+                        array_push($contacts, $contact);
+                    }
                 }
             } else {
                 $errMsg = "désolé, une erreur s'est produite lors de la recherche de '$search'!";
@@ -1197,6 +1214,36 @@ class User extends Model
             }
         }
         return $contacts;
+    }
+
+    /**
+     * Filter the search
+     * + remove pseudo that blocked the current user
+     * @param Response $response to push in occured errors
+     * @param string[] $pseudos pseudo to filter
+     * @return array of valid pseudos
+     */
+    private function filterSearch(Response $response, $pseudos)
+    {
+        $pseudo = $this->getPseudo();
+        $sql = "SELECT * FROM `Contacts` WHERE pseudo_ != '$pseudo' AND contact = '$pseudo' AND contactStatus = 'blocked'";
+        $pdo = parent::executeRequest($sql);
+        if ($pdo->errorInfo()[0] == self::PDO_SUCCEESS) {
+            $badPseudos = $pdo->fetchAll(PDO::FETCH_COLUMN);
+            if (count($badPseudos) > 0) {
+                foreach ($badPseudos as $badPseudo) {
+                    if (in_array($badPseudo, $pseudos)) {
+                        $key = array_search($badPseudo, $pseudos);
+                        $pseudos[$key] = null;
+                        unset($pseudos[$key]);
+                    }
+                }
+            }
+        } else {
+            $errMsg = "désolé, une erreur s'est produite lors de la recherche!";
+            $response->addError($errMsg, MyError::FATAL_ERROR);
+        }
+        return $pseudos;
     }
 
     // /**

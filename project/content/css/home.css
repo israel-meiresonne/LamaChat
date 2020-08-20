@@ -2,6 +2,10 @@
     outline: none;
 }
 
+body{
+    margin: 0;
+}
+
 .esi-logo-container {
     width: 200px;
     padding: 20px;
@@ -391,7 +395,7 @@
 
 #discussion_feed .content {
     background: url('../images/static/lama-eat.gif');
-    min-height: 100%;
+    height: 100%;
     background-position: center;
     background-size: cover;
     background-repeat: repeat;
