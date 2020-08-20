@@ -267,7 +267,11 @@ class ControllerHome extends ControllerSecure
             $ctcTable = ob_get_clean();
             $response->addResult(self::ACTION_GET_CONTACT_TABLE, $ctcTable);
         } else {
-            $ctcTable = "Aucun résultat!";
+            $message = "Vous n'avez aucun contact";
+            ob_start();
+            require 'view/Home/message.php';
+            $messageHtml = ob_get_clean();
+            $response->addResult(self::ACTION_GET_CONTACT_TABLE, $messageHtml);
         }
         echo json_encode($response->getAttributs());
     }
@@ -369,72 +373,6 @@ class ControllerHome extends ControllerSecure
         }
         echo json_encode($response->getAttributs());
     }
-
-    /**
-     * To update feed's messages
-     */
-    // public function updateFeed()
-    // {
-    //     $this->secureSession();
-    //     $response = new Response();
-    //     if ($this->request->existingParameter(self::ACTION_UPDATE_FEED)) {
-    //         $feed = json_decode($this->request->getParameter(self::ACTION_UPDATE_FEED));
-    //         $this->checkData(self::ALPHA_NUMERIC, Discussion::DISCU_ID, $feed->{Discussion::DISCU_ID}, $response, true);
-    //         (!empty($feed->{Message::KEY_LAST_MSG}->{Message::KEY_MSG_ID}))
-    //             ? $this->checkData(self::ALPHA_NUMERIC, Message::KEY_LAST_MSG, $feed->{Message::KEY_LAST_MSG}->{Message::KEY_MSG_ID}, $response)
-    //             : null;
-    //         if (count($feed->{Message::KEY_MESSAGE}) > 0) {
-    //             foreach ($feed->{Message::KEY_MESSAGE} as $key => $msg) {
-    //                 $this->checkData(self::ALPHA_NUMERIC, $key, $msg->{Message::KEY_MSG_ID}, $response, true);
-    //                 if ($response->containError()) {
-    //                     break;
-    //                 }
-    //                 if (($msg->{Message::KEY_STATUS} != Message::MSG_STATUS_READ) && ($msg->{Message::KEY_STATUS} != Message::MSG_STATUS_SEND)) {
-    //                     $response->addError("invalid message status", $key);
-    //                     break;
-    //                 }
-    //             }
-    //         }
-
-    //         if (!$response->containError()) {
-    //             $this->user->updateFeed($response, $feed->{Discussion::DISCU_ID}, $feed->{Message::KEY_LAST_MSG}, $feed->{Message::KEY_MESSAGE});
-    //             if (!$response->containError()) {
-    //                 if ($response->existResult(Message::KEY_MSG_ID)) {
-    //                     ob_start();
-    //                     require 'view/Home/elements/discussionMessageStatusRead.php';
-    //                     $read = ob_get_clean();
-    //                     $response->addResult(Message::MSG_STATUS_READ, $read);
-    //                 }
-
-    //                 if ($response->existResult(Message::KEY_MESSAGE)) {
-    //                     $lastMessages = $response->getResult(Message::KEY_MESSAGE);
-    //                     $msgHtmlList = [];
-    //                     $user = $this->user;
-    //                     foreach ($lastMessages as $message) {
-    //                         ob_start();
-    //                         require 'view/Home/elements/discussionMessage.php';
-    //                         $msgHtml = ob_get_clean();
-    //                         // $msgHtmlMap[$message->getMessageID()] = $msgHtml;
-    //                         array_push($msgHtmlList, $msgHtml);
-    //                     }
-    //                     $response->addResult(Message::KEY_MESSAGE, $msgHtmlList);
-    //                 }
-
-    //                 if ($response->existResult(Message::KEY_LAST_MSG)) {
-    //                     $message = $response->getResult(Message::KEY_LAST_MSG);
-    //                     $text = $message->getPreview();
-    //                     $isNew = true;
-    //                     ob_start();
-    //                     require 'view/Home/elements/discussionMenuPreview.php';
-    //                     $preview = ob_get_clean();
-    //                     // $preview = "<p>" . $message->getPreview() . "</p>";
-    //                     $response->addResult(Message::KEY_LAST_MSG, $preview);
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     echo json_encode($response->getAttributs());
-    // }
 
     /**
      * To update feed's messages
@@ -554,37 +492,4 @@ class ControllerHome extends ControllerSecure
         // $response->addResult("key", $_POST);
         echo json_encode($response->getAttributs());
     }
-
-    // public function test()
-    // {
-    //     $config = array(
-    //         "digest_alg" => "sha512",
-    //         "private_key_bits" => 4096,
-    //         "private_key_type" => OPENSSL_KEYTYPE_RSA,
-    //     );
-
-    //     // Create the private and public key
-    //     $res = openssl_pkey_new($config);
-
-    //     // Extract the private key from $res to $privKey
-    //     openssl_pkey_export($res, $privKey);
-
-    //     // Extract the public key from $res to $pubKey
-    //     $pubKey = openssl_pkey_get_details($res);
-    //     $pubKey = $pubKey["key"];
-
-    //     $data = "hello world";
-    //     var_dump("msg: ");
-    //     var_dump($data);
-    //     echo "<hr>";
-
-    //     // openssl_private_encrypt($data, $encrypted, $privKey);
-    //     openssl_public_encrypt($data, $encrypted, $pubKey);
-    //     var_dump("encrypted msg: ", $encrypted);
-    //     echo "<hr>";
-
-    //     openssl_private_decrypt($encrypted, $decrypted, $privKey);
-    //     var_dump("decrypted msg: ", $decrypted);
-    //     echo "<hr>";
-    // }
 }
