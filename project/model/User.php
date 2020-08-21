@@ -553,7 +553,6 @@ class User extends Model
                 $date = date("Y-m-d", $time);
                 $sql .= (empty($sql)) ? "UPDATE `Users` SET `birthdate`='$date'" : ", `birthdate`='$date'";
             }
-
             if (!empty($_FILES[User::KEY_PICTURE])) {
                 $oldPicture = $this->getPicture();
                 $newpicture = Discussion::generateDateCode(20);
@@ -589,7 +588,9 @@ class User extends Model
                     $errMsg = $pdo->errorInfo()[1];
                     $response->addError($errMsg, MyError::FATAL_ERROR);
                 } else {
-                    $this->setProperties();
+                    try {
+                        $this->setProperties();
+                    } catch (\Throwable $th) {}
                 }
             }
 
