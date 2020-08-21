@@ -316,41 +316,6 @@
         }
     }
 
-    // updateFeed = function (id) {
-    //     var w = $("#" + id);
-    //     var d = {};
-    //     d[DISCU_ID] = id;
-    //     var l = $(w).find(".msg-wrap").last();
-    //     var lm = {}
-    //     var msgId = $(l).attr("data-msgid");
-    //     lm[KEY_MSG_ID] = (msgId != null) ? msgId : null;
-    //     d[KEY_LAST_MSG] = lm;
-    //     d[KEY_MESSAGE] = [];
-
-    //     var xs = $(w).find(".msg-wrap[data-msgstatus='" + MSG_STATUS_SEND + "'][data-sender='" + SENDER + "']");
-    //     var nb = xs.length;
-    //     for (var i = 0; i < nb; i++) {
-    //         var x = xs[i];
-    //         var msgId = $(x).attr("data-msgid");
-    //         var status = $(x).attr("data-msgstatus");
-    //         var m = {
-    //             [KEY_MSG_ID]: msgId,
-    //             [KEY_STATUS]: status,
-    //         };
-    //         d[KEY_MESSAGE].push(m);
-    //     }
-    //     var fd = new FormData();
-    //     fd.append(ACTION_UPDATE_FEED, json_encode(d));
-    //     var datasSND = {
-    //         "action": ACTION_UPDATE_FEED,
-    //         "jxd": fd,
-    //         "rspf": updateFeedRSP,
-    //         "lds": "#isLoading",
-    //         "x": ""
-    //     };
-    //     SND_fd(datasSND);
-    // }
-
     updateHome = function () {
         var fd = new FormData();
         var ts = $(".menu-discu");
@@ -783,7 +748,6 @@
         // }
         $("#search_contact_input").keyup(function () {
             var d = $(this).text();
-            // ((m != "") && (m != null)) ? endKeyup(searchContact, m) : null;
             endKeyup(searchContact, d);
         });
 
@@ -819,6 +783,7 @@
             cleanErr(e);
             var xs = $("#id01 span[contenteditable='true']");
             var map = mapTagInput(xs);
+            // console.log(map);
             var fd = new FormData();
             $("#edit_img_input")[0].files[0];
             var f = $("#edit_img_input")[0].files[0];

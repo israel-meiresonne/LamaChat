@@ -114,6 +114,7 @@ class User extends Model
      * @var string
      */
     private const DEFAULT_PICTURE = "default-user-picture.png";
+    private const DEFAULT_INFO = "—";
 
     /**
      * datas access keys
@@ -491,6 +492,15 @@ class User extends Model
                     $this->informations[$infoLine["information_"]] = $infoLine["value"];
                 }
             }
+            $sql = "SELECT * FROM `Informations`";
+            $pdo = parent::executeRequest($sql);
+            $infos = $pdo->fetchAll(PDO::FETCH_COLUMN);
+            foreach ($infos as $info) {
+                if (!key_exists($info, $this->informations)) {
+                    $this->informations[$info] = self::DEFAULT_INFO;
+                }
+            }
+            ksort($this->informations);
         }
     }
 
@@ -561,8 +571,14 @@ class User extends Model
                 foreach ($infoKeys as $info) {
                     $input = self::valueToInputName($info);
                     if ($request->existingParameter($input)) {
-                        $value = strtolower($request->getParameter($input));
-                        $sql .= " UPDATE `Users_ Informations` SET `value` = '$value' WHERE `Users_ Informations`.`pseudo_` = '$pseudo' AND `Users_ Informations`.`information_` = '$info'; ";
+                        $informations = $this->getInformations();
+                        if($informations[$info] != self::DEFAULT_INFO){
+                            $value = strtolower($request->getParameter($input));
+                            $sql .= " UPDATE `Users_ Informations` SET `value` = '$value' WHERE `Users_ Informations`.`pseudo_` = '$pseudo' AND `Users_ Informations`.`information_` = '$info'; ";
+                        } else {
+                            $value = strtolower($request->getParameter($input));
+                            $sql .= " INSERT INTO `Users_ Informations`(`pseudo_`, `information_`, `value`) VALUES ('$pseudo', '$info', '$value'); ";
+                        }
                     }
                 }
             }
@@ -822,6 +838,7 @@ class User extends Model
         $pseudo = $this->getPseudo();
         $contact = new User();
         $contactPseu = (!empty($pdoLine["contact"])) ? $pdoLine["contact"] : $pdoLine["pseudo"];
+        // var_dump($contactPseu);
         $contact->setPseudo($contactPseu);
         $contact->setFirstname($pdoLine["firstname"]);
         $contact->setLastname($pdoLine["lastname"]);
