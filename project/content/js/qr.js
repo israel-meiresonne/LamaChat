@@ -699,9 +699,9 @@
                 popAlert(r.errors[FATAL_ERROR].message);
             }
         }
-        // setTimeout(() => {
-        //     updateHome();
-        // }, TIME_UPDATE_FEED * 1000);
+        setTimeout(() => {
+            updateHome();
+        }, TIME_UPDATE_FEED * 1000);
         readMessage();
     }
 

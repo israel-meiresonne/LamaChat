@@ -572,7 +572,7 @@ class User extends Model
                     $input = self::valueToInputName($info);
                     if ($request->existingParameter($input)) {
                         $informations = $this->getInformations();
-                        if($informations[$info] != self::DEFAULT_INFO){
+                        if ($informations[$info] != self::DEFAULT_INFO) {
                             $value = strtolower($request->getParameter($input));
                             $sql .= " UPDATE `Users_ Informations` SET `value` = '$value' WHERE `Users_ Informations`.`pseudo_` = '$pseudo' AND `Users_ Informations`.`information_` = '$info'; ";
                         } else {
@@ -1074,19 +1074,28 @@ class User extends Model
 
     /**
      * Perform a blockage of a contact from the current user
-     * @param string $pseudo contact to block's pseudo
+     * @param string $contactPseu contact to block's pseudo
      * @param Response $response to push in occured errors
      */
-    public function blockContact($pseudo, Response $response)
+    public function blockContact($contactPseu, Response $response)
     {
-        if (empty($this->pseudo)) {
-            throw new Exception("User's pseu must be initialized");
-        }
-        $sql = "UPDATE `Contacts` SET `contactStatus` = 'blocked' WHERE `Contacts`.`pseudo_` = '$this->pseudo' AND `Contacts`.`contact` = '$pseudo';";
+        $pseudo = $this->getPseudo();
+        $sql = "UPDATE `Contacts` SET `contactStatus` = 'blocked' WHERE `Contacts`.`pseudo_` = '$pseudo' AND `Contacts`.`contact` = '$contactPseu';";
         $pdo = parent::executeRequest($sql);
         if ($pdo->errorInfo()[0] != self::PDO_SUCCEESS) {
-            $errMsg = "désolé, une erreur s'est produite lors de la tentative de bloquer '$pseudo'!";
+            $errMsg = "désolé, une erreur s'est produite lors de la tentative de bloquer '$contactPseu'!";
             $response->addError($errMsg, MyError::FATAL_ERROR);
+        } else {
+            $discus = $this->getDiscussions();
+            $discuID = null;
+            foreach ($discus as $discu) {
+                $participants = $discu->getParticipants();
+                if (key_exists($contactPseu, $participants) && key_exists($pseudo, $participants)) {
+                    $discuID = $discu->getDiscuID();
+                    break;
+                }
+            }
+            (!empty($discuID))? $this->removeDiscussion($discuID, $response) : null;
         }
     }
 
@@ -1116,31 +1125,30 @@ class User extends Model
      * @param Response $response to push in occured errors
      * @return Discussion|null discussion between current user and his contact
      */
-    public function writeContact($pseudo, Response $response)
+    public function writeContact($contactPseu, Response $response)
     {
-        if (empty($this->pseudo)) {
-            throw new Exception("User's pseu must be initialized");
-        }
+        $pseudo = $this->getPseudo();
         $sql = "SELECT *
         FROM `Participants` p1
         JOIN `Discussions` d ON p1.discuId = d.discuID
-        WHERE p1.pseudo_ = '$this->pseudo' 
+        WHERE p1.pseudo_ = '$pseudo' 
             AND p1.discuId IN (SELECT p2.discuId
                                FROM `Participants` p2
-                               WHERE p2.pseudo_ = '$pseudo')";
+                               WHERE p2.pseudo_ = '$contactPseu')";
         $pdo = parent::executeRequest($sql);
         if ($pdo->errorInfo()[0] == self::PDO_SUCCEESS) {
+            $this->unlockContact($contactPseu, $response);
             if (($pdo->rowCount() == 1)) {
                 $pdoLine = $pdo->fetch();
                 return $this->createDiscussion($pdoLine);
             } else {
-                $discu = $this->createDiscussionWith($pseudo, $response);
+                $discu = $this->createDiscussionWith($contactPseu, $response);
                 $discu->setParticipants();
                 $discu->setMessages();
                 return $discu;
             }
         } else {
-            $errMsg = "désolé, une erreur s'est produite lors de votre tentative d'écrire à '$pseudo'!";
+            $errMsg = "désolé, une erreur s'est produite lors de votre tentative d'écrire à '$contactPseu'!";
             $response->addError($errMsg, MyError::FATAL_ERROR);
         }
         return null;

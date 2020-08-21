@@ -75,12 +75,12 @@ class Discussion extends Model
      */
     public function setParticipants()
     {
+        $this->participants = [];
         $sql = "SELECT * 
         FROM `Participants` p
         JOIN `Users` u ON p.pseudo_ = u.pseudo
         WHERE discuId = '$this->discuID'";
         $pdo = parent::executeRequest($sql);
-        $this->participants = [];
         while ($pdoLine = $pdo->fetch()) {
             // $user = $this->createUser($pdoLine);
             $user = User::createUser($pdoLine);
@@ -135,6 +135,16 @@ class Discussion extends Model
     public function getDiscuName()
     {
         return $this->discuName;
+    }
+
+    /**
+     * Getter for discussion's participants
+     * @return string discussion's name
+     */
+    public function getParticipants()
+    {
+        (!isset($this->participants)) ? $this->setParticipants() : null;
+        return $this->participants;
     }
 
     /**
