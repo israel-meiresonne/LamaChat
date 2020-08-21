@@ -136,7 +136,6 @@
         /*————————————————————— DISCUSSION PAGE UP ——————————————————————————*/
         /*————————————————————— ADMIN PAGE DOWN —————————————————————————————*/
         $(".piano_btn").click((x) => {
-        // $(".piano_btn").click(function () {
             var b = $(x.currentTarget)[0];
             piano(b);
         })

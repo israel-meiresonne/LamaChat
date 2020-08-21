@@ -11,7 +11,6 @@ body, html {
 }
 
 .bgimg {
-    /* background-image: url('../images/static/forestbridge.jpg'); */
     background: url('../images/static/lama-jump.gif');
     min-height: 100%;
     background-position: center;

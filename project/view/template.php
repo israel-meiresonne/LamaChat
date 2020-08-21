@@ -84,8 +84,6 @@ require_once 'model/Message.php';
         const KEY_LAST_MSG = "<?= Message::KEY_LAST_MSG ?>";
         const MSG_STATUS_SEND = "<?= Message::MSG_STATUS_SEND ?>";
     </script>
-
-
 </head>
 
 <body>

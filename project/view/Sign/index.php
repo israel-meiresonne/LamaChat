@@ -1,5 +1,5 @@
 <?php
-$this->title = "S'inscrire"/* Se Connecter*/;
+$this->title = "S'inscrire";
 ?>
 
 <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">

@@ -22,12 +22,6 @@ class ControllerSign extends ControllerSecure
      */
     const ACTION_SIGN_IN = "sign/signIn";
 
-    // /**
-    //  * Action used to Perform a new user registration 
-    //  */
-    // const ACTION_SIGN_UP = "rspSignUp";
-
-
     public function __construct()
     {
     }

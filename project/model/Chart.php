@@ -36,7 +36,12 @@ class Chart extends Model
      */
     private $yTitle;
 
-    // public function __construct($id, $tab/*$colNames, $rows*/)
+    /**
+     * Constructor
+     * @param string $id id of chart's container
+     * @param string $$colNames colonm name
+     * @param string $rows rows with datas
+     */
     public function __construct($id, $colNames, $rows)
     {
         $nbCol = count($colNames);

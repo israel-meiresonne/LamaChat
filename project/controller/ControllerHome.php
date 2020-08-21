@@ -35,7 +35,6 @@ class ControllerHome extends ControllerSecure
      * Access key for actions's responses
      * @var string
      */
-    // public const RSP_GET_NOTIF = "getnitif"; // don't forget
     public const RSP_WRITE_MENU = "menu";
     public const RSP_WRITE_DISCU_FEED = "discuFeed";
     public const RSP_SEARCH_KEY = "searchWord";
@@ -126,7 +125,6 @@ class ControllerHome extends ControllerSecure
             if (!($response->containError())) {
                 $ctcPseu = $pseudo;
                 $dataAttribut = "data-window='search_window'";
-                // $relationship = User::BLOCKED;
                 ob_start();
                 require 'view/Home/elements/removeButton.php';
                 $button = ob_get_clean();
@@ -349,11 +347,9 @@ class ControllerHome extends ControllerSecure
                     $msgHtml = ob_get_clean();
 
                     $text = $message->getPreview();
-                    // $isNew = true;
                     ob_start();
                     require 'view/Home/elements/discussionMenuPreview.php';
                     $preview = ob_get_clean();
-                    // $preview = "</p>" . $message->getPreview() . "</p>";
 
                     $response->addResult(self::ACTION_SEND_MSG, $msgHtml);
                     $response->addResult(Discussion::DISCU_ID, $discuID);
@@ -395,7 +391,6 @@ class ControllerHome extends ControllerSecure
             foreach ($status as $discuID => $msgIDs) {
                 $ids = $this->user->checkMessageStatus($response, Message::MSG_STATUS_READ, $discuID, $msgIDs);
                 (!empty($ids)) ? $toUpdate[$discuID] = $ids : null;
-                // $toUpdate = array_merge($toUpdate, $ids);
             }
         }
 
@@ -403,9 +398,6 @@ class ControllerHome extends ControllerSecure
         $lastMsgs = [];
         if (isset($lasts)) {
             foreach ($lasts as $discuID => $msgID) {
-                // $discussion = $this->user->getDiscussion($discuID);
-                // var_dump($msgID);
-                // $msgSetDate = $discussion->getMessage($msgID)->getSetDate();
                 if (!empty($msgID)) {
                     $discussion = $this->user->getDiscussion($discuID);
                     $msgSetDate = $discussion->getMessage($msgID)->getSetDate();
@@ -414,7 +406,6 @@ class ControllerHome extends ControllerSecure
                 }
                 $messages = $this->user->getLastForeignMessages($response, $discuID, $msgSetDate);
                 (count($messages) > 0) ? $foreignLastMsgs[$discuID] = $messages : null;
-                // $foreignLastMsgs[$discuID] = $messages;
 
                 $lastMsg = $this->user->getLastMessage($response, $discuID, $msgSetDate);
                 (!empty($lastMsg)) ? $lastMsgs[$discuID] = $lastMsg : null;
@@ -436,7 +427,6 @@ class ControllerHome extends ControllerSecure
             $pseudo = $user->getPseudo();
 
             if ($response->existResult(Message::KEY_MSG_ID)) {
-                // $newStatus = $response->getResult(Message::KEY_MSG_ID);
                 ob_start();
                 require 'view/Home/elements/discussionMessageStatusRead.php';
                 $read = ob_get_clean();
@@ -491,10 +481,6 @@ class ControllerHome extends ControllerSecure
                 $response->addResult(Discussion::KEY_NEW_DISCU, $discusHtml);
             }
         }
-
-
-
-        // $response->addResult("key", $_POST);
         echo json_encode($response->getAttributs());
     }
 }

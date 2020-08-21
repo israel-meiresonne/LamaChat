@@ -10,7 +10,6 @@ require_once 'model/Discussion.php';
 ?>
 <table class="contact-table">
     <?php
-    // $contacts = $user->getContacts();
     foreach ($contacts as $contact) :
         $ctcPseu = $contact->getPseudo();
         $relationship = $contact->getRelationship();
@@ -29,7 +28,6 @@ require_once 'model/Discussion.php';
                 require 'view/Home/elements/removeButton.php';
             }
             ob_start();
-            // require 'elements/blockButton.php';
             require 'blockButton.php';
             echo ob_get_clean();
             $btnId = 'relationStatus' . Discussion::generateDateCode(25);

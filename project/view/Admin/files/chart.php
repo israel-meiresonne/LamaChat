@@ -56,7 +56,6 @@
         options.height = 500;
 
         var chart = new google.visualization.ComboChart(document.getElementById('<?= $id ?>'));
-        // chart.draw(data, options);
         chart.draw(view, options);
     }
     $(window).resize(() => {

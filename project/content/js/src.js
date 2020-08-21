@@ -40,9 +40,5 @@
     $(document).ready(function () {
         var openInbox = document.getElementById("myBtn");
         $(openInbox).click();
-        
-        // var openTab = document.getElementById("firstTab");
-        // openTab.click();
-
     });
 }).call(this);

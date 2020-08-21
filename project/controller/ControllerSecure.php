@@ -159,7 +159,6 @@ abstract class ControllerSecure extends Controller
      */
     protected function checkData($type, $key, $value, Response $response, $isRequired = false, $length = null)
     {
-        // var_dump($value);
         if ($isRequired && (empty($value))) {
             $errorMsg = "ce champ ne paut pas être vide!";
             $response->addError($errorMsg, $key);
@@ -228,24 +227,6 @@ abstract class ControllerSecure extends Controller
                 break;
         }
     }
-
-    /**
-     * To check picture submited
-     * @param string $key data's access key in $reponse if there is error
-     * @param string $value file's name
-     * @param Response $response to push in occured errors
-     */
-    // protected function checkFile($key, $filename, Response $response)
-    // {
-    //     // $filename = $_FILES[$key]['name'];
-    //     // $location = "upload/" . $filename;
-    //     $ext = pathinfo($filename, PATHINFO_EXTENSION);
-
-    //     if (!in_array(strtolower($ext), User::VALID_EXTENSIONS)) {
-    //         $errorMsg = "ce type de fichier n'est pas supporté";
-    //         $response->addError($errorMsg, $key);
-    //     }
-    // }
 
     /**
      * Convert frech textual month to its integer value

@@ -39,8 +39,7 @@ $discuTitle = ($nbDiscu > 0) ? "Discussions (" . $nbDiscu . ")" : "Discussion ("
             </button>
         </div>
     </div>
-    <a href="javascript:void(0)" onclick="w3_close()" title="Close Sidemenu" class="w3-bar-item w3-button w3-hide-large w3-large">Close <i class="fa fa-remove"></i></a>
-    <!-- <a href="javascript:void(0)" class="w3-bar-item w3-button w3-dark-grey w3-button w3-hover-black w3-left-align" onclick="">New Message <i class="w3-padding fa fa-pencil"></i></a> -->
+    <a onclick="w3_close()" title="Close Sidemenu" class="w3-bar-item w3-button w3-hide-large w3-large">Close <i class="fa fa-remove"></i></a>
     <button id="log_out_btn" class="w3-bar-item w3-button"><i class="fa fa-sign-out" aria-hidden="true"></i>Se déconnecter</button>
     <div id="myBtn" onclick="myFunc('Demo1')" href="javascript:void(0)" class="w3-bar-item w3-button"><i class="fa fa-inbox w3-margin-right"></i><?= $discuTitle ?><i class="fa fa-caret-down w3-margin-left"></i></div>
 
@@ -50,8 +49,6 @@ $discuTitle = ($nbDiscu > 0) ? "Discussions (" . $nbDiscu . ")" : "Discussion ("
          * @var User
          */
         $user = $user;
-        // $discussions = $user->getDiscussions();
-        // var_dump($discussions);
         foreach ($discussions as $discu) :
             $corresp = $discu->getCorrespondent($user->getPseudo());
         ?>
@@ -120,14 +117,6 @@ $discuTitle = ($nbDiscu > 0) ? "Discussions (" . $nbDiscu . ")" : "Discussion ("
                 </div>
                 <div class="more-info-title">
                     <h3>plus d'infomations</h3>
-                    <!-- <div class="setting-add-info" style="display: none;">
-                        <button id="setting_save_btn" class="standard-button blue-button remove-button-default-att">
-                            <div class="plus_symbol-wrap">
-                                <span class="plus_symbol-vertical"></span>
-                                <span class="plus_symbol-horizontal"></span>
-                            </div>
-                        </button>
-                    </div> -->
                 </div>
                 <div class="setting-job-set">
                     <ul class="remove-ul-default-att">
@@ -215,16 +204,12 @@ $discuTitle = ($nbDiscu > 0) ? "Discussions (" . $nbDiscu . ")" : "Discussion ("
 <!-- Page content -->
 <div id="discussion_feed" class="w3-main" style="margin-left:320px;">
     <i class="burger-btn fa fa-bars w3-button w3-white w3-hide-large w3-xlarge w3-margin-left w3-margin-top" onclick="w3_open()"></i>
-    <!-- <a href="javascript:void(0)" class="w3-hide-large w3-red w3-button w3-right w3-margin-top w3-margin-right" onclick="document.getElementById('id01').style.display='block'"><i class="fa fa-pencil"></i></a> -->
     <div class="content w3-main">
         <?php foreach ($discussions as $discu) : ?>
-            <?php
+        <?php
             ob_start();
             require 'elements/discussionFeed.php';
             echo ob_get_clean();
-            ?>
-
-
-        <?php endforeach; ?>
+        endforeach; ?>
     </div>
 </div>

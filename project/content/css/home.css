@@ -13,7 +13,6 @@ body{
 
 .window-display-middle {
     width: 50%;
-    /* height: 50vh; */
     margin: auto;
     padding: 10px;
     border-radius: 5px;
@@ -40,7 +39,6 @@ body{
 }
 
 .form-container .input-container {
-    /* width: 50%; */
     margin: 0 auto;
 }
 
@@ -84,7 +82,6 @@ body{
 .msg-window-inner {
     height: 90%;
     padding: 10px 30px 0;
-    /* overflow: auto; */
 }
 
 .msg-window-feed {
@@ -93,9 +90,7 @@ body{
 }
 
 .msg-wrap {
-    /* display: flex; */
     position: relative;
-    /* padding-bottom: 15px; */
     padding: 0 5px 15px;
     font-family: var(--main-font-family);
 }
@@ -217,7 +212,6 @@ body{
 
 .msg_sender-inner {
     display: flex;
-    /* height: 100%; */
     padding: 0 10px;
     border-radius: 21px;
     background-color: var(--color-white);
@@ -245,7 +239,6 @@ body{
 }
 
 .msg_sender-button-div {
-    /* width: 50%; */
     width: 100%;
     padding: 0 5px;
 }
@@ -273,7 +266,6 @@ body{
 }
 
 .w3-panel {
-    /* margin-top: 0; */
     padding: 0 16px 15px;
 }
 
@@ -296,17 +288,6 @@ body{
     border-radius: var(--border-float-radius);
     background-color: var(--color-blue-conv);
 }
-
-/* .setting-content .data-key_value-value::-moz-selection {
-    Code for Firefox
-    color: var(--color-text-08);
-    background: var(--color-yellow);
-}
-
-.setting-content .data-key_value-value::selection {
-    color: var(--color-text-08);
-    background: var(--color-yellow);
-} */
 
 ::-moz-selection {
     /* Code for Firefox */

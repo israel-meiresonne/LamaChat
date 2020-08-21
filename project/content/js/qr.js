@@ -47,9 +47,6 @@
 
     const replaceBtn = function (x, y) {
         $(x).parent().replaceWith(y);
-        // $(x).fadeOut(TS, function () {
-        //     $(y).fadeIn(TS);
-        // })
     }
 
     const replaceFade = function (x, y, t = TS) {
@@ -78,14 +75,8 @@
     }
 
     var isCtrEtr = function (e) {
-        // return ((e.ctrlKey || e.metaKey) && (e.keyCode == 13 || e.keyCode == 10)); //{
-        return (/*(e.ctrlKey || e.metaKey) && */(e.keyCode == 13 || e.keyCode == 10)); //{
-        //     f(dts);
-        // }
+        return ((e.keyCode == 13 || e.keyCode == 10));
     }
-
-
-
 
     const jx = function (action, jxd, rspf, lds, x = null, cbkSND = function () { }, cbkRSP = function () { }) {
         $(lds).fadeIn(TS, cbkSND());
@@ -112,7 +103,7 @@
             contentType: false,
             processData: false,
             success: function (r) {
-                console.log("response: ", r);
+                // console.log("response: ", r);
                 $(lds).fadeOut(TS, cbkRSP());
                 rspf(r, x);
             }
@@ -127,8 +118,7 @@
         var x = datas.x;
         var cbkSND = datas.cbkSND;
         var cbkRSP = datas.cbkRSP;
-        console.log("action", webRoot + action, "send: ", jxd);
-        // console.log();
+        // console.log("action", webRoot + action, "send: ", jxd);
         jx(action, jxd, rspf, lds, x, cbkSND, cbkRSP);
     }
 
@@ -140,8 +130,7 @@
         var x = datas.x;
         var cbkSND = datas.cbkSND;
         var cbkRSP = datas.cbkRSP;
-        console.log("action", webRoot + action, "send: ", jxd);
-        // console.log();
+        // console.log("action", webRoot + action, "send: ", jxd);
         jx_fd(action, jxd, rspf, lds, x, cbkSND, cbkRSP);
     }
 
@@ -160,7 +149,6 @@
     addContact = function (id, k, d) {
         var map = { [k]: d };
         var param = mapToParam(map);
-        // var x = $("#search_window button[onclick=\"addContact('" + k + "', '" + d + "')\"]")[0];
         var x = $("#" + id)[0];
         var datasSND = {
             "action": ACTION_ADD_CONTACT,
@@ -177,7 +165,6 @@
         if (remove) {
             var map = { [k]: d };
             var param = mapToParam(map);
-            // var x = $("#contact_window button[onclick=\"removeContact('" + k + "', '" + d + "')\"]")[0];
             var x = $("#" + id)[0];
             var datasSND = {
                 "action": ACTION_REMOVE_CONTACT,
@@ -187,7 +174,6 @@
                 "x": x
             };
             SND(datasSND);
-            // console.log(k, d);
         }
     }
 
@@ -196,7 +182,6 @@
         if (remove) {
             var map = { [k]: d };
             var param = mapToParam(map);
-            // var x = $("#contact_window button[onclick=\"blockContact('" + k + "', '" + d + "')\"]")[0];
             var x = $("#" + id)[0];
             var datasSND = {
                 "action": ACTION_BLOCK_CONTACT,
@@ -212,7 +197,6 @@
     unlockContact = function (id, k, d) {
         var map = { [k]: d };
         var param = mapToParam(map);
-        // var x = $("#contact_window button[onclick=\"unlockContact('" + k + "', '" + d + "')\"]")[0];
         var x = $("#" + id)[0];
         var datasSND = {
             "action": ACTION_UNLOCK_CONTACT,
@@ -333,22 +317,16 @@
             var w = $("#" + discuID);
             var ms = $(w).find(".msg-wrap[data-msgstatus='" + MSG_STATUS_SEND + "'][data-sender='" + SENDER + "']");
             var nbm = ms.length;
-            // (nbm > 0)? status[discuID] = [] : null;
             status[discuID] = [];
             for (var i = 0; i < nbm; i++) {
                 var m = $(ms[i])[0];
                 var msgId = $(m).attr("data-msgid");
-                // var mobj = { [discuID]: msgId };
-                // status[discuID].push(mobj);
                 status[discuID].push(msgId);
             }
-            // last msg
             var lm = $(w).find(".msg-wrap").last();
-            // if(lm.length > 0){
             lasts[discuID] = [];
             var lmId = $(lm).attr("data-msgid");
             lasts[discuID] = (lmId != null) ? lmId : null;
-            // }
         }
         console.log("discuIds", discuIds);
         console.log("status", status);
@@ -365,15 +343,6 @@
         };
         SND_fd(datasSND);
     }
-
-    // lunchUpdate = function () {
-    //     var ws = $(".msg-window");
-    //     var nb = ws.length;
-    //     for (var i = 0; i < nb; i++) {
-    //         var id = $(ws[i]).attr("id");
-    //         updateFeed(id);
-    //     }
-    // }
 
     pardonUser = function (id, d) {
         var remove = window.confirm("Voulez-vous vraiment gracier cette utilisateur?");
@@ -612,11 +581,6 @@
 
     const sendMessageRSP = function (r, x) {
         if (r.isSuccess) {
-            // var txt = $(x.y).text();
-
-            // $(x.y).text("");
-            // var z = $(x.y).prev();
-            // displayOn(z);
 
             var m = createNone(r.results[ACTION_SEND_MSG]);
             $(x.x).find(".msg-window-feed").append(m);
@@ -742,9 +706,7 @@
             };
             SND(datasSND);
         });
-        // var c = function (m) {
-        //     console.log(m);
-        // }
+
         $("#search_contact_input").keyup(function () {
             var d = $(this).text();
             endKeyup(searchContact, d);
@@ -782,7 +744,6 @@
             cleanErr(e);
             var xs = $("#id01 span[contenteditable='true']");
             var map = mapTagInput(xs);
-            // console.log(map);
             var fd = new FormData();
             $("#edit_img_input")[0].files[0];
             var f = $("#edit_img_input")[0].files[0];

@@ -9,10 +9,6 @@
 
 .panel-container .panel-board {
     display: none;
-    /* height: 100%; */
-    /* min-height: 500px; */
-    /* width: 100%; */
-    /* opacity: 0; */
 }
 
 .panel-board:first-child {

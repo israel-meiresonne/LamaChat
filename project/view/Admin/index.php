@@ -77,66 +77,10 @@ echo $chatChart->getChart();
                 ob_start();
                 require 'view/Admin/files/userTable.php';
                 echo ob_get_clean();
-                // echo $this->generateFile('view/Admin/files/userTable.php', $datas);
                 ?>
-                <!-- <table class="user-table">
-                    <tr>
-                        <th class="image"><span>photo</span></th>
-                        <th><span>pseudo</span></th>
-                        <th><span>prénom</span></th>
-                        <th><span>nom</span></th>
-                        <th><span>date de naissance</span></th>
-                        <th><span>permission</span></th>
-                        <th colspan="2"><span></span></th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <button class="img-button remove-button-default-att">
-                                <img src="content/images/user-profile/user-test2.png" onclick="openProfile('pseudo', 'pseudo2')">
-                            </button>
-                        </td>
-                        <td><span>pseudo2</span></td>
-                        <td><span>pseudo2</span></td>
-                        <td><span>pseudo2</span></td>
-                        <td><span>pseudo2</span></td>
-                        <td><span>pseudo2</span></td>
-                        <td><button id="removeContact8r01304j04151x02n0233y467" data-window="contact_window" onclick="removeContact('removeContact8r01304j04151x02n0233y467', 'pseudo', 'pseudo2')" class="standard-button red-button remove-button-default-att">supprimer</button></td>
-                        <td><button id="relationStatusaw0e0r2493rw37p000q41421r" onclick="blockContact('relationStatusaw0e0r2493rw37p000q41421r', 'pseudo', 'pseudo2')" class="standard-button orange-button remove-button-default-att">bloquer</button></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <button class="img-button remove-button-default-att">
-                                <img src="content/images/user-profile/30aw08002570160o7j25.jpeg" onclick="openProfile('pseudo', 'pseudo5')">
-                            </button>
-                        </td>
-                        <td><span>pseudo5</span></td>
-                        <td><span>pseudo5</span></td>
-                        <td><span>pseudo5</span></td>
-                        <td><span>pseudo5</span></td>
-                        <td><span>pseudo5</span></td>
-                        <td><button id="removeContact0m04042kb2133j0z74040vph1" data-window="contact_window" onclick="removeContact('removeContact0m04042kb2133j0z74040vph1', 'pseudo', 'pseudo5')" class="standard-button red-button remove-button-default-att">supprimer</button></td>
-                        <td><button id="relationStatus1j2002b5j23404064037rq431" onclick="blockContact('relationStatus1j2002b5j23404064037rq431', 'pseudo', 'pseudo5')" class="standard-button orange-button remove-button-default-att">bloquer</button></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <button class="img-button remove-button-default-att">
-                                <img src="content/images/user-profile/00729011022pc96d72aj.jpg" onclick="openProfile('pseudo', 'skryska')">
-                            </button>
-                        </td>
-                        <td><span>skryska</span></td>
-                        <td><span>skryska</span></td>
-                        <td><span>skryska</span></td>
-                        <td><span>skryska</span></td>
-                        <td><span>skryska</span></td>
-                        <td><button id="removeContactyt610xm0t4731c3o02ig240o0" data-window="contact_window" onclick="removeContact('removeContactyt610xm0t4731c3o02ig240o0', 'pseudo', 'skryska')" class="standard-button red-button remove-button-default-att">supprimer</button></td>
-                        <td><button id="relationStatusbt02ot301vh47l0a22010f324" onclick="blockContact('relationStatusbt02ot301vh47l0a22010f324', 'pseudo', 'skryska')" class="standard-button orange-button remove-button-default-att">bloquer</button></td>
-                    </tr>
-                </table> -->
             </div>
             <div id="chat_board" class="panel-board"></div>
             <div id="message_board" class="panel-board"></div>
         </div>
     </div>
 </body>
-
-<!-- </html> -->
