@@ -227,7 +227,6 @@
     writeContact = function (id, k, d) {
         var map = { [k]: d };
         var param = mapToParam(map);
-        // var x = $("#contact_window button[onclick=\"writeContact('" + k + "', '" + d + "')\"]")[0];
         var x = $("#" + id)[0];
         var datasSND = {
             "action": ACTION_WRITE_CONTACT,

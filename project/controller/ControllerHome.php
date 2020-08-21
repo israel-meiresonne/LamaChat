@@ -40,6 +40,9 @@ class ControllerHome extends ControllerSecure
     public const RSP_WRITE_DISCU_FEED = "discuFeed";
     public const RSP_SEARCH_KEY = "searchWord";
 
+    public const CONTACT_WINDOW_ID = "contact_window";
+    public const SEARCH_WINDOW_ID = "search_window";
+
     public function index()
     {
         $this->secureSession();
@@ -95,6 +98,7 @@ class ControllerHome extends ControllerSecure
             if ((!$response->containError())) {
                 if (count($contacts) > 0) {
                     $dataAttribut = "data-window='search_window'";
+                    $windId = self::SEARCH_WINDOW_ID;
                     ob_start();
                     require 'view/Home/elements/contactTable.php';
                     $ctcTable = ob_get_clean();
@@ -216,12 +220,12 @@ class ControllerHome extends ControllerSecure
             $this->user->setProperties();
             $discu = $this->user->writeContact($pseudo, $response);
             if ((!empty($discu)) && (!$response->containError())) {
+                $user = $this->user;
                 $corresp = $discu->getCorrespondent($this->user->getPseudo());
                 ob_start();
                 require 'view/Home/elements/discussionMenu.php';
                 $discuMenu = ob_get_clean();
 
-                $user = $this->user;
                 ob_start();
                 require 'view/Home/elements/discussionFeed.php';
                 $discuFeed = ob_get_clean();
@@ -262,6 +266,7 @@ class ControllerHome extends ControllerSecure
         $contacts = $this->user->getContacts();
         if (count($contacts) > 0) {
             $dataAttribut = "data-window='contact_window'";
+            $windId = self::CONTACT_WINDOW_ID;
             ob_start();
             require 'view/Home/elements/contactTable.php';
             $ctcTable = ob_get_clean();

@@ -152,7 +152,7 @@ $discuTitle = ($nbDiscu > 0) ? "Discussions (" . $nbDiscu . ")" : "Discussion ("
     </div>
 </div>
 
-<div id="contact_window" class="w3-modal" style="z-index:4">
+<div id="<?= ControllerHome::CONTACT_WINDOW_ID ?>" class="w3-modal" style="z-index:4">
     <div class="w3-modal-content">
         <div class="background-purple w3-container w3-padding w3-red">
             <span id="contact_close_button" class="background-purple w3-button w3-red w3-right w3-xxlarge"><i class="fa fa-remove"></i></span>
@@ -173,7 +173,7 @@ $discuTitle = ($nbDiscu > 0) ? "Discussions (" . $nbDiscu . ")" : "Discussion ("
     </div>
 </div>
 
-<div id="search_window" class="w3-modal" style="z-index:4">
+<div id="<?= ControllerHome::SEARCH_WINDOW_ID ?>" class="w3-modal" style="z-index:4">
     <div class="w3-modal-content">
         <div class="background-purple w3-container w3-padding w3-red">
             <span id="search_close_button" class="background-purple w3-button w3-red w3-right w3-xxlarge"><i class="fa fa-remove"></i></span>

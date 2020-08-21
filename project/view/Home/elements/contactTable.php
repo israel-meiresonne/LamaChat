@@ -5,6 +5,7 @@ require_once 'model/Discussion.php';
  * ——————————————————————————————— NEED —————————————————————————————————————
  * @param User[] $contacts =>  list of user's contacts
  * @param string $dataAttribut: attributs "data-..." to put on button
+ * @param string $windId id of the window
  */
 ?>
 <table class="contact-table">
@@ -33,7 +34,7 @@ require_once 'model/Discussion.php';
             echo ob_get_clean();
             $btnId = 'relationStatus' . Discussion::generateDateCode(25);
             ?>
-            <td><button id="<?= $btnId ?>" data-windCloseBtn="contact_window" onclick="writeContact('<?= $btnId ?>', '<?= User::KEY_PSEUDO ?>', '<?= $ctcPseu; ?>')" class="standard-button blue-button remove-button-default-att">écrire</button></td>
+            <td><button id="<?= $btnId ?>" data-windCloseBtn="<?= $windId ?>" onclick="writeContact('<?= $btnId ?>', '<?= User::KEY_PSEUDO ?>', '<?= $ctcPseu; ?>')" class="standard-button blue-button remove-button-default-att">écrire</button></td>
         </tr>
     <?php endforeach; ?>
 </table>
