@@ -1,4 +1,404 @@
-.esi-logo-container{
+:focus {
+    outline: none;
+}
+
+body{
+    margin: 0;
+}
+
+.esi-logo-container {
     width: 200px;
     padding: 20px;
+}
+
+.window-display-middle {
+    width: 50%;
+    margin: auto;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: var(--color-white);
+}
+
+.form-switcher-container {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.switcher-button-div {
+    width: 50%;
+    padding: 0 5px;
+}
+
+.sign_form {
+    margin-bottom: 30px;
+}
+
+.sign_form-container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.form-container .input-container {
+    margin: 0 auto;
+}
+
+.sign_form-button-div {
+    width: 50%;
+    margin: 0 auto;
+}
+
+/*—————————————————————— DISCUSSIONS DOWN ———————————————————————————————————*/
+
+.discu-btn {
+    position: absolute;
+    right: 0;
+}
+
+.burger-btn {
+    position: fixed;
+    z-index: 2;
+}
+
+.w3-main {
+    height: 100%;
+}
+
+.msg-window {
+    display: none;
+    position: relative;
+    height: 100%;
+    padding: 0;
+}
+
+.msg-background {
+    position: absolute;
+    background-image: url('../images/static/lama-game.gif');
+    height: 100%;
+    width: 100%;
+    background-position: center;
+    background-size: cover;
+}
+
+.msg-window-inner {
+    height: 90%;
+    padding: 10px 30px 0;
+}
+
+.msg-window-feed {
+    height: 100%;
+    overflow: auto;
+}
+
+.msg-wrap {
+    position: relative;
+    padding: 0 5px 15px;
+    font-family: var(--main-font-family);
+}
+
+.msg-wrap-inner {
+    display: flex;
+}
+
+.msg-date {
+    width: 100%;
+    display: flex;
+}
+
+.msg-date span {
+    margin: 0 auto;
+    background-color: var(--color-blue_esi);
+    color: var(--color-white);
+    padding: 5px;
+    border-radius: var(--border-float-radius);
+}
+
+.msg-date span::first-letter {
+    text-transform: capitalize;
+}
+
+.msg-text {
+    position: relative;
+    padding: 5px;
+    color: var(--color-white);
+    border-radius: var(--border-float-radius);
+}
+
+.msg-text .o_symbol {
+    border: var(--color-white) solid;
+    border-width: 2px 0 0 0;
+}
+
+.msg-left {
+    max-width: 80%;
+    margin-right: auto;
+    background-color: var(--color-blue-conv);
+}
+
+.msg-left::after {
+    content: '';
+    position: absolute;
+    top: 2.5px;
+    left: -3px;
+    width: 10px;
+    height: 10px;
+    border-color: var(--color-blue-conv);
+    border-width: 0 1px 1px 0;
+    border-style: solid;
+    pointer-events: none;
+    transform: rotate(-45deg);
+    background-color: var(--color-blue-conv);
+}
+
+.msg-right {
+    max-width: 80%;
+    margin-left: auto;
+    background-color: var(--color-blue_esi);
+}
+
+.msg-right::after {
+    content: '';
+    position: absolute;
+    top: 2.5px;
+    right: -3px;
+    width: 10px;
+    height: 10px;
+    border-color: var(--color-blue_esi);
+    border-width: 0 1px 1px 0;
+    border-style: solid;
+    pointer-events: none;
+    transform: rotate(-45deg);
+    background-color: var(--color-blue_esi);
+}
+
+.msg-info {
+    display: flex;
+}
+
+.msg-info-inner {
+    display: flex;
+    flex-direction: row;
+    margin-left: auto;
+}
+
+.msg-time {
+    margin-right: 5px;
+}
+
+.msg-status {
+    display: flex;
+}
+
+.msg-status .v_symbol-wrap, .msg-status .o_symbol-wrap {
+    margin: auto;
+}
+
+.msg-window .msg_sender-container {
+    position: relative !important;
+    height: 10%;
+}
+
+.msg_sender-container {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    padding: 10px 15px;
+    bottom: 0;
+    background-color: var(--color-grey);
+}
+
+.msg_sender {
+    width: 80%;
+}
+
+.msg_sender-inner {
+    display: flex;
+    padding: 0 10px;
+    border-radius: 21px;
+    background-color: var(--color-white);
+}
+
+.msg_sender-placeholder {
+    position: absolute;
+    top: 11px;
+    left: 30px;
+    color: var(--color-grey-esi-08);
+}
+
+.msg_sender-input {
+    width: 100%;
+    margin: auto 0;
+    padding-left: 5px;
+    color: var(--color-text-08);
+    border-radius: var(--border-float-radius);
+    z-index: 1;
+}
+
+.msg_sender-button-set {
+    display: flex;
+    width: 20%;
+}
+
+.msg_sender-button-div {
+    width: 100%;
+    padding: 0 5px;
+}
+
+.menu-container {
+    display: flex;
+    padding: 10px;
+}
+
+.menu-container .profile:hover {
+    cursor: pointer;
+}
+
+.menu-btn {
+    display: flex;
+    margin-left: auto;
+}
+
+.menu-btn button {
+    margin: auto;
+}
+
+.setting-content {
+    margin-bottom: 20px;
+}
+
+.w3-panel {
+    padding: 0 16px 15px;
+}
+
+.edit-profile-img {
+    width: 110px;
+}
+
+.edit-profile-img .img_text_down-img-inner {
+    width: auto;
+}
+
+.edit-profile-img .img_text_down-text-div input {
+    display: none;
+}
+
+.setting-content .data-key_value-value[contenteditable="true"] {
+    min-width: 50px;
+    padding: 0 5px;
+    color: var(--color-white);
+    border-radius: var(--border-float-radius);
+    background-color: var(--color-blue-conv);
+}
+
+::-moz-selection {
+    /* Code for Firefox */
+    color: var(--color-text-08);
+    background: var(--color-yellow);
+}
+
+::selection {
+    color: var(--color-text-08);
+    background: var(--color-yellow);
+}
+
+.more-info-title {
+    display: flex;
+}
+
+.setting-content h3 {
+    color: var(--color-text-08);
+    text-decoration: underline;
+}
+
+.setting-content h3::first-letter {
+    text-transform: capitalize;
+}
+
+.setting-add-info {
+    width: 20px;
+    height: 20px;
+    margin: auto 5px;
+}
+
+.setting-add-info button {
+    height: 100%;
+}
+
+.setting-save {
+    display: flex;
+}
+
+.setting-save button {
+    width: 100px;
+    margin-left: auto;
+}
+
+/*—————————————————————— CONTACT WINDOW DOWN ————————————————————————————————*/
+
+.contact-table {
+    width: 100%;
+}
+
+.contact-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.contact-table td {
+    padding: 0 5px;
+}
+
+.contact-table .img-button {
+    height: 50px;
+}
+
+/*—————————————————————— SEARCH WINDOW DOWN —————————————————————————————————*/
+
+#search_window .w3-panel {
+    margin: 0;
+    padding: 0;
+}
+
+#search_window .msg_sender-container {
+    position: relative;
+}
+
+#search_window .msg_sender-container .msg_sender {
+    margin: 0 auto;
+}
+
+#search_window .msg_sender-container .msg_sender-inner {
+    position: relative;
+}
+
+#search_window .msg_sender-container .msg_sender-placeholder {
+    top: 0;
+    left: 14px;
+}
+
+#discussion_feed .content {
+    background: url('../images/static/lama-eat.gif');
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: repeat;
+}
+
+.msg-preview {
+    display: flex;
+}
+
+.msg-preview .notif {
+    display: block;
+    width: 15px;
+    height: 15px;
+    margin-left: auto;
+    border: 3px var(--color-red) solid;
+    border-radius: 50%;
+}
+
+#myBtn, .background-purple{
+    background: var(--color-purple) !important;
+}
+
+#Demo1 .fa-remove{
+    color: var(--color-red);
 }

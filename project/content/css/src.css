@@ -1,0 +1,23 @@
+/* down code's source:  https://www.w3schools.com/w3css/tryit.asp?filename=tryw3css_templates_coming_soon&stacked=h 
+                        https://www.w3schools.com/w3css/tryit.asp?filename=tryw3css_templates_mail&stacked=h
+*/
+
+html, body, h1, h2, h3, h4, h5 {
+    font-family: var(--main-font-family);
+}
+
+body, html {
+    height: 100%;
+}
+
+.bgimg {
+    background: url('../images/static/lama-jump.gif');
+    min-height: 100%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: repeat;
+}
+
+.w3-bar-block .w3-bar-item {
+    padding: 16px;
+}

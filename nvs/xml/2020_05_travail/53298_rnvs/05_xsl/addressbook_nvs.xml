@@ -1,0 +1,821 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- addressbook.xml -->
+<addressbook xmlns="https://esi-bru.be/WEBR4">
+    <persons>
+        <person id='p1'>
+            <identity>
+                <lastname>Loiselle</lastname>
+                <firstnames>
+                    <firstname>Raymond</firstname>
+                    <firstname>Claude</firstname>
+                </firstnames>
+                <sex>MALE</sex>
+                <birth>1991-10-15</birth>
+                <death>NULL</death>
+            </identity>
+            <addresses>
+                <postal>
+                    <country_id>BE</country_id>
+                    <postalcode>4850</postalcode>
+                    <city>Plombières</city>
+                    <street>Rue Basse</street>
+                    <number>113</number>
+                </postal>
+                <emails>
+                    <email use='PROFESSIONAL'>natoque.penatibus@loremipsumsodales.org</email>
+                    <email use='PRIVATE'>id@lacusMaurisnon.net</email>
+                </emails>
+                <phones>
+                    <phone use='PRIVATE' type='LANDLINE'>042082616</phone>
+                    <phone use='PRIVATE' type='CELLPHONE'>0497806590</phone>
+                    <phone use='PROFESSIONAL' type='LANDLINE'>022966411</phone>
+                    <phone use='PROFESSIONAL' type='IPPHONE'>082648320</phone>
+                </phones>
+            </addresses>
+            <relations>
+                <relation>
+                    <person_id>p3</person_id>
+                    <level>1</level>
+                </relation>
+                <relation>
+                    <person_id>p7</person_id>
+                    <level>-1</level>
+                </relation>
+                <relation>
+                    <person_id>p12</person_id>
+                    <level>0</level>
+                </relation>
+                <relation>
+                    <person_id>p5</person_id>
+                    <level>3</level>
+                </relation>
+            </relations>
+        </person>
+        <person id='p2'>
+            <identity>
+                <lastname>Frueh</lastname>
+                <firstnames>
+                    <firstname>Andreas</firstname>
+                </firstnames>
+                <sex>MALE</sex>
+                <birth>1984-04-15</birth>
+                <death>NULL</death>
+            </identity>
+            <addresses>
+                <postal>
+                    <country_id>DE</country_id>
+                    <postalcode>53560</postalcode>
+                    <city>Vettelschoß</city>
+                    <street>Wallstrasse</street>
+                    <number>21</number>
+                </postal>
+                <emails>
+                    <email use='PRIVATE'>Aenean.eget@etlibero.net</email>
+                    <email use='PROFESSIONAL'>Proin.nisl.sem@vitaevelitegestas.edu</email>
+                </emails>
+                <phones>
+                    <phone use='PRIVATE' type='LANDLINE'>03327839582</phone>
+                    <phone use='PRIVATE' type='CELLPHONE'>017436797167</phone>
+                    <phone use='PROFESSIONAL' type='LANDLINE'>07056419296</phone>
+                    <phone use='PROFESSIONAL' type='IPPHONE'>09747178748</phone>
+                </phones>
+            </addresses>
+            <relations>
+                <relation>
+                    <person_id>p14</person_id>
+                    <level>4</level>
+                </relation>
+                <relation>
+                    <person_id>p1</person_id>
+                    <level>2</level>
+                </relation>
+                <relation>
+                    <person_id>p3</person_id>
+                    <level>-1</level>
+                </relation>
+                <relation>
+                    <person_id>p10</person_id>
+                    <level>1</level>
+                </relation>
+                <relation>
+                    <person_id>p11</person_id>
+                    <level>1</level>
+                </relation>
+                <relation>
+                    <person_id>p6</person_id>
+                    <level>2</level>
+                </relation>
+                <relation>
+                    <person_id>p5</person_id>
+                    <level>2</level>
+                </relation>
+            </relations>
+        </person>
+        <person id='p3'>
+            <identity>
+                <lastname>Diederich</lastname>
+                <firstnames>
+                    <firstname>Juliane</firstname>
+                </firstnames>
+                <sex>FEMALE</sex>
+                <birth>1963-12-23</birth>
+                <death>2005-05-02</death>
+            </identity>
+            <addresses>
+                <postal>
+                    <country_id>DE</country_id>
+                    <postalcode>56414</postalcode>
+                    <city>Oberahr</city>
+                    <street>Stuttgarter Platz</street>
+                    <number>75</number>
+                </postal>
+                <emails>
+                    <email use='PRIVATE'>Aenean.eget@etlibero.net</email>
+                </emails>
+                <phones/>
+            </addresses>
+            <relations>
+                <relation>
+                    <person_id>p12</person_id>
+                    <level>4</level>
+                </relation>
+                <relation>
+                    <person_id>p11</person_id>
+                    <level>4</level>
+                </relation>
+                <relation>
+                    <person_id>p1</person_id>
+                    <level>4</level>
+                </relation>
+            </relations>
+        </person>
+        <person id='p4'>
+            <identity>
+                <lastname>Abboud</lastname>
+                <firstnames>
+                    <firstname>Khadija</firstname>
+                </firstnames>
+                <sex>FEMALE</sex>
+                <birth>1993-05-23</birth>
+                <death>NULL</death>
+            </identity>
+            <addresses>
+                <postal>
+                    <country_id>BE</country_id>
+                    <postalcode>5570</postalcode>
+                    <city>Felenne</city>
+                    <street>Rue du Moulin</street>
+                    <number>58</number>
+                </postal>
+                <emails>
+                    <email use='PROFESSIONAL'>ut.nisi@sit.org</email>
+                </emails>
+                <phones>
+                    <phone use='PRIVATE' type='LANDLINE'>042582631</phone>
+                    <phone use='PROFESSIONAL' type='LANDLINE'>082221362</phone>
+                </phones>
+            </addresses>
+            <relations>
+                <relation>
+                    <person_id>p6</person_id>
+                    <level>2</level>
+                </relation>
+                <relation>
+                    <person_id>p1</person_id>
+                    <level>1</level>
+                </relation>
+            </relations>
+        </person>
+        <person id='p5'>
+            <identity>
+                <lastname>Santana Parra</lastname>
+                <firstnames>
+                    <firstname>Manuela</firstname>
+                    <firstname>Malvina</firstname>
+                    <firstname>Juliana</firstname>
+                </firstnames>
+                <sex>FEMALE</sex>
+                <birth>1960-04-29</birth>
+                <death>NULL</death>
+            </identity>
+            <addresses>
+                <postal>
+                    <country_id>FR</country_id>
+                    <postalcode>76610</postalcode>
+                    <city>Le Havre</city>
+                    <street>Rue Michel Ange</street>
+                    <number>76</number>
+                </postal>
+                <emails>
+                    <email use='PROFESSIONAL'>molestie.in.tempus@lorem.com</email>
+                    <email use='PRIVATE'>volutpat.Nulla.facilisis@Nullafacilisi.ca</email>
+                    <email use='OTHER'>ac@facilisisSuspendissecommodo.ca</email>
+                </emails>
+                <phones>
+                    <phone use='PRIVATE' type='CELLPHONE'>0663748554</phone>
+                    <phone use='PROFESSIONAL' type='LANDLINE'>0383552607</phone>
+                </phones>
+            </addresses>
+            <relations>
+                <relation>
+                    <person_id>p12</person_id>
+                    <level>3</level>
+                </relation>
+                <relation>
+                    <person_id>p10</person_id>
+                    <level>1</level>
+                </relation>
+                <relation>
+                    <person_id>p3</person_id>
+                    <level>-1</level>
+                </relation>
+                <relation>
+                    <person_id>p11</person_id>
+                    <level>0</level>
+                </relation>
+                <relation>
+                    <person_id>p6</person_id>
+                    <level>4</level>
+                </relation>
+                <relation>
+                    <person_id>p2</person_id>
+                    <level>-1</level>
+                </relation>
+            </relations>
+        </person>
+        <person id='p6'>
+            <identity>
+                <lastname>Wielens</lastname>
+                <firstnames>
+                    <firstname>Joann</firstname>
+                    <firstname>Myrthe</firstname>
+                </firstnames>
+                <sex>OTHER</sex>
+                <birth>1939-07-18</birth>
+                <death>2015-02-19</death>
+            </identity>
+            <addresses>
+                <postal>
+                    <country_id>BE</country_id>
+                    <postalcode>9090</postalcode>
+                    <city>Mele</city>
+                    <street>Korte Noordsstraat</street>
+                    <number>379</number>
+                </postal>
+                <emails>
+                    <email use='PRIVATE'>a.aliquet.vel@Nuncmauris.org</email>
+                    <email use='OTHER'>Praesent@enimdiamvel.com</email>
+                </emails>
+                <phones>
+                    <phone use='PRIVATE' type='CELLPHONE'>0412694360</phone>
+                    <phone use='OTHER' type='CELLPHONE'>0450144941</phone>
+                </phones>
+            </addresses>
+            <relations>
+                <relation>
+                    <person_id>p8</person_id>
+                    <level>-1</level>
+                </relation>
+                <relation>
+                    <person_id>p2</person_id>
+                    <level>2</level>
+                </relation>
+                <relation>
+                    <person_id>p15</person_id>
+                    <level>4</level>
+                </relation>
+                <relation>
+                    <person_id>p4</person_id>
+                    <level>0</level>
+                </relation>
+            </relations>
+        </person>
+        <person id='p7'>
+            <identity>
+                <lastname>Pawłowska</lastname>
+                <firstnames>
+                    <firstname>Wacława</firstname>
+                    <firstname>Stefania</firstname>
+                    <firstname>Elżbieta</firstname>
+                    <firstname>Roksana</firstname>
+                </firstnames>
+                <sex>FEMALE</sex>
+                <birth>1998-11-24</birth>
+                <death>NULL</death>
+            </identity>
+            <addresses>
+                <postal>
+                    <country_id>DE</country_id>
+                    <postalcode>54534</postalcode>
+                    <city>Karl</city>
+                    <street>Lützowplatz</street>
+                    <number>57</number>
+                </postal>
+                <emails/>
+                <phones/>
+            </addresses>
+            <relations>
+                <relation>
+                    <person_id>p8</person_id>
+                    <level>4</level>
+                </relation>
+            </relations>
+        </person>
+        <person id='p8'>
+            <identity>
+                <lastname>D'Aubigné</lastname>
+                <firstnames>
+                    <firstname>Joséphine</firstname>
+                    <firstname>Caroline</firstname>
+                    <firstname>Arnaude</firstname>
+                    <firstname>Halette</firstname>
+                    <firstname>Christelle</firstname>
+                    <firstname>Anaïs</firstname>
+                </firstnames>
+                <sex>FEMALE</sex>
+                <birth>2001-11-03</birth>
+                <death>NULL</death>
+            </identity>
+            <addresses>
+                <postal>
+                    <country_id>FR</country_id>
+                    <postalcode>01000</postalcode>
+                    <city>Bourg-en-Bresse</city>
+                    <street>Rue Petite Fusterie</street>
+                    <number>61</number>
+                </postal>
+                <emails>
+                    <email use='PRIVATE'>lacinia.vitae.sodales@elementum.net</email>
+                </emails>
+                <phones>
+                    <phone use='PRIVATE' type='IPPHONE'>0999954681</phone>
+                </phones>
+            </addresses>
+            <relations>
+                <relation>
+                    <person_id>p4</person_id>
+                    <level>1</level>
+                </relation>
+                <relation>
+                    <person_id>p9</person_id>
+                    <level>2</level>
+                </relation>
+                <relation>
+                    <person_id>p2</person_id>
+                    <level>2</level>
+                </relation>
+                <relation>
+                    <person_id>p5</person_id>
+                    <level>0</level>
+                </relation>
+                <relation>
+                    <person_id>p1</person_id>
+                    <level>1</level>
+                </relation>
+            </relations>
+        </person>
+        <person id='p9'>
+            <identity>
+                <lastname>Jodoin</lastname>
+                <firstnames>
+                    <firstname>Prunella</firstname>
+                    <firstname>Andrée</firstname>
+                    <firstname>Cosette</firstname>
+                </firstnames>
+                <sex>FEMALE</sex>
+                <birth>2006-04-18</birth>
+                <death>NULL</death>
+            </identity>
+            <addresses>
+                <postal>
+                    <country_id>BE</country_id>
+                    <postalcode>7910</postalcode>
+                    <city>Anvaing</city>
+                    <street>Rue du Pont Simon</street>
+                    <number>348</number>
+                </postal>
+                <emails>
+                    <email use='PRIVATE'>Proin.dolor.Nulla@interdumCurabiturdictum.com</email>
+                    <email use='PROFESSIONAL'>sem@Sednecmetus.com</email>
+                    <email use='OTHER'>Nulla.tincidunt@odiosemper.ca</email>
+                    <email use='OTHER'>sem@montesnascetur.ca</email>
+                </emails>
+                <phones>
+                    <phone use='PROFESSIONAL' type='LANDLINE'>085529236</phone>
+                    <phone use='PROFESSIONAL' type='CELLPHONE'>0418864786</phone>
+                    <phone use='PROFESSIONAL' type='IPPHONE'>086214048</phone>
+                    <phone use='PRIVATE' type='CELLPHONE'>0413285076</phone>
+                </phones>
+            </addresses>
+            <relations/>
+        </person>
+        <person id='p10'>
+            <identity>
+                <lastname>Napolitani</lastname>
+                <firstnames>
+                    <firstname>Agostino</firstname>
+                    <firstname>Innocenzo</firstname>
+                </firstnames>
+                <sex>MALE</sex>
+                <birth>1939-10-07</birth>
+                <death>1993-05-23</death>
+            </identity>
+            <addresses>
+                <postal>
+                    <country_id>BE</country_id>
+                    <postalcode>7100</postalcode>
+                    <city>La Louvière</city>
+                    <street>Rue de Baras</street>
+                    <number>76</number>
+                </postal>
+                <emails/>
+                <phones>
+                    <phone use='PROFESSIONAL' type='LANDLINE'>020402495</phone>
+                    <phone use='PRIVATE' type='LANDLINE'>051925112</phone>
+                </phones>
+            </addresses>
+            <relations>
+                <relation>
+                    <person_id>p1</person_id>
+                    <level>-1</level>
+                </relation>
+                <relation>
+                    <person_id>p2</person_id>
+                    <level>-1</level>
+                </relation>
+                <relation>
+                    <person_id>p3</person_id>
+                    <level>2</level>
+                </relation>
+                <relation>
+                    <person_id>p4</person_id>
+                    <level>0</level>
+                </relation>
+                <relation>
+                    <person_id>p5</person_id>
+                    <level>1</level>
+                </relation>
+                <relation>
+                    <person_id>p6</person_id>
+                    <level>0</level>
+                </relation>
+                <relation>
+                    <person_id>p7</person_id>
+                    <level>3</level>
+                </relation>
+                <relation>
+                    <person_id>p8</person_id>
+                    <level>0</level>
+                </relation>
+                <relation>
+                    <person_id>p9</person_id>
+                    <level>-1</level>
+                </relation>
+                <relation>
+                    <person_id>p11</person_id>
+                    <level>4</level>
+                </relation>
+                <relation>
+                    <person_id>p12</person_id>
+                    <level>-1</level>
+                </relation>
+                <relation>
+                    <person_id>p13</person_id>
+                    <level>3</level>
+                </relation>
+                <relation>
+                    <person_id>p14</person_id>
+                    <level>0</level>
+                </relation>
+                <relation>
+                    <person_id>p15</person_id>
+                    <level>0</level>
+                </relation>
+            </relations>
+        </person>
+        <person id='p11'>
+            <identity>
+                <lastname>Pisano</lastname>
+                <firstnames>
+                    <firstname>Pisano</firstname>
+                </firstnames>
+                <sex>MALE</sex>
+                <birth>1970-08-06</birth>
+                <death>NULL</death>
+            </identity>
+            <addresses>
+                <postal>
+                    <country_id>DE</country_id>
+                    <postalcode>12629</postalcode>
+                    <city>Berlin Hellersdorf</city>
+                    <street>Leopoldstraße</street>
+                    <number>81</number>
+                </postal>
+                <emails>
+                    <email use='PROFESSIONAL'>sociis@estmaurisrhoncus.edu</email>
+                    <email use='PRIVATE'>mauris.Integer.sem@miAliquamgravida.co.uk</email>
+                </emails>
+                <phones>
+                    <phone use='PROFESSIONAL' type='LANDLINE'>07390212311</phone>
+                    <phone use='PROFESSIONAL' type='CELLPHONE'>017958785258</phone>
+                    <phone use='PRIVATE' type='CELLPHONE'>016684255916</phone>
+                    <phone use='PRIVATE' type='LANDLINE'>04434799227</phone>
+                </phones>
+            </addresses>
+            <relations>
+                <relation>
+                    <person_id>p7</person_id>
+                    <level>2</level>
+                </relation>
+            </relations>
+        </person>
+        <person id='p12'>
+            <identity>
+                <lastname>Vertefeuille</lastname>
+                <firstnames>
+                    <firstname>Zacharie</firstname>
+                    <firstname>Guy</firstname>
+                    <firstname>Pascal</firstname>
+                    <firstname>Jacques</firstname>
+                </firstnames>
+                <sex>MALE</sex>
+                <birth>1911-08-24</birth>
+                <death>1973-09-28</death>
+            </identity>
+            <addresses>
+                <postal>
+                    <country_id>FR</country_id>
+                    <postalcode>95140</postalcode>
+                    <city>Garges-Lès-Gonesse</city>
+                    <street>Rue Saint Germain</street>
+                    <number>14</number>
+                </postal>
+                <emails/>
+                <phones>
+                    <phone use='PROFESSIONAL' type='LANDLINE'>0284602981</phone>
+                </phones>
+            </addresses>
+            <relations/>
+        </person>
+        <person id='p13'>
+            <identity>
+                <lastname>Saenz Trejo</lastname>
+                <firstnames>
+                    <firstname>Orfeo</firstname>
+                </firstnames>
+                <sex>MALE</sex>
+                <birth>1995-05-08</birth>
+                <death>NULL</death>
+            </identity>
+            <addresses>
+                <postal>
+                    <country_id>FR</country_id>
+                    <postalcode>13008</postalcode>
+                    <city>Marseille</city>
+                    <street>Cours Franklin Roosevelt</street>
+                    <number>45</number>
+                </postal>
+                <emails>
+                    <email use='PRIVATE'>Morbi@montesnasceturridiculus.org</email>
+                    <email use='PROFESSIONAL'>Phasellus@magnaCrasconvallis.com</email>
+                </emails>
+                <phones>
+                    <phone use='PROFESSIONAL' type='IPPHONE'>0961846231</phone>
+                    <phone use='PRIVATE' type='CELLPHONE'>0655827990</phone>
+                </phones>
+            </addresses>
+            <relations>
+                <relation>
+                    <person_id>p11</person_id>
+                    <level>2</level>
+                </relation>
+                <relation>
+                    <person_id>p15</person_id>
+                    <level>0</level>
+                </relation>
+                <relation>
+                    <person_id>p9</person_id>
+                    <level>3</level>
+                </relation>
+                <!-- <relation>
+                    <person_id>p19</person_id>
+                    <level>3</level>
+                </relation> -->
+                <relation>
+                    <person_id>p5</person_id>
+                    <level>1</level>
+                </relation>
+                <relation>
+                    <person_id>p6</person_id>
+                    <level>-1</level>
+                </relation>
+                <relation>
+                    <person_id>p12</person_id>
+                    <level>0</level>
+                </relation>
+                <relation>
+                    <person_id>p8</person_id>
+                    <level>1</level>
+                </relation>
+                <relation>
+                    <person_id>p2</person_id>
+                    <level>-1</level>
+                </relation>
+                <relation>
+                    <person_id>p1</person_id>
+                    <level>-1</level>
+                </relation>
+                <relation>
+                    <person_id>p10</person_id>
+                    <level>1</level>
+                </relation>
+            </relations>
+        </person>
+        <person id='p14'>
+            <identity>
+                <lastname>Pedraza Luevano</lastname>
+                <firstnames>
+                    <firstname>Heliena</firstname>
+                    <firstname>Varinia</firstname>
+                    <firstname>Wendy</firstname>
+                </firstnames>
+                <sex>FEMALE</sex>
+                <birth>1950-05-01</birth>
+                <death>NULL</death>
+            </identity>
+            <addresses>
+                <postal>
+                    <country_id>DE</country_id>
+                    <postalcode>55767</postalcode>
+                    <city>Sonnenberg-Winnenberg</city>
+                    <street>Meininger Strasse</street>
+                    <number>35</number>
+                </postal>
+                <emails>
+                    <email use='PRIVATE'>Phasellus@magnaCrasconvallis.com</email>
+                </emails>
+                <phones>
+                    <phone use='PRIVATE' type='LANDLINE'>03287796198</phone>
+                    <phone use='PRIVATE' type='CELLPHONE'>015611001031</phone>
+                </phones>
+            </addresses>
+            <relations>
+                <relation>
+                    <person_id>p5</person_id>
+                    <level>0</level>
+                </relation>
+                <relation>
+                    <person_id>p1</person_id>
+                    <level>1</level>
+                </relation>
+                <relation>
+                    <person_id>p12</person_id>
+                    <level>2</level>
+                </relation>
+                <relation>
+                    <person_id>p13</person_id>
+                    <level>-1</level>
+                </relation>
+                <relation>
+                    <person_id>p15</person_id>
+                    <level>1</level>
+                </relation>
+                <relation>
+                    <person_id>p8</person_id>
+                    <level>4</level>
+                </relation>
+            </relations>
+        </person>
+        <person id='p15'>
+            <identity>
+                <lastname>Sleurink</lastname>
+                <firstnames>
+                    <firstname>Reintje</firstname>
+                    <firstname>Coralie</firstname>
+                    <firstname>Rayna</firstname>
+                </firstnames>
+                <sex>FEMALE</sex>
+                <birth>1950-08-22</birth>
+                <death>2012-01-10</death>
+            </identity>
+            <addresses>
+                <postal>
+                    <country_id>BE</country_id>
+                    <postalcode>1741</postalcode>
+                    <city>Wambeek</city>
+                    <street>Schoolstraat</street>
+                    <number>405</number>
+                </postal>
+                <emails>
+                    <email use='PRIVATE'>Nullam.ut.nisi@mauris.org</email>
+                </emails>
+                <phones>
+                    <phone use='PROFESSIONAL' type='LANDLINE'>050967225</phone>
+                    <phone use='PRIVATE' type='CELLPHONE'>0469864892</phone>
+                    <phone use='PRIVATE' type='LANDLINE'>076006224</phone>
+                </phones>
+            </addresses>
+            <relations>
+                <relation>
+                    <person_id>p6</person_id>
+                    <level>-1</level>
+                </relation>
+                <relation>
+                    <person_id>p12</person_id>
+                    <level>3</level>
+                </relation>
+                <relation>
+                    <person_id>p5</person_id>
+                    <level>2</level>
+                </relation>
+                <relation>
+                    <person_id>p7</person_id>
+                    <level>1</level>
+                </relation>
+                <relation>
+                    <person_id>p11</person_id>
+                    <level>0</level>
+                </relation>
+                <relation>
+                    <person_id>p2</person_id>
+                    <level>4</level>
+                </relation>
+                <relation>
+                    <person_id>p14</person_id>
+                    <level>1</level>
+                </relation>
+                <relation>
+                    <person_id>p3</person_id>
+                    <level>4</level>
+                </relation>
+                <relation>
+                    <person_id>p8</person_id>
+                    <level>2</level>
+                </relation>
+                <relation>
+                    <person_id>p13</person_id>
+                    <level>0</level>
+                </relation>
+                <relation>
+                    <person_id>p9</person_id>
+                    <level>1</level>
+                </relation>
+                <relation>
+                    <person_id>p10</person_id>
+                    <level>2</level>
+                </relation>
+                <relation>
+                    <person_id>p4</person_id>
+                    <level>3</level>
+                </relation>
+            </relations>
+        </person>
+    </persons>
+    <countries>
+        <country>
+            <alpha2code>BE</alpha2code>
+            <names>
+                <name xml:lang='en'>Belgium</name>
+                <name xml:lang='fr'>Belgique</name>
+                <name xml:lang='nl'>België</name>
+                <name xml:lang='de'>Belgien</name>
+            </names>
+            <callingcode>32</callingcode>
+        </country>
+        <country>
+            <alpha2code>FR</alpha2code>
+            <names>
+                <name xml:lang='fr'>France</name>
+                <name xml:lang='en'>France</name>
+            </names>
+            <callingcode>33</callingcode>
+        </country>
+        <country>
+            <alpha2code>IT</alpha2code>
+            <names>
+                <name xml:lang='it'>Italia</name>
+                <name xml:lang='fr'>Italie</name>
+                <name xml:lang='en'>Italy</name>
+            </names>
+            <callingcode>39</callingcode>
+        </country>
+        <country>
+            <alpha2code>DE</alpha2code>
+            <names>
+                <name xml:lang='de'>Deutschland</name>
+                <name xml:lang='fr'>Allemagne</name>
+                <name xml:lang='en'>Germany</name>
+            </names>
+            <callingcode>49</callingcode>
+        </country>
+        <country>
+            <alpha2code>ES</alpha2code>
+            <names>
+                <name xml:lang='es'>España</name>
+                <name xml:lang='en'>Spain</name>
+                <name xml:lang='fr'>Espagne</name>
+            </names>
+            <callingcode>34</callingcode>
+        </country>
+    </countries>
+</addressbook>

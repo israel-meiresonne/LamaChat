@@ -1,0 +1,69 @@
+<!--- addressbook.dtd -->
+
+<!ELEMENT addressbook (persons|countries)*>
+<!ATTLIST addressbook xmlns CDATA #IMPLIED>
+
+<!ELEMENT persons (person)*>
+
+<!ELEMENT person (identity|addresses|relations)*>
+<!ATTLIST person id CDATA #IMPLIED>
+
+<!ELEMENT identity (lastname|firstnames|sex|birth|death)*>
+
+<!ELEMENT lastname (#PCDATA)>
+
+<!ELEMENT firstnames (firstname)*>
+
+<!ELEMENT firstname (#PCDATA)>
+
+<!ELEMENT sex (#PCDATA)>
+
+<!ELEMENT birth (#PCDATA)>
+
+<!ELEMENT death (#PCDATA)>
+
+<!ELEMENT addresses (postal|emails|phones)*>
+
+<!ELEMENT postal (country_id|postalcode|city|street|number)*>
+
+<!ELEMENT country_id (#PCDATA)>
+
+<!ELEMENT postalcode (#PCDATA)>
+
+<!ELEMENT city (#PCDATA)>
+
+<!ELEMENT street (#PCDATA)>
+
+<!ELEMENT number (#PCDATA)>
+
+<!ELEMENT emails (email)*>
+
+<!ELEMENT email (#PCDATA)>
+<!ATTLIST email use CDATA #IMPLIED>
+
+<!ELEMENT phones (phone)*>
+
+<!ELEMENT phone (#PCDATA)>
+<!ATTLIST phone use CDATA #IMPLIED
+                type CDATA #IMPLIED>
+
+<!ELEMENT relations (relation)*>
+
+<!ELEMENT relation (person_id|level)*>
+
+<!ELEMENT person_id (#PCDATA)>
+
+<!ELEMENT level (#PCDATA)>
+
+<!ELEMENT countries (country)*>
+
+<!ELEMENT country (alpha2code|names|callingcode)*>
+
+<!ELEMENT alpha2code (#PCDATA)>
+
+<!ELEMENT names (name)*>
+
+<!ELEMENT name (#PCDATA)>
+<!ATTLIST name xml:lang CDATA #IMPLIED>
+
+<!ELEMENT callingcode (#PCDATA)>
