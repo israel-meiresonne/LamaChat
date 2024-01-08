@@ -1,4 +1,0 @@
--   il manque les tables de la bd.
--   dans « 9. gérer les compte utilisateur », tu écris systématiquement : « (si le compte a la permission) ». que cela signifie-t-il ?
--   l'interface administration ne permet pas la gestion des discussions ?
--   les discussions sont-elles chiffrées ?

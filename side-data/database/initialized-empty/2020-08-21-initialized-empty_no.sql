@@ -11,10 +11,10 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 --
--- Base de données :  `projet_din_mai_2020`
+-- Base de données :  `lamachat.dev`
 --
-CREATE DATABASE IF NOT EXISTS `projet_din_mai_2020` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `projet_din_mai_2020`;
+CREATE DATABASE IF NOT EXISTS `lamachat.dev` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `lamachat.dev`;
 
 -- --------------------------------------------------------
 
