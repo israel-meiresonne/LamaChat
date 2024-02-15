@@ -37,11 +37,11 @@ See all features in action on Youtube (with *TimeCodes*): <https://www.youtube.c
 
 ### ER-Diagram
 
-[<img src="side-data/doc/diagram/projet-ER_diagram.pdf" width="500">](side-data/doc/diagram/projet-ER_diagram.pdf)
+[<img src="side-data/doc/diagram/projet-ER_diagram.png" width="500">](side-data/doc/diagram/projet-ER_diagram.png)
 
 ### Class Diagram
 
-[<img src="side-data/doc/diagram/projet-mcd.pdf" width="500">](side-data/doc/diagram/projet-mcd.pdf)
+[<img src="side-data/doc/diagram/projet-mcd.png" width="500">](side-data/doc/diagram/projet-mcd.png)
 
 ## Screenshots
 
