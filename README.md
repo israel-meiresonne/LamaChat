@@ -1,4 +1,11 @@
 # Chat Application
+<!-- ❌ Don't Delete This Comment ❌
+Project short description:
+  Full-stack real-time web chat application that enables instantaneous connections and communication between users.
+Project Topics (tags):
+  javascript  mysql  css  html  jquery php
+-->
+
 
 A real-time web chat application that enables instantaneous connections and communication between users.
 The application implements an administrator interface that allows administrators to track statistics and moderate users.
